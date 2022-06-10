@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="siteadm">
+	
+	<select id="selectSiteinfo" resultType="com.harmony.longterm.vo.SiteinfoVO">
+		SELECT id, title, DATE_FORMAT(start_date,'%Y-%m-%d') as start_date, DATE_FORMAT(end_date,'%Y-%m-%d') as end_date, left_postion, top_postion, width, height, contents, link_url, pc_type FROM siteinfo
+		<where>
+			<if test="start_date != '' and start_date != null ">
+				<![CDATA[
+					AND start_date <= now()
+				]]>
+			</if>
+			<if test="end_date != '' and start_date != null ">
+				<![CDATA[
+					AND end_date >= now()
+				]]>
+			</if>
+			<if test="pc_type != '' and pc_type != null ">
+				AND pc_type = #{pc_type}
+			</if>
+			<if test="id != '' and id != null ">
+				AND id = #{id}
+			</if>
+		
+		</where>
+	</select>
+
+	<select id="selectSiteinfoTotCnt" resultType="int">
+		SELECT count(*) FROM siteinfo
+		<where>
+			<if test="start_date != '' and id != null ">
+				<![CDATA[
+					AND end_date >= #{start_date}
+				]]>
+			</if>
+			
+			<if test="pc_type != '' and pc_type != null ">
+				AND pc_type = #{pc_type}
+			</if>
+			<if test="id != '' and id != null ">
+				AND id != #{id}
+			</if>
+		
+		</where>
+	</select>
+	
+	<select id="selectSiteinfoList" resultType="com.harmony.longterm.vo.SiteinfoVO">
+		SELECT id, title, start_date, end_date, left_postion, top_postion, width, height, contents, link_url, pc_type
+		FROM siteinfo
+		<where>
+		<if test="pc_type != '' and pc_type != null ">
+			AND pc_type = #{pc_type}
+		</if>
+		</where>
+		ORDER BY 
+		end_date DESC
+		limit #{page}, #{count}
+		
+	</select>
+
+	<insert id="insertSiteinfo" useGeneratedKeys="true" keyProperty="id" parameterType="com.harmony.longterm.vo.SiteinfoVO"> 
+        INSERT INTO siteinfo 
+        	( 
+        		id, 
+				title, 
+				start_date, 
+				end_date, 
+				left_postion, 
+				top_postion, 
+				width, 
+				height, 
+				contents,
+				link_url, 
+				pc_type
+		   	)
+        VALUES 
+        	(
+        		0, 
+        		#{title}, 
+        		#{start_date}, 
+        		#{end_date}, 
+        		${left_postion}, 
+        		${top_postion}, 
+        		${width}, 
+        		#{height}, 
+        		#{contents},
+        		#{link_url},
+        		${pc_type} 
+        	) 
+    </insert>
+
+    <update id="updateSiteinfo" parameterType="com.harmony.longterm.vo.SiteinfoVO">
+		UPDATE siteinfo 
+		<set>
+			<if test="title != '' and title != null">title = #{title},</if>
+			<if test="start_date != '' and start_date != null">start_date = #{start_date},</if>
+			<if test="end_date != '' and end_date != null">end_date = #{end_date},</if>
+			<if test="left_postion != '' and left_postion != null">left_postion = #{left_postion},</if>
+			<if test="top_postion != '' and top_postion != null">top_postion = #{top_postion},</if>
+			<if test="width != '' and width != null">width = #{width},</if>
+			<if test="height != '' and height != null">height = #{height},</if>
+			<if test="contents != '' and contents != null">contents = #{contents},</if>
+			<if test="link_url != '' and link_url != null">link_url = #{link_url},</if>
+			<if test="pc_type != '' and pc_type != null">pc_type = #{pc_type},</if>			
+		</set>
+    	WHERE id=#{id}
+    </update>
+    
+    <delete id="deleteSiteinfo" parameterType="int">
+    	DELETE FROM siteinfo
+    	WHERE id=#{id}
+    </delete>   
+</mapper>

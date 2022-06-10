@@ -1,0 +1,90 @@
+<!DOCTYPE tiles-definitions PUBLIC
+  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+ 
+<tiles-definitions>
+ 
+    <!-- 화면의 기초가 되는 base -->
+    <definition name="base" template="/WEB-INF/views/layout/template.jsp">
+    	<put-attribute name="title" value="하모니렌트카" />
+        <put-attribute name="nav"   value="/WEB-INF/views/layout/nav.jsp" />
+        <put-attribute name="header" value="/WEB-INF/views/layout/header.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/views/layout/footer.jsp" />
+    </definition>
+    
+    <!-- base를 상속받은 base/index -->
+    <definition name="base/index" extends="base">
+        <put-attribute name="body" value="/WEB-INF/views/base/index.jsp" />
+    </definition>
+
+    <definition name="admin.estimatedetail" template="/WEB-INF/views/layout/only-html.jsp">
+		<put-attribute name="body" value="" />
+    </definition>    
+
+    <definition name="admin.*" template="/WEB-INF/views/layout/template-admin.jsp">
+    
+    	<put-attribute name="title" value="하모니렌트카" />
+    	<put-attribute name="IncludeCSS" value="/admin-{1}" />
+        <put-attribute name="nav"   value="/WEB-INF/views/layout/nav-a.jsp" />
+        <put-attribute name="body"   value="/WEB-INF/views/admin/{1}.jsp" />
+        <put-attribute name="header" value="/WEB-INF/views/layout/header-a.jsp" />
+    </definition>    
+    
+     <definition name="member.*" template="/WEB-INF/views/layout/template-member.jsp">
+    	<put-attribute name="title" value="하모니렌트카" />
+    	<put-attribute name="IncludeCSS" value="/member-{1}" />
+        <put-attribute name="nav"   value="/WEB-INF/views/layout/nav-a.jsp" />
+        <put-attribute name="body"   value="/WEB-INF/views/member/{1}.jsp" />
+        <put-attribute name="header" value="/WEB-INF/views/layout/header-mem.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/views/layout/footer.jsp" />
+    </definition>    
+
+     <definition name="m-member.*" template="/WEB-INF/views/layout/template-member-m.jsp">
+    	<put-attribute name="title" value="하모니렌트카" />
+    	<put-attribute name="IncludeCSS" value="/member-{1}-m" />
+        <put-attribute name="nav"   value="/WEB-INF/views/layout/nav-m.jsp" />
+        <put-attribute name="body"   value="/WEB-INF/views/member/{1}.jsp" />
+        <put-attribute name="header" value="/WEB-INF/views/layout/header-mem-m.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/views/layout/footer-m.jsp" />
+    </definition>    
+
+ 
+    <definition name="rent.*" template="/WEB-INF/views/layout/template-rent.jsp">
+    	<put-attribute name="title" value="하모니렌트카" />
+    	<put-attribute name="IncludeCSS" value="/{1}" />
+        <put-attribute name="nav"   value="/WEB-INF/views/layout/nav.jsp" />
+        <put-attribute name="body"   value="/WEB-INF/views/{1}.jsp" />
+        <put-attribute name="header" value="/WEB-INF/views/layout/header.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/views/layout/footer.jsp" />
+    </definition>
+
+    <definition name="m-rent.*" template="/WEB-INF/views/layout/template-rent-m.jsp">
+    	<put-attribute name="title" value="하모니렌트카" />
+    	<put-attribute name="IncludeCSS" value="/{1}-m" />
+        <put-attribute name="nav"   value="/WEB-INF/views/layout/nav-m.jsp" />
+        <put-attribute name="body"   value="/WEB-INF/views/{1}-m.jsp" />
+        <put-attribute name="header" value="/WEB-INF/views/layout/header.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/views/layout/footer-m.jsp" />
+    </definition>
+
+
+    <definition name="bbs.*" template="/WEB-INF/views/layout/template-rent.jsp">
+    	<put-attribute name="title" value="하모니렌트카" />
+    	<put-attribute name="IncludeCSS" value="/{1}" />
+        <put-attribute name="nav"   value="/WEB-INF/views/layout/nav.jsp" />
+        <put-attribute name="body"   value="/WEB-INF/views/bbs/{1}.jsp" />
+        <put-attribute name="header" value="/WEB-INF/views/layout/header.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/views/layout/footer.jsp" />
+    </definition>
+
+    <definition name="m-bbs.*" template="/WEB-INF/views/layout/template-rent-m.jsp">
+    	<put-attribute name="title" value="하모니렌트카" />
+    	<put-attribute name="IncludeCSS" value="/{1}" />
+        <put-attribute name="nav"   value="/WEB-INF/views/layout/nav-m.jsp" />
+        <put-attribute name="body"   value="/WEB-INF/views/bbs/{1}.jsp" />
+        <put-attribute name="header" value="/WEB-INF/views/layout/header.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/views/layout/footer-m.jsp" />
+    </definition>
+    
+    
+</tiles-definitions>

@@ -1,0 +1,145 @@
+@charset "UTF-8";
+	@import url( http://fonts.googleapis.com/earlyaccess/nanumgothic.css );
+	@import url(https://fonts.googleapis.com/earlyaccess/notosanskr.css);  	 /* Noto Sans KR */
+
+	* {	margin: 0px; padding: 0px; outline: 0px;	}
+	div,p,span,a,ul,ol,li,dl,dt,dd,h1,h2,h3,h4,form,select,fieldset,input,textarea	{margin:0;	padding:0; border:0; list-style:none; font-family:"Nanum Gothic", "돋움", "굴림", "Tahoma" , "Helvetica", "AppleGothic", "sans-serif"; color:#696969;}
+	body,div,span,a,input,select,textarea { text-decoration:none; }
+	ul, ol, dl {	list-style:none;}
+	img 							{	border:0; vertical-align:top;}
+	ul 								{	list-style:none; padding:0; margin:0;}	
+	img 							{ margin:0; border:0; padding:0px; border-collapse:collapse; }
+	#a,img					{ selector-dummy: expression(this.hideFocus=true); font-family:"Nanum Gothic", "돋움", "굴림", "Tahoma" , "Helvetica", "AppleGothic", "sans-serif"; } 
+
+	html	{	background: rgb(255, 255, 255); height: 100%;	}
+	body	{	background: rgb(255, 255, 255); height: 100%;	}
+	body {	color: rgb(63, 63, 63);	}
+	a 			{	color: rgb(63, 63, 63);	}
+
+
+	/** @@ 시맨틱 태그   ***************************************/
+	header 						{	position:fixed; top:0; left:0; z-index:30; width:100%; height:50px; /*background:#fff;*/ border-style:solid; border-color:#FFF; border-width:0 0 1px 0;	}
+	nav										{	width:100%; }
+	section 					{	margin:0 auto; 	width:100%; padding-top:100px;  /*max-width:1060px;*/ }
+	article 					{	display: block;	width:1000px; margin:0 auto;    padding:50px 0 50px 0; /*border: 0px currentColor;*/ 	}
+	aside 							{	display: block;	width:100%; 		margin: 0px; padding:50px 0 50px 0; border: 0px currentColor; border-image: none;	}	
+
+	#wrapper 				{	display: none;	}
+
+
+
+
+	/** @@ MENU		   ***************************************/
+	.mb_gnb																								{	display:none;}
+	.pc_gnb																								{ width:100%;  max-width:750px; height:50px; float:right; }
+	.pc_gnb .menu																		{ font-family:"Noto Sans KR","Nanum Gothic", "돋움", "굴림", "Tahoma" , "Helvetica", "AppleGothic", "sans-serif"; font-size:0.8em; color:#000000; text-decoration:none;  }
+	.pc_gnb ul																					{ margin:0 auto; width:100%;}
+	.gnb:after																					{ clear:both; content:''}
+	.pc_gnb > ul > li														{ position:relative; float:left;  height:50px; text-align:center; }
+
+	.pc_gnb > ul > li.gnb01 {	display:inline-block;	width:20%; max-width:150px; }
+	.pc_gnb > ul > li.gnb02 { display:inline-block; width:20%; height:50px; max-width:150px; cursor:pointer; /*background-color:#C00;*/	}
+	.pc_gnb > ul > li.gnb03 {	width:20%; max-width:150px;	}
+	.pc_gnb > ul > li.gnb04 {	width:20%; max-width:150px;	}
+	.pc_gnb > ul > li.gnb05 {	width:20%; max-width:150px;	}
+	
+	.pc_gnb > ul > li.gnb01:hover	 { height:50px;	background: rgba(253, 253, 253, 0.3); color: rgb(0, 0, 0); box-shadow: inset 0px 3px #000; font-weight:600; }
+	.pc_gnb > ul > li.gnb02:hover	 { height:50px;	background: rgba(253, 253, 253, 0.3); color: rgb(0, 0, 0); box-shadow: inset 0px 3px #000; font-weight:600; }
+	.pc_gnb > ul > li.gnb03:hover	 { height:50px;	background: rgba(253, 253, 253, 0.3); color: rgb(0, 0, 0); box-shadow: inset 0px 3px #000; font-weight:600; }
+	.pc_gnb > ul > li.gnb04:hover	 { height:50px;	background: rgba(253, 253, 253, 0.3); color: rgb(0, 0, 0); box-shadow: inset 0px 3px #000; font-weight:600; }
+	.pc_gnb > ul > li.gnb05:hover	 { height:50px;	background: rgba(253, 253, 253, 0.3); color: rgb(0, 0, 0); box-shadow: inset 0px 3px #000; font-weight:600; }			
+	/*
+	.pc_gnb > ul > li.gnb06 {width:20%;}
+	.pc_gnb > ul > li.gnb07 {width:20%;}
+	.pc_gnb > ul > li.gnb08 {width:20%;}
+	.pc_gnb > ul > li.gnb02 a
+	.pc_gnb > ul > li.gnb02 > a, .pc_gnb > ul > li.gnb04 > a {	display:block;	padding-top:15px; color:#fff; text-decoration:none; width:100%; height:30px; 	}
+	.pc_gnb > ul > li.gnb01 a
+	.pc_gnb > ul > li.gnb02 > a, .pc_gnb > ul > li.gnb03 > a {	display:block;	padding-top:15px; color:#fff; text-decoration:none; width:100%; height:30px; background-color:#063;	}
+	.pc_gnb > ul > li.gnb02 a,
+	.pc_gnb > ul > li.gnb03 a{ letter-spacing:25px }
+	.pc_gnb > ul > li.gnb03 li a,
+	.pc_gnb > ul > li.gnb02 li a{ letter-spacing:0;}
+	
+	.pc_gnb > ul > li.hv > a										{	padding-bottom:18px; color:#fbfb51;	}
+	.pc_gnb ul li ul																		{	display:none; position:absolute; top:50px;	padding-top:15px;	width:100%;	height:30px;	background:#fff;}
+	.pc_gnb > ul > li:first-child > ul{	}
+	.pc_gnb ul li ul li															{	display:block; padding:3px 0 3px 0; font-size:15px;	text-align:center; background-color:#906; }
+	.pc_gnb > ul > li > ul > li > a			{	display:block;		color:#897d77; text-decoration:none; 									}
+	.pc_gnb ul li ul li a:hover							{	color:#000000;	}
+	.pc_gnb ul li ul li a img									{ padding:0 10px;}
+	.pc_gnb ul li ul li ul												{	position:relative;	top:0;	left:0;	margin-bottom:5px;	padding:0;	height:auto;	border:0;	}
+	.pc_gnb ul li ul li ul li a							{	display:block;	}
+	.pc_gnb ul li ul li ul li a:hover	{ }
+	*/
+	.pc_gnb > ul > li > a													{	display:block;	width:100%; height:30px; padding-top:15px; }
+	.pc_gnb ul li ul																		{	display:none; 	width:100%;	position:absolute; top:0px;	padding-top:50px;	 }
+	.pc_gnb ul li ul li															{	display:block; padding:7px 0 0 0; height:30px;	text-align:center; border-style:solid; border-color:#FFF; border-width:0 1px 1px 1px;	}
+	.pc_gnb ul li ul li	a													{	font-family:"Noto Sans KR","Nanum Gothic", "돋움", "굴림", "Tahoma" , "Helvetica", "AppleGothic", "sans-serif"; font-size:0.8em; color:#000000; text-decoration:none; }	
+
+
+	/** @@ MAIN		   ***************************************/
+ .main_area 		{	width: 100%; height: 100%; clear: both; margin-left: 0px; float: left; display: block;	}
+	.container 		{	margin: 0px auto; height: auto !important; min-height: 100%;		}
+	a 											{	overflow: hidden;	}
+	#bg 									{	background-position: bottom; margin: 0px; padding: 0px; left: 0px; top: 0px; width: 100%; height: 100%; position: fixed; z-index: 0; background-image: url("../../../images_sample/main_01_bg.jpg"); background-size: cover;	}
+	
+	
+	
+	
+	
+	@media all and (min-width:949px)
+	{
+				header .top_logo																		{	display:inline-block; width:180px; height:50px; margin:0px; padding:0px; vertical-align:top; padding-left:20px; }	
+				header .top_logo h1 a													{ display:block; font-family:"Noto Sans KR","Nanum Gothic", "돋움", "굴림", "Tahoma" , "Helvetica", "AppleGothic", "sans-serif"; font-size:0.5em; color:#000000; text-decoration:none; margin:10px 0 0 0;}
+
+			.pc_gnb																												{	display:block;}
+				header	.btn_menu																		{	display:none;	}	
+			.mb_gnb																												{	display:none;	}
+			.mb_gnb	.login																					{	display:none;	}
+			.mb_gnb	ul																									{	display:none;	}
+	}
+	
+	@media all and (max-width:950px)
+	{
+				header .top_logo																		{	display:inline-block; width:100%; height:50px; margin:0px; padding:0px; vertical-align:top; text-align:center; }	
+				header .top_logo h1 a													{ display:block; font-family:"Noto Sans KR","Nanum Gothic", "돋움", "굴림", "Tahoma" , "Helvetica", "AppleGothic", "sans-serif"; font-size:0.5em; color:#000000; text-decoration:none; margin:10px 0 0 0;}
+
+					header .btn_menu																							{	display:block;	position:absolute; top:10px;	right:10px;	width:30px;}
+					header	.btn_menu a																					{	display:block;	height:30px;	text-indent:-999px;	overflow:hidden;}
+					header .btn_menu a.btnopen													{	background:url('../html_mark1_images/btn_menu.gif') no-repeat center center;	background-size:60%;border:1px solid #FFF	}
+					header .btn_menu a.btnClose												{	display:none;background:#555 url('../html_mark1_images/btn_close.png') no-repeat center center;background-size:40%;border:1px solid #555}
+			
+				.pc_gnb																																	{	display:none;}
+				.mb_gnb																																	{	display:none;	position:absolute;	top:50px;left:0;	z-index:500; margin:0 auto;	width:100%; height:auto; /*background:#eaeaea;*/ border-top:1px solid #fff;}
+				.mb_gnb	 .login																									{	padding:10px 30px; background:rgba(253, 253, 253, 0.5); text-align:right;}
+				.mb_gnb	 .login span																				{	display:inline-block; margin:-10px 5px 0 5px;   font-family:"Nanum Gothic", "돋움", "굴림", "Tahoma" , "Helvetica", "AppleGothic", "sans-serif"; font-size:0.8em; color:#666; }
+				.mb_gnb	 .login	a																							{	display:inline-block; vertical-align:text-bottom;  font-family:"Noto Sans KR","Nanum Gothic", "돋움", "굴림", "Tahoma" , "Helvetica", "AppleGothic", "sans-serif"; font-size:0.8em; color:#000; text-decoration:none;/* background:#eaeaea; */}
+				.mb_gnb a																															{	display:block}
+				.mb_gnb > ul > li > a																			{	padding:20px 30px; background:rgba(121,205,210, 0.7); border-top:1px solid #fff; font-size:18px; font-weight:600; color:#fff; text-decoration:none;}
+				.mb_gnb > ul > li.open > a														{	background:#444;  right center;}
+				.mb_gnb > ul > li > ul																		{	display:none}
+				.mb_gnb > ul > li > ul > li > a									{	padding:15px 30px;font-size:17px;color:#555; background:#fff ;border-top:1px solid #ddd}
+				.mb_gnb > ul > li > ul > li.open > a				{	color:#fff;background:#eb4e30 right center;border-top:1px solid #eb4e30}
+				.mb_gnb > ul > li > ul > li > ul											{	display:none;padding:10px 0; background:#fafafa;}
+				.mb_gnb > ul > li > ul > li > ul > li > a		{	padding:5px 0 5px 50px;	font-size:16px;	color:#000;/*	background:38px center*/}
+				.mb_gnb > ul.member_gnb > li > a 										{	padding:15px 30px;	background:#444; right center;	border-top:1px solid #303030;	}
+		}
+
+		@media only screen and (min-width:769px)
+		{
+					html {	}
+					body {	}
+					
+					.main_area {	width: 100%; height: 100%; padding-bottom: 50px; clear: both; margin-left: 0px; float: left; display: block; }
+					.container { padding: 0px; width: 100%; height: 100%; margin-right: auto; margin-left: auto;					}
+					#bg 							{	background-position: top; background-image: url("../../../images_sample/main_01_bg.jpg");		}
+		}
+
+
+
+	/** @@FOOTER ************************************/
+	footer 					{	width:100%; height:57px; bottom: 0px; position: fixed; z-index: 1; background:rgba(0, 0, 0, 0.5);	}
+	.copyright		{	margin-top:15px; width:100%; text-align:center; font-family:"Nanum Gothic", "돋움", "굴림", "Tahoma" , "Helvetica", "AppleGothic", "sans-serif"; font-size:0.7em; color:#fff; text-decoration:none;	}
+
+

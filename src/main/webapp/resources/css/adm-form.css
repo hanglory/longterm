@@ -1,0 +1,463 @@
+@charset "utf-8";
+
+/* popup */  
+.popup-wrap{position:relative; width:100%;box-shadow:1px 2px 3px 2px rgba(132,133,133,0.1);background:#fff} 
+.popup-wrap .pop-tit {position: absolute;left:0;top:0;width:100%;z-index:2;height:50px;line-height:50px; background:#ff545c url("/images/others/bg_pop.png") no-repeat 0 0;background-size:122px 50px;text-indent:10px}
+.popup-wrap .pop-tit span{font-size:16px;color:#fff}
+.popup-wrap .cla-close{display:block;overflow:hidden;position:absolute;right:0;top:0;height:50px;width:50px;z-index:3;background:url("/images/others/btn_etc.png") no-repeat 50% 15px;text-indent:-999px;background-size:20px 95px} 
+.popup-wrap .pop-cont{ padding:70px 20px 20px }
+.popup-wrap .pop-btn{text-align:center;padding:20px 20px 40px}
+.popup-wrap .today{overflow:hidden;position:fixed;bottom:0;left:0;width:100%;height:36px;background:#f9f9f9}
+.popup-wrap .today p{float:right;padding:8px 20px}
+.popup-wrap .today img{width:50px;margin:10px 20px} 
+.popup-wrap .form-table table th {width:20%}
+.popup-wrap .form-table table td {width:80%;line-height:140%}  
+.popup-wrap .cont-window{padding:20px 15px  30px}   
+/* 레이어 popup */  
+.pop-layer{display:table;position:fixed;left:0;top:0;bottom:0;height:100%;right:0;width:100%;background-color: rgba(0,0,0, 0.3);z-index:999;table-layout:fixed}
+.pop-layer .pop-inner{ display:table-cell;vertical-align:middle }
+.pop-layer .popup-wrap{position: relative;top:30%;left:50%; width:624px;padding-bottom:35px; margin-left:-312px; } 
+.pop-layer .popup-wrap .pop-cont{ padding:70px 20px 20px  20px}
+.pop-layer .popup-wrap .pop-cont.pop-cal{ padding: 50px 0 0} /* 무료방송 달력팝업용 */
+.pop-layer .popup-wrap .pop-btn{position:relative; padding:20px 0 0}
+.pop-layer .popup-wrap .pop-btn:after{content:"";display:block;height:1px}
+.pop-layer .popup-wrap .pop-btn .btn-m{height:35px} 
+.pop-layer .popup-wrap:after{content:"";display:block;position:absolute;bottom:0;left:0;width:100%;height:36px;background:#f9f9f9 url("/images/logo2.png") no-repeat 15px 5px;background-size:160px 28px} 
+.pop-layer .popup-wrap .pop-cont .scroll-y{height:300px;margin-right:-15px;padding-right:20px;overflow-y:auto}
+.pop-layer .popup-wrap .pop-cont .cont-scroll{height:527px;overflow-x:none;overflow-y:auto;margin-left:-20px;margin-right:-20px;padding:0 22px 0 20px}
+.pop-layer .img-zoom img{width:100%}
+/* 레이어 popup 가로 크기*/
+.pop-layer .popup-wrap.wid-m{width:500px;margin-left: -250px}
+.pop-layer .popup-wrap.wid-s{width:400px;margin-left: -200px}
+.pop-layer .popup-wrap.wid-cal{width:890px;margin-left: -445px}
+.pop-layer .popup-wrap.wid-interest{width:890px;margin-left: -445px}
+/*상단검색영역*/
+
+
+h2{
+  font-size: 24px;
+  font-weight: 600;
+  color: #737373;
+  padding-left: 10px;
+  margin-bottom: 5px;
+}
+
+.check_style {
+  width: 16px;
+  max-width: 16px;
+  height: 16px;
+  max-height: 16px;
+  border: 1px solid #b8b8b8;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+}
+.check_style img {
+  opacity: 0;
+  font-size: 0;
+  display: inline-flex;
+  width: 80%;
+  height: 100%;
+}
+
+
+.main_content {
+  padding-top: 100px;
+}
+
+.main_content .sub_title {
+ font-size: 18px ;
+ height: 60px;
+ background-color: #f2f2f9;
+ display: flex;
+ align-items: center;
+ padding-left: 20px;
+ border-top: 3px solid #000;
+ border-bottom: 1px solid #959595;
+}
+
+.register_wrap {
+  display: flex;
+  justify-content: space-between;
+}
+
+.register_wrap .left_area{
+  width: calc(55% - 25px);
+}
+.register_wrap .right_area{
+  width: calc(45% - 25px);
+
+}
+
+.info_item {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #959595;
+  background-color: #f4f4f6;
+
+}
+
+.info_item .info_title {
+  font-size: 16px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 40px;
+  width: 30%;
+  min-height: 100%;
+}
+
+
+
+.info_item .info_title br {
+  display: none;
+}
+
+.info_item .input_wrap {
+  display: flex;
+  align-items: center;
+  width: 70%;
+  height: 100%;
+  background-color: #fff;
+  font-size: 16px;
+  padding: 10px 0 10px 12px;
+}
+
+input, select  {
+  font-size: inherit;
+  height: 100%;
+  width: 100%;
+  background-color: transparent;
+}
+
+.text_box {
+  width: 140px;
+  margin-right: 5px;
+}
+.box_style {
+  border: 1px solid #ccc;
+  width: 140px;
+  height: 32px;
+  margin-right: 5px;
+  padding: 0 5px;
+}
+
+
+.sub_wrap {
+  display: flex;
+  justify-content: space-between;
+} 
+
+.sub_inputwrap {
+  display: flex;
+  align-items: center;
+  padding-right: 50px;
+}
+.sub_inputwrap span {
+  margin-right: 10px;
+}
+.sub_inputwrap input {
+  text-align: center;
+}
+
+.price_wrap {
+  justify-content: space-between;
+}
+
+.price_item {
+  display: flex;
+  align-items: center;
+}
+.price_item span {
+  white-space: nowrap;
+}
+.price_item .prefix {
+  margin: 0 5px 0 10px;
+  font-size: 13px;
+}
+
+.sub_price_item .box_style{
+  width: 120px;
+}
+
+.file_wrap label{
+  cursor: pointer;
+}
+
+.file_wrap input[type="file"]{
+  display: none;
+}
+
+.option_list {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #f4f4f6;
+  padding: 40px;
+  margin-bottom: 20px
+}
+.option_list.icon_list {
+  padding: 20px 40px;
+}
+
+.option_item {
+  width: 33.3333%;
+  margin-bottom: 10px;
+}
+
+.option_item.icon_item {
+  width: 25%;
+}
+
+.option_item .check_lable span {
+  font-size: 16px;
+  margin-left: 5px;
+}
+
+
+.text_section:first-of-type {
+  margin-bottom: 20px;
+}
+
+
+.text_section .textarea_wrap textarea {
+  background-color:#f4f4f6;
+  width: 100%;
+  height: 60px;
+  font-size: 16px;
+  padding: 5px 10px;
+  margin-top: 5px;
+}
+.bottom_area {
+  margin-top: 12px;
+  margin-bottom: 50px;
+}
+
+.bottom_area textarea{
+  width: 100%;
+  height: 300px;
+  background-color:  #f4f4f6;
+  font-size: 16px;
+  padding: 5px 10px;
+}
+
+.bottom_area .button_wrap {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.bottom_area .button_wrap button {
+  width: 140px;
+  height: 46px;
+  background-color: #d7e5e7;
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 12px;
+}
+
+.bottom_area .button_wrap button:first-child {
+  margin-right: 10px;
+}
+
+@media screen and (max-width: 1680px) {
+  .price_item .prefix {
+   display: none;
+  }
+}
+@media screen and (max-width: 1400px) {
+  h2{
+    font-size: 18px;
+  }
+  
+  .main_content {
+    padding-top: 20px;
+  }
+  
+  .main_content .sub_title {
+   font-size: 16px ;
+   height: 42px;
+   padding-left: 12px;
+   border-top: 2px solid #000;
+  }
+  
+  .register_wrap {
+    display: block;
+  }
+  
+  .register_wrap .left_area{
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .register_wrap .right_area{
+    width: 100%;
+  }
+  
+  
+  .info_item .info_title {
+    font-size: 14px;
+    padding-left: 12px;
+  }
+  
+  .info_item .input_wrap {
+    font-size: 14px;
+    padding: 8px 0 8px 12px;
+  }
+  
+  .text_box {
+    width: 140px;
+    margin-right: 5px;
+  }
+  .box_style {
+    height: 28px;
+  }
+  
+  .sub_inputwrap {
+    padding-right: 10px;
+  }
+  .sub_inputwrap span {
+    margin-right: 5px;
+  }
+  
+  .price_wrap {
+    justify-content: space-between;
+  }
+  
+  .sub_price_item .box_style{
+    width: 120px;
+  }
+  
+  .option_list {
+    padding: 16px;
+  }
+  .option_list.icon_list {
+    padding: 16px;
+  }
+  
+  .option_item {
+    width: 50%;
+    margin-bottom: 10px;
+  }
+  
+  .option_item.icon_item {
+    width: 50%;
+  }
+  
+  .option_item .check_lable span {
+    font-size: 14px;
+    margin-left: 0;
+  }
+  
+  .text_section .textarea_wrap textarea {
+    height: 80px;
+    font-size: 14px;
+  }
+
+  .bottom_area {
+    margin-top: 12px;
+    margin-bottom: 50px;
+  }
+  
+  .bottom_area textarea{
+    font-size: 14px;
+  }
+  
+  .bottom_area .button_wrap {
+    justify-content: space-between;
+  }
+  
+  .bottom_area .button_wrap button {
+    width: calc(50% - 5px);
+    height: 42px;
+    font-size: 14px;
+  }
+  
+  .bottom_area .button_wrap button:first-child {
+    margin-right: 0;
+  }
+}
+
+@media screen and (max-width: 720px) {
+
+  .main_content .sub_title {
+    font-size: 14px;
+    height: 36px;
+  }
+
+  .info_item .info_title {
+    font-size: 12px;
+    width: 32%;
+  }
+  
+  .info_item .input_wrap {
+    font-size: 12px;
+    padding: 8px 10px;
+    width: 68%;
+  }
+  .text_box {
+    width: 100%;
+  }
+  .suffix {
+    margin-left: 5px;
+  }
+  .box_style {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .sub_inputwrap{
+    width: 100%;
+    padding-right: 0;
+    margin-top: 5px;
+
+  }
+  .sub_inputwrap span {
+    white-space: nowrap;
+  }
+  .sub_inputwrap .box_style {
+    width: 50%;
+  }
+
+  .sub_price_item .box_style {
+    width: 100%;
+  }
+  .input_wrap.sub_wrap,
+  .input_wrap.price_wrap {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  .price_item{
+    width: 100%;
+  }
+
+  .price_item:not(:last-child){
+    margin-bottom: 5px;
+  }
+  .select_wrap {
+    display: flex;
+    justify-content: space-between;
+  }
+  .select_wrap .box_style {
+    width: calc(50% - 3px);
+  }
+
+  .option_item .check_lable span {
+    font-size: 12px;
+  }
+
+  .bottom_area .button_wrap button {
+    height: 36px;
+    font-size: 12px;
+  }
+  .text_section .textarea_wrap textarea {
+    font-size: 12px;
+  }
+
+}
+@media screen and (max-width: 320px) {
+  .info_item .info_title br {
+    display: block;
+  }
+}

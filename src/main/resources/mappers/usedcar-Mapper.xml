@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="usedcar">
+	
+	<select id="usedcar_one" resultType="com.harmony.longterm.vo.UsedCarVO">
+		SELECT * FROM usedcar
+		<![CDATA[
+			WHERE id=#{id}
+		]]>
+		
+	</select>
+
+	<select id="selectUsedCarTotCnt" resultType="int">
+		SELECT count(id) FROM usedcar
+		<where>
+		<if test="rentfee_min != '' ">
+			AND rentfee >= #{rentfee_min}
+		</if>
+		<if test="rentfee_max != '' ">
+			<![CDATA[
+			AND rentfee <= #{rentfee_max}
+			]]>
+		</if>
+		
+		<if test="deposit != '' ">
+		<![CDATA[
+			AND deposit <= #{deposit}
+		]]>
+		</if>		
+		<if test="maker != '' ">
+			AND maker = #{maker}
+		</if>
+		<if test="car_type != '' ">
+			AND car_type = #{car_type}
+		</if>						
+		<if test="sell_state != '' ">
+			AND sell_state = #{sell_state}
+		</if>
+		<if test="trim_name != '' ">
+			AND 
+		</if>
+		<if test="trim_name != '' and car_no !=''">
+			(
+		</if>
+		<if test="trim_name != '' ">
+			trim_name  LIKE concat('%',#{trim_name},'%')
+		</if>
+		
+		<if test="car_no != '' ">
+			OR car_no LIKE concat('%',#{car_no},'%')
+		</if>
+		<if test="trim_name != '' and car_no !=''">
+			)
+		</if>
+
+		</where>
+	</select>
+	
+	<select id="selectUsedCarList" resultType="com.harmony.longterm.vo.UsedCarVO">
+		SELECT *
+		FROM usedcar
+		<where>
+		<if test="rentfee_min != '' ">
+			AND rentfee >= #{rentfee_min}
+		</if>
+		<if test="rentfee_max != '' ">
+		<![CDATA[
+			AND rentfee <= #{rentfee_max}
+		]]>
+		</if>		
+		
+		<if test="deposit != '' ">
+		<![CDATA[
+			AND deposit <= #{deposit}
+		]]>
+		</if>		
+		<if test="maker != '' ">
+			AND maker = #{maker}
+		</if>
+		<if test="car_type != '' ">
+			AND car_type = #{car_type}
+		</if>		
+		<if test="sell_state != '' ">
+			AND sell_state = #{sell_state}
+		</if>		
+		<if test="trim_name != '' ">
+			AND 
+		</if>
+		<if test="trim_name != '' and car_no !=''">
+			(
+		</if>
+		<if test="trim_name != '' ">
+			trim_name  LIKE concat('%',#{trim_name},'%')
+		</if>
+		<if test="car_no != '' ">
+			OR car_no LIKE concat('%',#{car_no},'%')
+		</if>
+		<if test="trim_name != '' and car_no !=''">
+			)
+		</if>
+		</where>
+		ORDER BY 
+		<trim prefixOverrides="," >
+		<if test="orderby != '' ">
+		<![CDATA[
+			${orderby},
+		]]>
+		</if>
+		`ranking`, id DESC
+		</trim>
+		limit #{page}, #{count}
+		
+	</select>
+
+	<select id="selectUsedCar" resultType="com.harmony.longterm.vo.UsedCarVO">
+		SELECT *
+		FROM usedcar
+		<where>
+		<if test=" id != '' ">
+			AND id = #{id}
+		</if>
+		</where>
+		limit 1
+	</select>
+		
+	<insert id="insertUsedCar" useGeneratedKeys="true" keyProperty="id" parameterType="com.harmony.longterm.vo.UsedCarVO"> 
+        INSERT INTO usedcar 
+        	(
+        		car_no, 
+        		maker, 
+        		trim_name, 
+        		vehicle_year, 
+        		period, 
+        		deposit, 
+        		rentfee, 
+        		rentfee_1, 
+        		rentfee_24, 
+        		trim_price, 
+        		acquisition, 
+        		ranking, 
+        		sell_state,
+        		car_type, 
+				distance, 
+				fuel, 
+				image, 
+				options, 
+				icon,
+				etc_memo, 
+				accident, 
+				contents,
+				view_cnt 
+        	)
+        VALUES 
+        	(
+        		#{car_no}, 
+        		#{maker}, 
+        		#{trim_name}, 
+        		#{vehicle_year}, 
+        		${period}, 
+        		${deposit}, 
+        		${rentfee}, 
+        		${rentfee_1}, 
+        		${rentfee_24},
+        		${trim_price}, 
+        		${acquisition}, 
+        		${ranking}, 
+        		#{sell_state},
+        		#{car_type}, 
+				${distance}, 
+				#{fuel}, 
+				#{image}, 
+				#{options}, 
+				#{icon},
+				#{etc_memo}, 
+				#{accident},
+				#{contents},
+				#{view_cnt} 
+        	) 
+    </insert>
+
+    <update id="updateUsedCar" parameterType="map">
+		UPDATE usedcar SET
+			car_no = #{car_no},
+			maker = #{maker},
+			trim_name = #{trim_name},
+			vehicle_year = #{vehicle_year},
+			period = #{period},
+			deposit = #{deposit},
+			rentfee = #{rentfee},
+			rentfee_1 = #{rentfee_1},
+			rentfee_24 = #{rentfee_24},
+			trim_price = #{trim_price},
+			acquisition = #{acquisition},
+			ranking = #{ranking},
+			sell_state = #{sell_state},
+			car_type = #{car_type},
+			distance = #{distance},
+			fuel = #{fuel},
+			options = #{options},
+			icon = #{icon},
+			etc_memo = #{etc_memo},
+			accident = #{accident},
+			contents = #{contents}
+    	WHERE id=#{id}
+    </update>
+    
+   <update id="updateUsedCarViewCnt" parameterType="map">
+    	UPDATE usedcar
+    	SET view_cnt=view_cnt+1
+    	WHERE id=#{id}
+    </update>
+    
+    <delete id="deleteUsedCar" parameterType="map">
+    	DELETE FROM usedcar
+    	WHERE id=#{id}
+    </delete>   
+</mapper>

@@ -1,0 +1,381 @@
+.container_hrmbbs {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 10px;
+}
+
+/* nav_hrmbbs */
+.nav_hrmbbs ul {
+    display: flex;
+    justify-content: end;
+    gap: 5px;
+    border-bottom: 1px solid #ccc;
+}
+
+.nav_hrmbbs li span {
+    color: #333;
+    font-size: 15px;
+}
+
+.nav_hrmbbs li {
+    padding: 8px 5px;
+    background: #2E91B1;
+}
+
+.nav_hrmbbs li:first-child {
+    background: transparent;
+}
+
+.nav_hrmbbs li a {
+    display: inline-block;
+    font-size: 15px;
+    color: #fff;
+    font-weight: 500;
+    line-height: 1.3;
+}
+
+/* logo_hrmbbs */
+.logo_hrmbbs {
+    display: flex;
+    justify-content: center;
+    padding: 17px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.logo_hrmbbs figure {
+    width: 152px;
+}
+
+.logo_hrmbbs img {
+    width: 100%;
+}
+
+/* catagory_hrmbbs */
+.catagory_hrmbbs {
+    border-bottom: 1px solid #ccc;
+}
+
+.catagory_hrmbbs > ul {
+    display: flex;
+    justify-content: center;
+    gap: 27px;
+}
+
+.catagory_hrmbbs li {
+    height: 77px;
+    width: 81px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.catagory_hrmbbs li a {
+    font-size: 17px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.catagory_hrmbbs li:last-child {
+    position: relative;
+}
+
+.catagory_hrmbbs li:hover {
+    background: #DFF2F8;
+}
+
+
+.catagory_hrmbbs .sub_ul_hrmbbs {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    display: none;
+}
+
+.catagory_hrmbbs .sub_ul_hrmbbs li {
+    background: #DFF2F8;
+}
+
+.catagory_hrmbbs .sub_li_hrmbbs.active .sub_ul_hrmbbs{
+    display: block;
+}
+
+.catagory_hrmbbs .sub_ul_hrmbbs li {
+    height: 35px;
+}
+
+/* guide_hrmbbs */
+.guide_hrmbbs {
+    height: 80px;
+}
+
+.guide_hrmbbs span {
+    font-size: 25px;
+}
+
+/* search_hrmbbs */
+.search_hrmbbs {
+    height: 146px;
+    background: #F5F3F4;
+}
+
+.search_hrmbbs form {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.search_hrmbbs .input_box_hrmbbs {
+    width: 610px;
+    position: relative;
+    background: #fff;
+}
+
+.search_hrmbbs .input_box_hrmbbs input {
+    width: 70%;
+    height: 72px;
+    outline: none;
+    border: none;
+    padding: 0 40px;
+    font-size: 20px;
+    color: #333;
+}
+
+.search_hrmbbs .input_box_hrmbbs figure {
+    position: absolute;
+    top: 50%;
+    right: 40px;
+    transform: translateY(-50%);
+    width: 51px;
+}
+
+.search_hrmbbs .input_box_hrmbbs figure img {
+    width: 100%;
+}
+
+/* table_hrmbbs */
+.table_hrmbbs {
+    width: 100%;
+    max-width: 1086px;
+    margin: 34px auto;
+    overflow-x: auto;
+}
+
+.table_hrmbbs table {
+    border: 1px solid #ccc;
+    text-align: center;
+    line-height: 52px;
+    min-width: 500px;
+}
+
+.table_hrmbbs tr {
+    height: 52px;
+    border-bottom: 1px solid #ccc;
+}
+
+.table_hrmbbs thead tr {
+    background: #054E7B;
+}
+
+
+/* .table_hrmbbs thead */
+.table_hrmbbs thead th:nth-child(1) {
+    width: 201px;
+    border-right: 1px solid #ccc;
+}
+
+.table_hrmbbs thead th:nth-child(2) {
+    width: 611px;
+    border-right: 1px solid #ccc;
+}
+
+.table_hrmbbs thead th:nth-child(3) {
+    width: 276px;
+}
+
+.table_hrmbbs thead th {
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* .table_hrmbbs tbody  */
+.table_hrmbbs tbody td:nth-child(1) {
+    width: 201px;
+    border-right: 1px solid #ccc;
+}
+
+.table_hrmbbs tbody td:nth-child(2) {
+    width: 611px;
+    border-right: 1px solid #ccc;
+}
+
+.table_hrmbbs tbody td {
+    color: #333;
+    font-weight: 500;
+}
+
+.btn_hrmbbs {
+    display: flex;
+    justify-content: end;
+    width: 100%;
+    max-width: 1086px;
+    margin: auto;
+	height: 50px;
+    position: relative;
+}
+
+.btn_hrmbbs button {
+    width: 104px;
+    height: 34px;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    background: #07507D;
+    border-radius: 4px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* modal_hrmbbs */
+.modal_hrmbbs {
+    display: none;
+
+}
+
+.bg_hrmbbs {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0, 0.7);
+    display: none;
+}
+
+.modal_hrmbbs .content_hrmbbs{
+    width: 100%;
+    max-width: 546px;
+    height: auto;
+    padding: 0 10px;
+    border-radius: 4px;
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.modal_hrmbbs .top_area_hrmbbs {
+    background: #003664;
+    height: 45px;
+    line-height: 45px;
+    display: flex;
+    justify-content: end;
+    padding: 0 20px;
+}
+
+.modal_hrmbbs .top_area_hrmbbs figure {
+    width: 20px;
+    cursor: pointer;
+}
+
+.modal_hrmbbs .top_area_hrmbbs figure img {
+    width: 100%;
+}
+
+.modal_hrmbbs .bottom_area_hrmbbs {
+    background: #d7d9d8;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal_hrmbbs .bottom_area_hrmbbs form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 100%;
+    padding: 30px 10px;
+}
+
+.modal_hrmbbs .input_box_hrmbbs {
+    margin-bottom: 15px;
+    display: flex;
+    position: relative;
+}
+
+.modal_hrmbbs .input_box_hrmbbs label {
+    background: #f3f4f8;
+    width: 95px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    display: inline-block;
+
+}
+
+.modal_hrmbbs .input_box_hrmbbs input {
+    background: #fff;
+    outline: none;
+    border: none;
+    height: 40px;
+    line-height: 40px;
+    width: 100%;
+    padding: 0 10px;
+}
+
+.modal_hrmbbs .input_box_hrmbbs select {
+    background: #fff;
+    outline: none;
+    border: none;
+    height: 40px;
+    width: 100%;
+}
+
+.modal_hrmbbs .modal_btn_hrmbbs {
+    display: flex;
+    justify-content: end;
+}
+
+.modal_hrmbbs .modal_btn_hrmbbs button {
+    width: 85px;
+    height: 35px;
+    border: none;
+    outline: none;
+    background: #f3f4f8;
+    cursor: pointer;
+
+}
+
+.btn_hrmbbs input{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 104px;
+    height: 34px;
+    opacity: 0;
+    cursor: pointer;
+}
+
+
+
+@media screen and (max-width:450px) {
+    .catagory_hrmbbs li a,
+    .nav_hrmbbs li a,
+    .nav_hrmbbs li span {
+        word-break: keep-all;
+        font-size: 14px;
+    }
+
+    .search_hrmbbs .input_box_hrmbbs figure {
+        width: 30px;
+    }
+}

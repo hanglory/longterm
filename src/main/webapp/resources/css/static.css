@@ -1,0 +1,241 @@
+/* **** PAGING **** */
+.paging{clear:both;padding:0 0 30px 0;text-align:center;position:relative;margin-left:4px}
+.paging a{vertical-align:top}
+.paging ul{display:inline ;padding:0 7px;margin-left:-4px;overflow:hidden;height:28px}
+.paging li{display:inline;padding:0;font-weight:bold}
+.paging li a{display:inline-block;color:#888888;min-width:28px;padding:0 5px;height:28px;line-height:26px;border:#eaeaea 1px solid;font-size:12px;box-sizing:border-box;letter-spacing:-1px}
+.paging li a:hover,
+.paging li a:focus,
+.paging li.on a{color:#000;border:#888888 1px solid}
+.paging .prev{display:inline-block;width:28px;height:28px;background:url("/rpan/common/images/btn_board.png") no-repeat -1px -1px;overflow:hidden;text-indent:-9999em;border:#eaeaea 1px solid;border-right:none;box-sizing:border-box}
+.paging .before{display:inline-block;width:28px;height:28px;background:url("/rpan/common/images/btn_board.png") no-repeat -28px -1px;overflow:hidden;text-indent:-9999em;margin-left:-5px;border:#eaeaea 1px solid;box-sizing:border-box}
+.paging .after{display:inline-block;width:28px;height:28px;background:url("/rpan/common/images/btn_board.png")  no-repeat -1px -29px;overflow:hidden;text-indent:-9999em;border:#eaeaea 1px solid;border-right:none;box-sizing:border-box;position:relative}
+.paging .after::after{content:"";width:1px;height:28px;background-color:#eaeaea;position:absolute;top:0;right:0}
+.paging .next{display:inline-block;width:28px;height:28px;background:url("/rpan/common/images/btn_board.png")  no-repeat -28px -29px;overflow:hidden;text-indent:-9999em;margin-left:-5px;border:#eaeaea 1px solid;box-sizing:border-box;position:relative}
+.paging p.right{position:absolute;top:0;right:0;z-index:3}
+
+.page_box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+.page_box button {
+  margin: 0 2px;
+}
+
+.page_box button:not(:first-child, :last-child){
+  background-color: #acacac;
+  font-weight: 500;
+  width:20px;
+}
+
+.content_box {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 1200px) {
+  .content_box {
+    max-width: 480px;
+  }
+}
+
+@font-face {
+  font-family: 'NotoSansKR';
+  font-style: normal;
+  font-weight: 700;
+  src: url('../font/NotoSansKR-Black.woff') format('woff')
+}
+@font-face {
+  font-family: 'NotoSansKR';
+  font-style: normal;
+  font-weight: 600;
+  src: url('../font/NotoSansKR-Bold.woff') format('woff')
+}
+@font-face {
+  font-family: 'NotoSansKR';
+  font-style: normal;
+  font-weight: 500;
+  src: url('../font/NotoSansKR-Medium.woff') format('woff')
+}
+@font-face {
+  font-family: 'NotoSansKR';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../font/NotoSansKR-Regular.woff') format('woff')
+}
+@font-face {
+  font-family: 'NotoSansKR';
+  font-style: normal;
+  font-weight: 300;
+  src: url('../font/NotoSansKR-Light.woff') format('woff')
+}
+
+:root {
+  --navy_font100: #7f8fa5; 
+  --navy_font200: #6a7b8f; 
+  --navy_font300: #233343; 
+  --navy_input100: #717e8f;   
+  --navy_input200: #394656;  
+  --navy_bg100: #f0f3f7; 
+  --navy_bg200: #223143; 
+  --navy_bg300: #1e2b3c; 
+  --gray100:#e5e5e5; 
+  --gray200:#b2b2b2; 
+  --gray300:#999; 
+  --orange: #f68f16; 
+  --blue: #31a8df; 
+  --green: #78b81e; 
+  --white:#fff;
+  --black: #000; 
+}
+
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+
+input, textarea, select {
+  font-family: 'NotoSansKR';
+  border:none;
+  outline: none; 
+}
+input:focus, 
+textarea:focus 
+select:focus{
+  outline: none; 
+}
+
+select {
+  cursor: pointer;
+}
+
+textarea {
+  resize: none;
+}
+body {
+  position: relative;
+  margin: 0 auto;
+}
+
+body, body *{
+  font-family: 'NotoSansKR';
+  font-weight: 400;
+  box-sizing: border-box;
+  color: var(--black);
+}
+
+a {
+  color: inherit;
+  text-decoration: none; 
+  outline: none
+}
+
+a:hover, a:active {
+  text-decoration: none; 
+}
+
+button{
+  border: none;
+  background-color: transparent;
+  box-sizing: border-box;
+  font-family: 'NotoSansKR' ;
+  cursor: pointer;
+}
+
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+.img_cover {
+  object-fit: cover;
+  object-position: center center;
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ellipsis_two {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.select_style {
+  appearance: none;
+  background:url('../../static/images/arrow_bottom.svg') no-repeat right 9px center;
+}
+
+.check_lable {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.check_lable span {
+  white-space: nowrap;
+  padding: 0 10px;
+  font-size: inherit;
+}
+
+.check_lable input[type="checkbox"] {
+  display: none;
+}
+.check_lable input[type="checkbox"]:checked + .check_style img {
+  opacity: 1;
+}
+.check_style img {
+  pointer-events: none;
+}
+@media screen and (max-width: 1400px) {
+  .check_style {
+    width: 20px;
+    height: 20px;
+  }
+  .check_lable span {
+    padding: 0 5px;
+  }
+}
+

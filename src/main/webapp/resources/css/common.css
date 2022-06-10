@@ -1,0 +1,11 @@
+@charset "UTF-8";
+
+:root {
+	--user-button-color: rgb(9, 145, 203);
+}
+body {
+	margin: 0;
+	padding: 0;
+}
+
+
