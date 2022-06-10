@@ -230,7 +230,7 @@ var UpdateSummary = function(kind=5) {
 		//dataType: "json",          // ajax 통신으로 받는 타입
 		contentType: "application/json",  // ajax 통신으로 보내는 타입
 		success: function(data) {
-			car.rentfee_no = Number(data.rentfee) + Math.floor(((car.trim_price + car.total_option_price + car.color_price)*0.004)/1000)*1000;
+			car.rentfee_no = Number(data.rentfee) + Math.floor(((car.trim_price + car.total_option_price + car.color_price)*0.002)/1000)*1000;
 			car.deposit_no = data.deposit;
 			car.acquisition_no = data.acquisition;
 			car.agent_fee_rate = car.agent_fee_rate_no;
