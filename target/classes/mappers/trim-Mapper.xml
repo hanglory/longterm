@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rent.car">
+	<select id="modellist" resultType="com.harmony.longterm.vo.CarVO">
+		SELECT maker, name as model_name, image, MIN(ranking) AS ranking 
+		FROM model 
+		WHERE active = 1 
+		AND maker = #{maker}
+		GROUP BY maker, name, image
+		ORDER BY ranking
+<!--  	
+		SELECT distinct m.maker maker, m.name model_name, i.image image, ranking FROM model m
+		LEFT JOIN (SELECT distinct name, image FROM model WHERE image != "" ) i
+		on m.name = i.name
+		WHERE m.active = 1 AND m.maker = #{maker}
+		ORDER BY m.ranking
+-->		
+	</select>
+
+	<select id="lineuplist" resultType="com.harmony.longterm.vo.CarVO">
+		SELECT id model_id, maker, name model_name, lineup, active FROM model 
+		WHERE active = 1 AND maker = #{maker} AND name=#{model}
+		ORDER BY ranking
+	</select>
+	
+	<select id="trim" resultType="com.harmony.longterm.vo.CarVO">
+		call trimInfo(#{trim_id}, #{deposit}, #{period});
+	</select>
+
+
+	<select id="color" resultType="com.harmony.longterm.vo.ColorVO">
+		select * from trimcolor tc
+		LEFT JOIN color c ON tc.color_id = c.idcolor
+		where idtrimcolor=(#{color_id});
+	</select>
+
+	
+	<select id="trimlist" resultType="com.harmony.longterm.vo.CarVO">
+		select * from trimview where model_id=#{model_id}
+	</select>
+	
+	<select id="optionlist" resultType="com.harmony.longterm.vo.OptionVO">
+		SELECT id option_id, name, price, exclusive exc FROM options o 
+		WHERE active = 1 AND trim_id = #{trim_id}
+		ORDER BY ranking
+	</select>
+	
+	
+	<select id="colorlist" resultType="com.harmony.longterm.vo.ColorVO">
+		SELECT * from colorview where model_id=#{model_id}
+	</select>
+	
+	<select id="holdingcarlist" resultType="com.harmony.longterm.vo.HoldingCarVO">
+		SELECT fullname, link_url FROM holdingcar
+		<![CDATA[
+			WHERE model_id = #{model_id} 
+			AND trim_id = #{trim_id}
+			AND options = #{optionlist}
+			AND status = 'Y'
+		]]>
+	</select>	
+
+</mapper>

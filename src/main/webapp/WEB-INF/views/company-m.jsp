@@ -30,7 +30,7 @@ window.onload = function(){
 <h1 style="text-align:center; margin-top: 20px; margin-bottom:10px;">10주년 소개 영상</h1>
 
 <p align ="middle">
-<iframe width="410" height="230" src="https://www.youtube.com/embed/_j-CbtdymQI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+<iframe width="410" height="230" src="https://www.youtube.com/embed/dr6fGoTLX1o" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
 </p>
 
 <div style= "text-align: center; margin-top:0px;">

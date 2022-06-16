@@ -512,11 +512,12 @@ textarea {
 </div>
 <c:if test="${userLevel <= 0 || empty userLevel }">
 					<div style="text-align : center;">
+<br><br>
 						<div class="add-info flex-center">
-							<input type="text" id="customer" name="customer" placeholder="고객이름"/><br>
-							<input type="tel" id="phone" name="tel" placeholder="010-1234-5678" pattern="(010)-\d{3,4}-\d{4}" title="연락처"/><br>
-							<input type="number" id="authNumber" name="authNumber" placeholder="인증번호" class="authNumber" style="display:none" maxlength=6 /><br>
-							<button id="authHpno" style="background-color:rgb(0 123 255 / 48%);" name="authHpno">인증번호받기</button><br>
+							<input type="text" id="customer" name="customer" placeholder="   고객이름" style="height:35px; width:95%; margin-bottom:5px;"/>
+							<input type="tel" id="phone" name="tel" placeholder="   010-1234-5678" pattern="(010)-\d{3,4}-\d{4}" title="연락처" style="height:35px;width:95%;margin-bottom:5px;"/><br>
+							<input type="number" id="authNumber" name="authNumber" placeholder="   인증번호" class="authNumber" style="display:none;height:35px;width:95%;margin-bottom:5px;" maxlength=6 /><br>
+							<button id="authHpno" style="background-color:rgb(0 123 255 / 48%);" name="authHpno" style="height:35px;">인증번호받기</button><br>
 						</div>
 					</div>
 </c:if>

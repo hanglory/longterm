@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin">
+	<select id="modellist" resultType="com.harmony.longterm.vo.CarVO">
+		SELECT m.maker, m.name model_name, m.ranking model_ranking, m.image FROM model m
+		WHERE m.active = 1
+		GROUP BY maker, NAME
+		<if test=" maker != '' " >
+			AND m.maker = #{maker}
+		</if>
+		ORDER BY maker, ranking
+	</select>
+
+	<update id="model_ranking" >
+		UPDATE model
+		SET ranking = #{model_ranking}, image = #{image}
+		WHERE maker = #{maker} AND name= #{model_name}
+	</update>
+	
+	<select id="lineuplist" resultType="com.harmony.longterm.vo.CarVO">
+		SELECT id model_id, maker, name model_name, lineup, active, ranking, 
+				image, displacement, car_type, 
+				janga24, janga36, janga48,
+				tax_type, tax_rate,
+				cal_rate_10_24, cal_rate_10_36, cal_rate_10_48,
+				cal_rate_50_24, cal_rate_50_36, cal_rate_50_48,
+				maintain_fee_10_24, maintain_fee_10_36, maintain_fee_10_48, 
+				maintain_fee_50_24, maintain_fee_50_36, maintain_fee_50_48
+		FROM model 
+		WHERE active = 1
+		<if test=" maker != '' "> 
+			AND maker = #{maker} 
+		</if>
+			AND name=#{model_name}
+		ORDER BY ranking
+	</select>
+	
+	<select id="trim" resultType="com.harmony.longterm.vo.CarVO">
+		call trimInfo(#{trim_id}, #{deposit}, #{period});
+	</select>
+
+
+	<select id="basecolorlist" resultType="com.harmony.longterm.vo.BaseColorVO">
+		select * from color
+	</select>
+
+	
+	<select id="trimlist" resultType="com.harmony.longterm.vo.CarVO">
+		select * from trimview where model_id=#{model_id}
+	</select>
+	
+	<select id="optionlist" resultType="com.harmony.longterm.vo.OptionVO">
+		SELECT id option_id, name, price, exclusive exc FROM options o 
+		WHERE active = 1 AND trim_id = #{trim_id}
+		ORDER BY ranking
+	</select>
+	
+	
+	<select id="colorlist" resultType="com.harmony.longterm.vo.ColorVO">
+		SELECT * from colorview where model_id=#{model_id}
+	</select>
+	
+
+</mapper>

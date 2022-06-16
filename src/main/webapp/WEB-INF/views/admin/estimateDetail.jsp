@@ -43,6 +43,10 @@ table#detail {
 	width: 100%;
 	border-collapse: collapse;
 	margin: 20px 0;
+	min-width: auto;
+
+
+
 }
 
 tr:nth-child(even) {
@@ -56,13 +60,14 @@ tr:hover td {
 }
 #detail th {
 	color: #ffffff;
-	background-color: rgb(46, 49, 146);
+	background-color: rgb(46, 49, 146);d
 	border: 1px solid #aaa;
 	padding: 6px;
 }
 #detail td {
 	padding: 4px;
 	border: 1px solid #aaa;
+	text-align:left;
 }
 #list td {
 	text-align: center;
