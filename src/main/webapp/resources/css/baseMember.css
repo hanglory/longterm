@@ -349,10 +349,10 @@ body {
   }
 
 #container {
-	min-width: 720px;
+	min-width: 98%;
 }
 header, footer {
-	min-width: 720px;
+	min-width: 98%;
 }
 footer {
 	margin : 20px 0;

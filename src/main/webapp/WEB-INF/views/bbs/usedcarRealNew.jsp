@@ -310,6 +310,7 @@ $(function(){
 	});
 	initFunction();
 	function displaySelect(){
+usedcar.page = 1;
 		var dataURL = ""
 		if(isList){
 			dataURL = "/bpm/NewCarListAjax";

@@ -124,6 +124,14 @@ textarea {
   margin-left: auto;
 }
 
+.add-info flex-center input{
+
+height: 30px;
+
+}
+
+
+
 
 * {padding: 0;margin: 0;}
 body, html {height: 100%;}
@@ -520,10 +528,12 @@ body, html {height: 100%;}
 
 <c:if test="${userLevel <= 0 || empty userLevel }">
 					<div style="text-align : center;">
+
+						<br><br>
 						<div class="add-info flex-center">
-							<input type="text" id="customer" name="customer" placeholder="고객이름"/>
-							<input type="tel" id="phone" name="tel" placeholder="010-1234-5678" pattern="(010)-\d{3,4}-\d{4}" title="연락처"/>
-							<input type="number" id="authNumber" name="authNumber" placeholder="인증번호" class="authNumber" style="display:none" maxlength=6 />
+							<input type="text" id="customer" name="customer" placeholder="고객이름" style="height:40px; border: 1px solid #428fc0;"/>
+							<input type="tel" id="phone" name="tel" placeholder="010-1234-5678" pattern="(010)-\d{3,4}-\d{4}" title="연락처" style="height:40px; border: 1px solid #428fc0;"/>
+							<input type="number" id="authNumber" name="authNumber" placeholder="인증번호" class="authNumber" style="display:none" maxlength=6 style="height:40px; border: 1px solid #428fc0;"/>
 							<button id="authHpno" style="background-color:rgb(0 123 255 / 48%);" name="authHpno">인증번호받기</button>
 						</div>
 					</div>

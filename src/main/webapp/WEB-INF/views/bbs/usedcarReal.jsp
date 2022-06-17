@@ -313,6 +313,7 @@ $(function(){
 
 });
 function displaySelect(){
+	usedcar.page = 1;
 	$.ajax({
 		type: "POST",
 		url: "/bbs/usedcarAjax",

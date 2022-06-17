@@ -80,6 +80,22 @@ tr:hover td {
 }
 </style>
 
+    <% 
+	int isMobile = 0;
+	String agent = request.getHeader("USER-AGENT");
+	String[] mobileos = {"iPhone","iPod","iPad","Android","BlackBerry","Windows CE","Nokia","Webos","Opera Mini","SonyEricsson","Opera Mobi","IEMobile"};
+	int j = -1;
+	for(int i=0 ; i<mobileos.length ; i++) {
+		j=agent.indexOf(mobileos[i]);
+		if(j > -1 )
+		{
+			// 모바일로 접근했을 때
+			isMobile = 1;
+			break;
+		}
+	}
+%>
+
 <div class="main">
 	<h1>견적서 리스트</h1>
 	<form class="search-form" action="${CPATH}/admin/estimatelist">
@@ -111,9 +127,63 @@ tr:hover td {
 		</div>
         
 	</form>
+
+      
 	<div>
-		<span>${paging.totalCount} 개가 있습니다.</span>
+		<span>견적서 총 ${paging.totalCount} 개</span>
+		  <% if(isMobile == 1){ %>
+               <li style="color:red;">두번 누르시면 상세페이지로 이동합니다.</li>
+        <table id="list">    
+			<tr>
+				<th rowspan='2'>종류</th>			
+				<th rowspan='2'>이름</th>              
+				<th rowspan='2'>모델</th>
+				<th>차량가격</th>
+<!-- 				<th>제조사</th> -->
+<!-- 				<th>차종</th> -->
+<!-- 				<th>라인업</th> -->
+<!-- 				<th>트림</th> -->
+<!-- 				<th>보증금 비율</th> -->
+				
+				<th rowspan='2'>진행상태</th>
+			</tr>
+			
+			<tr>
+				<th>(원)</th>
+				
+				
+			</tr>
+				<c:forEach var="estimate" items="${estimates }">
+				<tr data-e_id=${estimate.id } data-t_id=${estimate.trim_id }>
+
+				    <td>${estimate.type}</td>
+<%-- 				    <td>${estimate.deposit_ratio == 0.5 ? "M" : "H"}</td> --%>
+
+<%-- 					<td>${estimate.user_company} ${estimate.user_name }</td> --%>
+				
+					<td>${estimate.user_name }</td>
+                   
+				    <td class="tac">
+				    	${estimate.name }
+				    	</td>
+				    <td><fmt:formatNumber type="number" maxFractionDigits="3" value="${estimate.price+estimate.option_price}" /></td>
+					
+<%-- 				    <td>${estimate.maker }</td> --%>
+<%-- 				    <td>${estimate.name }</td> --%>
+<%-- 				    <td>${estimate.lineup }</td> --%>
+<%-- 				    <td class="tac">${estimate.trim_name }</td> --%>
+<%-- 				    <td>${estimate.deposit_ratio }</td> --%>
+				
+				
+		
+				    <td>${estimate.state }</td>
+				</tr>
+				</c:forEach>
+
+		</table>
+		     <% }else { %>
 		<table id="list">
+
 			<tr>
 				<th rowspan='2'>종류</th>
 				<th rowspan='2'>견적번호</th>
@@ -178,6 +248,7 @@ tr:hover td {
 				</c:forEach>
 
 		</table>
+<% } %>
 		
 		<!-- paging -->
 		<div class="paginate">
@@ -209,6 +280,7 @@ tr:hover td {
 	<div id="optionInfo"></div>
 </div>
 <script>
+
 
 var showList = function() {
 	document.querySelector('.optionBox').style.display = "none";

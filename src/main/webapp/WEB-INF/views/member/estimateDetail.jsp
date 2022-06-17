@@ -43,6 +43,7 @@ table#detail {
 	width: 100%;
 	border-collapse: collapse;
 	margin: 20px 0;
+	min-width:auto;
 }
 
 tr:nth-child(even) {
