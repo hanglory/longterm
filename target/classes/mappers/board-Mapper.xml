@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bbs">
+	
+	<select id="selectBoard" resultType="com.harmony.longterm.vo.BoardVO">
+		SELECT * FROM board
+		<![CDATA[
+			WHERE bd_no=#{bd_no}
+		]]>
+		
+	</select>
+
+	<select id="selectBoardTotCnt" resultType="int">
+		SELECT count(bd_no) FROM board
+		<where>
+		<if test="bd_type != '' ">
+			AND bd_type = #{bd_type}
+		</if>
+		<if test="bd_isdel != '' ">
+			AND bd_isdel = #{bd_isdel}
+		</if>
+		<if test="search != '' ">
+			AND bd_title  LIKE concat('%',#{search},'%')
+			OR bd_contents LIKE concat('%',#{search},'%')
+		</if>
+		</where>
+	</select>
+	
+	<select id="selectBoardList" resultType="com.harmony.longterm.vo.BoardVO">
+		SELECT *
+		FROM board
+		<where>
+		<if test="bd_type != '' ">
+			AND bd_type = #{bd_type}
+		</if>
+		<if test="bd_isdel != '' ">
+			AND bd_isdel = #{bd_isdel}
+		</if>
+		<if test="search != '' ">
+			AND bd_title  LIKE concat('%',#{search},'%')
+			OR bd_contents LIKE concat('%',#{search},'%')
+		</if>
+		</where>
+		ORDER BY 
+		bd_isnotice DESC, bd_no DESC
+		limit #{page}, #{count}
+		
+	</select>
+
+	<insert id="insertBoard" useGeneratedKeys="true" keyProperty="id" parameterType="com.harmony.longterm.vo.BoardVO"> 
+        INSERT INTO board 
+        	( 
+        		bd_no, 
+				bd_reguser, 
+				bd_title, 
+				bd_contents, 
+				bd_regdate, 
+				bd_isnotice, 
+				bd_type, 
+				bd_filename, 
+				bd_filelink, 
+				bd_viewcnt, 
+				bd_isdel
+        	)
+        VALUES 
+        	(
+        		0, 
+        		#{bd_reguser}, 
+        		#{bd_title}, 
+        		#{bd_contents}, 
+        		now(), 
+        		${bd_isnotice}, 
+        		${bd_type}, 
+        		#{bd_filename}, 
+        		#{bd_filelink},
+        		${bd_viewcnt}, 
+        		${bd_isdel} 
+        	) 
+    </insert>
+
+    <update id="updateBoard" parameterType="map">
+		UPDATE board SET
+		<set>
+			<if test="bd_title != ''">bd_title = #{bd_title},</if>
+			<if test="bd_contents != ''">bd_contents = #{bd_contents},</if>
+			<if test="bd_isnotice != ''">bd_isnotice = #{bd_isnotice},</if>
+			<if test="bd_type != ''">bd_type = #{bd_type},</if>
+			<if test="bd_filename != ''">bd_filename = #{bd_filename},</if>
+			<if test="bd_filelink != ''">bd_filelink = #{bd_filelink},</if>
+			<if test="bd_isdel != ''">bd_isdel = #{bd_isdel},</if>
+		</set>
+    	WHERE bd_no=#{bd_no}
+    </update>
+    
+   <update id="updateBoardViewCnt" parameterType="map">
+    	UPDATE board
+    	SET bd_viewcnt=bd_viewcnt+1
+    	WHERE bd_no=#{bd_no}
+    </update>
+    
+    <delete id="deleteBoard" parameterType="map">
+    	DELETE FROM board
+    	WHERE bd_no=#{bd_no}
+    </delete>   
+</mapper>

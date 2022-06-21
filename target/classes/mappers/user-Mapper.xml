@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userdb">
+
+	<select id="user" resultType="com.harmony.longterm.vo.UserVO">
+		SELECT * FROM user WHERE nickname = #{id}
+	</select>
+	
+	<select id="user_one" resultType="com.harmony.longterm.vo.UserVO">
+		SELECT * FROM user	
+		WHERE id = #{id}
+	</select>
+
+
+	<select id="selectUserTotCnt" resultType="int">
+		SELECT count(*) FROM user
+		<where>
+		<if test="name != '' ">
+			AND name  LIKE concat('%',#{name},'%')
+		</if>
+		</where>
+	</select>
+	
+	<select id="selectUserList" resultType="com.harmony.longterm.vo.UserVO">
+		SELECT *
+		FROM user
+		<where>
+		<if test="name != '' ">
+			AND name  LIKE concat('%',#{name},'%')
+		</if>
+		</where>
+		ORDER BY 
+			regdate DESC
+			limit #{page}, #{count}		
+	</select>
+	<update id="updateUserInfo" >
+		UPDATE user
+		SET	phone = #{phone},
+			name = #{name},
+			nickname = #{nickname},
+			address = #{address},
+			mail = #{mail},
+			level = #{level},
+			company = #{company},
+			department = #{department},
+			manager = #{manager},
+			state = #{state}
+		WHERE id=${id}	
+	</update>
+
+	<insert id="insertuser"> 
+        INSERT IGNORE INTO user (name, password, nickname, salt, company, phone, manager, level) VALUES 
+        	(#{name}, #{password}, #{nickname}, #{salt}, #{company}, #{phone}, #{manager}, 1) 
+    </insert>
+    
+    <update id="updatepassword">
+    	UPDATE user
+    	SET password=#{password}
+    	WHERE nickname=#{nickname}
+    </update>
+</mapper>

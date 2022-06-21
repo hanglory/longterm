@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="estimate">
+
+	<select id="estimate_no" resultType="long">
+		SELECT MAX(estimate_no) FROM estimate
+		<![CDATA[
+			WHERE (estimate_no > #{start}) AND (estimate_no < #{end})
+		]]>
+		
+	</select>
+	
+	<select id="estimate_one" resultType="com.harmony.longterm.vo.EstimateVO">
+		SELECT * FROM estimate
+		<![CDATA[
+			WHERE id=#{estimate_id}
+		]]>
+		
+	</select>
+	
+	<select id="estimate_one_group" resultType="com.harmony.longterm.vo.EstimateVO">
+		SELECT  ANY_VALUE(A.id)            id, 
+				ANY_VALUE(A.estimate_no)   estimate_no, 
+				A.type          type, 
+				ANY_VALUE(A.regdate)       regdate, 
+				ANY_VALUE(A.trim_id)       trim_id, 
+				ANY_VALUE(A.user_id)       user_id, 
+				MAX(A.deposit_ratio) deposit_ratio, 
+				ANY_VALUE(A.deposit)       deposit, 
+				ANY_VALUE(A.period)        period, 
+				ANY_VALUE(A.distance)      distance, 
+				ANY_VALUE(A.rentfee)       rentfee, 
+				ANY_VALUE(A.agent_fee_rate)agent_fee_rate, 
+				ANY_VALUE(A.agent_fee)     agent_fee, 
+				ANY_VALUE(A.option_price)  option_price, 
+				ANY_VALUE(A.options)       options, 
+				ANY_VALUE(A.color_id)      color_id, 
+				ANY_VALUE(A.acquisition)   acquisition, 
+				ANY_VALUE(A.tagsong)       tagsong, 
+				ANY_VALUE(A.blackbox)      blackbox, 
+				ANY_VALUE(A.etcprice)      etcprice, 
+				ANY_VALUE(A.state)         state, 
+				ANY_VALUE(A.memo)          memo, 
+				ANY_VALUE(A.customer)      customer, 
+				ANY_VALUE(A.tel)           tel, 
+				ANY_VALUE(A.email)         email, 
+				ANY_VALUE(A.user_name)     user_name, 
+				ANY_VALUE(A.user_manager)  user_manager, 
+				ANY_VALUE(A.prepayment)    prepayment, 
+				ANY_VALUE(A.trim_price)     trim_price 
+		FROM estimate A 
+ 		RIGHT JOIN (SELECT * FROM estimate 
+		<![CDATA[
+			WHERE id=#{estimate_id}) B
+		]]>
+		ON A.trim_price=B.trim_price
+		<![CDATA[
+		WHERE A.id >= (#{estimate_id}-4)
+		]]>
+		<![CDATA[
+		 AND A.id <= (#{estimate_id}+4)
+		 ]]> 
+		 AND A.trim_id=B.trim_id 
+		 AND A.user_id=B.user_id 
+		 AND LENGTH(A.type)=LENGTH(B.type)
+ 		 AND A.option_price=B.option_price 
+ 		 AND A.color_id=B.color_id 
+ 		 AND A.customer=B.customer 
+ 		 AND A.tel=B.tel 
+ 		 AND A.trim_price=B.trim_price
+ 		 GROUP BY A.type
+	</select>
+	
+
+	<select id="option_list" resultType="com.harmony.longterm.vo.OptionVO">
+		SELECT * FROM options o
+		<![CDATA[
+			WHERE o.trim_id=#{trim_id}
+		]]>
+		
+	</select>
+		
+	<select id="count" resultType="int">
+		
+		SELECT count(e.id) FROM estimate e
+		LEFT JOIN (
+			SELECT tr.id, m.maker, m.name, m.lineup, tr.name trim_name, tr.price  FROM trim tr
+			JOIN model m ON tr.model_id = m.id
+		) t ON t.id = e.trim_id
+		
+		WHERE 1 = 1
+		<if test=" estimate_no != '' ">
+			AND estimate_no LIKE CONCAT('%',#{estimate_no}, '%')
+		</if>
+		<if test=" user_id != '' ">
+			AND user_id = #{user_id}
+		</if>
+		<if test="search1 != '' ">
+			AND ${type1} LIKE CONCAT('%',#{search1}, '%')
+		</if>
+		<if test="search2 != '' ">
+			AND ${type2} LIKE CONCAT('%',#{search2}, '%')
+		</if>
+		<if test="searchStart != '' ">
+		<![CDATA[
+			AND regdate > #{searchStart}
+		]]>
+		</if>
+		<if test="searchEnd != '' ">
+		<![CDATA[
+			AND regdate < #{searchEnd}
+		]]>
+		</if>
+	</select>
+	
+	<select id="list" resultType="map">
+		SELECT e.*, u.name as user_name, u.company as user_company, t.id trim_id, t.maker, t.name as name, t.lineup, t.trim_name, trim_price as price, c.color_name, tc.price color_price 
+		FROM estimate e
+		LEFT JOIN (
+			SELECT tr.id, m.maker, m.name, m.lineup, tr.name trim_name, tr.price  FROM trim tr
+			JOIN model m ON tr.model_id = m.id
+		) t ON t.id = e.trim_id
+		LEFT JOIN trimcolor tc ON tc.idtrimcolor = e.color_id 
+		LEFT JOIN color c ON tc.color_id = c.idcolor
+		LEFT JOIN user u ON u.nickname = e.user_id
+		WHERE 1 = 1
+		<if test=" estimate_no != '' ">
+			AND estimate_no LIKE CONCAT('%',#{estimate_no}, '%')
+		</if>
+		<if test=" user_id != '' ">
+			AND user_id = #{user_id}
+		</if>
+		<if test="search1 != '' ">
+			AND ${type1} LIKE CONCAT('%',#{search1}, '%')
+		</if>
+		<if test="search2 != '' ">
+			AND ${type2} LIKE CONCAT('%',#{search2}, '%')
+		</if>
+		<if test="searchStart != '' ">
+		<![CDATA[
+			AND e.regdate >= #{searchStart}
+		]]>
+		</if>
+		<if test="searchEnd != '' ">
+		<![CDATA[
+			AND e.regdate <= #{searchEnd}
+		]]>
+		</if>
+		ORDER by e.estimate_no DESC
+		limit #{page}, #{count}
+		
+	</select>
+	
+	<insert id="insertestimate"> 
+        INSERT IGNORE INTO estimate 
+        	(
+        		estimate_no, type, trim_id, user_id, color_id,
+        		deposit, deposit_ratio,
+        		period, distance, rentfee, agent_fee_rate, agent_fee,
+        		options, option_price,
+        		acquisition,
+        		tagsong, blackbox, etcprice,
+        		memo, customer, tel, email, trim_price,
+        		user_name, user_manager
+        	)
+        VALUES 
+        	(
+        		#{estimate_no}, #{estimate_type}, #{trim_id}, #{user_id},#{color_id},
+        		#{deposit}, #{deposit_ratio},
+        		#{period}, #{distance}, #{rentfee}, #{agent_fee_rate}, #{agent_fee},
+        		#{options}, #{total_option_price},
+        		#{acquisition},
+        		#{tagsong}, #{blackbox}, #{etcprice},
+        		#{memo}, #{customer}, #{tel}, #{email}, #{trim_price},
+        		(SELECT name FROM user where nickname=#{user_id} ),
+        		(SELECT name FROM user where nickname=#{user_id} )
+        	) 
+    </insert>
+	<insert id="insertestimateall"> 
+        INSERT IGNORE INTO estimate 
+        	(
+        		estimate_no, type, trim_id, user_id, color_id,
+        		deposit, deposit_ratio,
+        		period, distance, rentfee, agent_fee_rate, agent_fee,
+        		options, option_price,
+        		acquisition,
+        		tagsong, blackbox, etcprice,
+        		memo, customer, tel, email, trim_price,
+        		user_name, user_manager, prepayment
+        	)
+        	VALUES 
+      <trim suffixOverrides=",">
+    		<if test='estimatetype_hi != ""' >
+ 				<![CDATA[
+ 			(	
+        		${estimate_no}+1, #{estimatetype_hi}, #{trim_id}, #{user_id},#{color_id},
+        		#{deposit_hi}, #{depositratio_hi},
+        		#{period_hi}, #{distance_hi}, #{rentfee_hi}, #{agent_fee_rate}, #{agentfee_hi},
+        		#{options}, #{total_option_price},
+        		#{acquisition_hi},
+        		#{tagsong}, #{blackbox}, #{etcprice},
+        		#{memo}, #{customer}, #{tel}, #{email}, #{trim_price},
+        		(SELECT name FROM user where nickname=#{user_id} ),
+        		(SELECT name FROM user where nickname=#{user_id} ),
+        		#{prepayment_hi}
+        	),
+				]]>
+			</if>
+    		<if test='estimatetype_my != ""'>
+ 				<![CDATA[
+        	(
+        		${estimate_no}+2, #{estimatetype_my}, #{trim_id}, #{user_id},#{color_id},
+        		#{deposit_my}, #{depositratio_my},
+        		#{period_my}, #{distance_my}, #{rentfee_my}, #{agent_fee_rate}, #{agentfee_my},
+        		#{options}, #{total_option_price},
+        		#{acquisition_my},
+        		#{tagsong}, #{blackbox}, #{etcprice},
+        		#{memo}, #{customer}, #{tel}, #{email}, #{trim_price},
+        		(SELECT name FROM user where nickname=#{user_id} ),
+        		(SELECT name FROM user where nickname=#{user_id} ),
+        		#{prepayment_my}
+        	),
+				]]>
+			</if>
+    		<if test='estimatetype_ou != ""'>
+ 				<![CDATA[
+        	(
+        		${estimate_no}+3, #{estimatetype_ou}, #{trim_id}, #{user_id},#{color_id},
+        		#{deposit_ou}, #{depositratio_ou},
+        		#{period_ou}, #{distance_ou}, #{rentfee_ou}, #{agent_fee_rate}, #{agentfee_ou},
+        		#{options}, #{total_option_price},
+        		#{acquisition_ou},
+        		#{tagsong}, #{blackbox}, #{etcprice},
+        		#{memo}, #{customer}, #{tel}, #{email}, #{trim_price},
+        		(SELECT name FROM user where nickname=#{user_id} ),
+        		(SELECT name FROM user where nickname=#{user_id} ),
+        		#{prepayment_ou}
+        	),
+				]]>
+			</if>
+    		<if test='estimatetype_no != ""'>
+ 				<![CDATA[
+        	(
+        		${estimate_no}+4, #{estimatetype_no}, #{trim_id}, #{user_id},#{color_id},
+        		#{deposit_no}, #{depositratio_no},
+        		#{period_no}, #{distance_no}, #{rentfee_no}, 0, 0,
+        		#{options}, #{total_option_price},
+        		#{acquisition_no},
+        		#{tagsong}, #{blackbox}, #{etcprice},
+        		#{memo}, #{customer}, #{tel}, #{email}, #{trim_price},
+        		(SELECT name FROM user where nickname=#{user_id} ),
+        		(SELECT name FROM user where nickname=#{user_id} ),
+        		#{prepayment_no}
+        	),
+				]]>
+			</if>
+	</trim>	
+    </insert>
+
+    
+    <update id="update" parameterType="map">
+    	UPDATE estimate
+    	SET state=#{state}, memo=#{memo}
+    	WHERE estimate_no=#{id}
+    </update>
+</mapper>

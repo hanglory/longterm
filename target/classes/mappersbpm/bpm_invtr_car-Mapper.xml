@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bpm_invtr_car"> 
+
+	<select id="productInvtrCarList"  resultType="map">
+	
+		SELECT /* productInvtrCarList */ *
+		FROM
+			( SELECT SUBSTR(SN,2,1) AS maker, CAR_DAE_NO, DATE_FORMAT(MOD_DT,'%Y%m%d') AS vehicle_year, CAR_NO, CAR_PRICE AS trim_price, SALES_BIZ_ITEM_NM, FUEL_NM, 
+		DEPOSIT60 AS deposit, MM_RENT60 AS rentfee ,BASE_MM, PRODUCT_REGDT, INVTR_PRODUCT_NID
+				FROM 
+				( SELECT P.* 
+					,B.DISPMT 
+					,B.SALES_BIZ_ITEM_NM 
+					,( SELECT CODE_NM FROM CODE_MST WHERE CODE_CLASS ='FUEL' and CODE_VAL = B.FUEL_CD ) as FUEL_NM 
+					, H.INOUT_ST AS HIS_INOUT_ST 
+					, H.REG_DT as INOUT_DT 
+					, H.IN_SHP_CD 
+					, ( SELECT EMP_NM FROM EMP SE WHERE SE.VENDOR_NID = H.VENDOR_NID and SE.EMP_NID = H.REG_NID ) AS INOUT_EMP_NM 
+					, ( select DATE_FORMAT(SH.reg_dt,'%Y%m%d%H%i%S') 
+						from INVTR_STATE_HIST SH 
+						where SH.INVTR_STATE_CD = 'STE001' 
+						and SH.INVTR_PRODUCT_NID = P.INVTR_PRODUCT_NID order by SH.HIST_NO desc limit 0, 1 ) AS INVTR_STATE_DT
+						  <![CDATA[       
+						, case when (ifnull(DEPOSIT12 , 0) + 
+									 ifnull(MM_RENT12 , 0) + 
+									 ifnull(ACQ_PRICE12 , 0) + 
+									 ifnull(DEPOSIT24 , 0) + 
+									 ifnull(MM_RENT24 , 0) + 
+									 ifnull(ACQ_PRICE24 , 0) + 
+									 ifnull(DEPOSIT36 , 0) + 
+									 ifnull(MM_RENT36 , 0) + 
+									 ifnull(ACQ_PRICE36 , 0) + 
+									 ifnull(DEPOSIT48 , 0) + 
+									 ifnull(MM_RENT48 , 0) + 
+									 ifnull(ACQ_PRICE48 , 0) + 
+									 ifnull(DEPOSIT60 , 0) + 
+									 ifnull(MM_RENT60 , 0) + 
+									 ifnull(ACQ_PRICE60 , 0) 
+									 ) > 0 then '완료' end GOODS_COMPLET 
+							 ]]>     		 
+							FROM INVTR_PRODUCT P left outer join SALES_BIZ_ITEM B on ( P.SALES_BIZ_ITEM_NID = B.SALES_BIZ_ITEM_NID and P.VENDOR_NID = B.VENDOR_NID ) 
+							left outer join INVTR_HIS H on ( P.VENDOR_NID = H.VENDOR_NID and P.LAST_INVTR_HST_NID = H.INVTR_HST_NID) 
+							WHERE P.VENDOR_NID = '1' 
+							AND P.USE_YN = 'Y' 
+							AND P.INVTR_STATE_CD != 'STE004' 
+							AND P.INOUT_ST = 'I' 
+							AND P.INVTR_STATE_CD != 'STE002' 
+							and not exists ( SELECT 'X' FROM RENT_CONTRACT SR WHERE SR.INVTR_PRODUCT_NID = P.INVTR_PRODUCT_NID AND SR.USE_YN ='Y' 
+										AND ( IMSI_SAVE_YN = 'Y' OR ( IMSI_SAVE_YN = 'N' AND DATE_FORMAT(NOW(),'%Y%m%d') 
+										BETWEEN substr(SR.RENT_FR_DT, 1, 8) AND IFNULL( substr(SR.CANCEL_DT, 1, 8), substr(SR.RENT_TO_DT,1, 8))) ) ) 
+							AND P.CAR_NO > ' ' 
+							AND (ifnull(DEPOSIT12 , 0) + ifnull(MM_RENT12 , 0) + ifnull(ACQ_PRICE12, 0) + ifnull(DEPOSIT24 , 0) + ifnull(MM_RENT24 , 0) + ifnull(ACQ_PRICE24 , 0) + 
+								ifnull(DEPOSIT36, 0) + ifnull(MM_RENT36 , 0) + ifnull(ACQ_PRICE36 , 0) + ifnull(DEPOSIT48 , 0) + ifnull(MM_RENT48, 0) + ifnull(ACQ_PRICE48 , 0) + 
+								ifnull(DEPOSIT60 , 0) + ifnull(MM_RENT60 , 0) + ifnull(ACQ_PRICE60, 0) ) > 0 
+							AND autocare_cd = 'AC01' 
+							AND 'NC01' like concat('%', ( case when ifnull(P.new_car_gbn_cd, '') = '' 
+									then 'EMPTY' else P.new_car_gbn_cd end ) , '%') 
+						) P order by P.PRODUCT_REGDT desc , P.INVTR_PRODUCT_NID ) A 
+						<where>
+						<if test="rentfee_min != '' ">
+							AND rentfee >= #{rentfee_min}
+						</if>
+						<if test="rentfee_max != '' ">
+							<![CDATA[
+							AND rentfee <= #{rentfee_max}
+							]]>
+						</if>						
+						<if test="deposit != '' ">
+						<![CDATA[
+							AND deposit <= #{deposit}
+						]]>
+						</if>		
+						<if test="maker != '' ">
+							AND maker = #{maker}
+						</if>
+						</where>
+						order by 
+						<trim prefixOverrides="," >
+						<if test="orderby != '' ">
+						<![CDATA[
+							${orderby},
+						]]>
+						</if>
+						PRODUCT_REGDT desc , INVTR_PRODUCT_NID
+						</trim>  				
+	</select>		
+	
+	
+</mapper>
+
