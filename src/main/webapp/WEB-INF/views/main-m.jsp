@@ -9,11 +9,16 @@
 
   gtag('config', 'G-06Y9Z40Y53');
 </script>
-<script language="JavaScript"> function setCookie( name, value, expiredays )
- { var todayDate = new Date(); todayDate.setDate( todayDate.getDate() + expiredays ); 
-document.cookie = name + "=" + escape( value ) + "; path=/; expires=" + todayDate.toGMTString() + ";" }
- function closeWin() { if ( document.notice_form.chkbox.checked ){ setCookie( "maindiv", "done" , 1 ); }
- document.all['divpop'].style.visibility = "hidden"; } 
+<script language="JavaScript"> 
+function setCookie( name, value, expiredays )
+{ 
+	var todayDate = new Date(); todayDate.setDate( todayDate.getDate() + expiredays ); 
+	document.cookie = name + "=" + escape( value ) + "; path=/; expires=" + todayDate.toGMTString() + ";" 
+}
+function closeWin() {
+	if ( document.notice_form.chkbox.checked ){ setCookie( "maindiv", "done" , 1 ); }
+ 	document.all['divpop'].style.visibility = "hidden"; 
+ } 
 </script>
 
 <style>
@@ -151,30 +156,80 @@ document.cookie = name + "=" + escape( value ) + "; path=/; expires=" + todayDat
 		transform: scale(1.1);
 	}
 
+#hd_pop {z-index:1000;position:relative;margin:0 auto;width:970px;height:0;}
+#hd_pop h2 {position:absolute;font-size:0;line-height:0;overflow:hidden}
+.hd_pops {position:absolute;border:1px solid #e9e9e9;background:#fff}
+.hd_pops_con {}
+.hd_pops_footer {padding:10px 0;background:#000;color:#fff;text-align:right;opacity : 1.0;}
+.hd_pops_footer button {margin-right:5px;padding:5px 10px;border:0;background:#393939;color:#fff}
 
 
+#quick{width:127px; top:102px; right:137px; position:absolute;}
+#quick .quick-input{width:200px; border:1px solid #478ed1; background:#f1f6f6; float:left;}
+#quick .quick-btn{width:195px; margin-top:5px; float:left;}
 
+#quick .quick-input h1{padding-top:20px; font-weight:600; font-size:16px; text-align:center; color:#478ed1; display:block;}
+#quick .quick-input ul{padding:5px 25px 15px; float:left;}
+#quick .quick-input ul li{margin-top:3px; float:left;}
+#quick .quick-input ul li input{width:150px; height:24px; border:1px solid #242424; background:#fbfbfb;}
+#quick .quick-input span{margin-right:1px; position:relative; _display:inline; float:left;}
+#quick .quick-input span label{top:5px; left:6px; position:absolute; letter-spacing:-1px; color:#999;}
+#quick .quick-input div.agree{width:140px; margin-top:2px; margin-left:30px; font-size:11px; color:#999; float:left;}
+#quick .quick-input div.agree a{margin:3px 5px; text-align:center; display:block;}
+#quick .quick-input div.submit{width:127px; float:left;}
+#quick .quick-input div.submit input{width: 200px; height:29px; font-weight:600; color:#fff; border:0; background:#478ed1;}
+#vagree2{width:254px; height:236px; padding:10px; top:0; left:-254px; z-index:10000; border:2px solid #222; background:#fff; position:absolute;}
+#vagree2 h2{font-weight:bold; font-family:"NanumGothic"; color:#444; font-size:100%}
+#vagree2 div{width:232px; border:1px solid #d7d7d7; height:190px; margin-top:5px; padding:10px; background:#fbfbfb; overflow-y:scroll; scrollbar-face-color:#fff; scrollbar-shadow-color:#eaeaea; scrollbar-highlight-color:#eaeaea; scrollbar-3dlight-color:#fff; scrollbar-darkshadow-color:#fff; scrollbar-track-color:#fff; scrollbar-arrow-color:#eaeaea; float:left;}
+#vagree2 div h3{font-weight:bold; font-family:"NanumGothic"; color:#707070; font-size:100%}
+#vagree2 div ul{margin:5px 0 10px;}
+#vagree2 div ul li{font-size:11px; line-height:20px; color:#909090;}
+.dn{display:none;}
 
 </style>
 
+<c:if test="${siteinfoVO.id > 0 }">
+	<c:if test="${cookie.maindiv.value ne 'done' }">
 
-<!--
-	<div class="sector1">
-		<div class="box">
-			<div class="col6 midas">
-				<a href="./totalrent">
-					<img src="${RPATH}/images/total-top.jpg" alt="" />
-				</a>
-			</div>
+<div id="hd_pop">
+    <h2>팝업레이어 알림</h2>
 
-			<div class="col6 hi24" style="float:right">
-				<a href="./totalrent">
-					<img src="${RPATH}/images/hi24-top.gif" alt="" />
-				</a>
-			</div>
-		</div>
-	</div>
-  -->					
+    <div id="hd_pops_40" class="hd_pops" style="top:${siteinfoVO.top_postion }px;left:${siteinfoVO.left_postion}px">
+        <div class="hd_pops_con" style="width:${siteinfoVO.width }px;height:${siteinfoVO.height }px">
+            <p><a href="${siteinfoVO.link_url }"><img src="${siteinfoVO.contents }" title="광고이미지" alt="광고이미지" /></a><br style="clear:both;" /> </p>        </div>
+        <div class="hd_pops_footer">
+            <button class="hd_pops_reject hd_pops_40 24"><strong>24</strong>시간 동안 다시 열람하지 않습니다.</button>
+            <button class="hd_pops_close hd_pops_40">닫기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+$(function() {
+    $(".hd_pops_reject").click(function() {
+        $('#hd_pop').css("display", "none");
+        setCookie( "maindiv", "done" , 1 );
+    });
+    $('.hd_pops_close').click(function() {
+        var idb = $(this).attr('class').split(' ');
+        $('#hd_pop').css('display','none');
+    });
+//    $("#hd").css("z-index", 1000);
+});
+
+$(document).ready(function(){
+	cookiedata = document.cookie; 
+	if ( cookiedata.indexOf("maindiv=done") < 0 ){ 
+	//	document.all['hd_pop'].style.visibility = "visible";
+		$('#hp_pop').show();
+	} else { 
+		$('#hp_pop').hide(); 
+	}
+});
+</script>
+
+</c:if>
+</c:if>
 	
 	<div class="sector2">
 

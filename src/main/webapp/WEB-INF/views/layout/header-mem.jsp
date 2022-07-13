@@ -178,10 +178,15 @@
 	                    <a href="${CPATH}/download">
                             <div class="middle"><span>다운로드</span>
 					<span style="font-size:17px;">(계약서,설명서)</span>
-
 		 </div>
 	                    </a>
 	                </li>
+<c:if test="${userLevel >= 5 }">
+         <li class="menu-item">
+         <a href="${CPATH}/member/${userId}/bankAccountMy"><div class="middle"><span>전용계좌 발급</span></div>
+						</a>
+					</li>
+</c:if>
                     
 	            </ul>
 			</div>

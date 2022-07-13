@@ -29,8 +29,8 @@
 .bo_notice,
 .bo_notice > div {background:#f0f5f8 !important;}
 .likeTbl > ul > li.bo_notice  .td_subject .bo_tit a{color:#ddd !important;}
-.likeTbl .td_board {width:150px; text-align:center; overflow:hidden; white-space:nowrap;}
-.likeTbl .td_chk {width:30px; text-align:center}
+.likeTbl .td_board {width:100px; text-align:center; overflow:hidden; white-space:nowrap;}
+.likeTbl .td_chk {width:80px; text-align:center}
 .likeTbl .td_zero {width:0px; text-align:center; color:#002c9f;}
 .likeTbl .td_date {width:60px; text-align:center; font-style: italic; }
 .likeTbl .td_datetime {width:60px; text-align:center; font-style: italic; color:#999; font-size:11px; font-family:verdana; }
@@ -71,7 +71,7 @@
 {
 
 	.likeTbl > ul{display:table; width:100%; }
-	.likeTbl > ul > li{display:table-row; width:100%; }
+	.likeTbl > ul > li{display:table-row; width:100%; height:20px;}
 	.likeTbl > ul > li > div{display:table-cell; }
 /*
 	.likeTbl > ul{display:block !important; }
@@ -94,7 +94,7 @@
 	.likeTbl > ul > li > div.td_subject{display:block; }
 	.likeTbl > ul > li > div.td_subject a{padding:0 0 8px 0; }
 	.likeTbl > ul > li > div.td_subject a.bo_cate_link{display:inline-block; padding-top:8px; }
-	.likeTbl > ul > li > div.td_chk{position:absolute; right:0px; top:0px; }
+/*	.likeTbl > ul > li > div.td_chk{position:absolute; right:0px; top:0px; } */
 
 	.likeTbl > ul > li:hover.likeTblTd .td_subject a{padding-left:0px; }
 	.likeTbl > ul > li.likeTblTd .td_subject .bo_tit a{padding-top:8px; }
@@ -314,9 +314,15 @@ $(function(){
 });
 function displaySelect(){
 	usedcar.page = 1;
+	var dataURL = ""
+	if(isList){
+		dataURL = "/bpm/NewCarListAjax";
+	}else{
+		dataURL = "/bbs/usedcarAjax";
+	}
 	$.ajax({
 		type: "POST",
-		url: "/bbs/usedcarAjax",
+		url: dataURL,
 		//dataType: "json",
         contentType: "application/json",
 		data: JSON.stringify(usedcar),
@@ -326,14 +332,15 @@ function displaySelect(){
 				div_html_list(data);
 			}
 			else{
-				$('#text_list_all').html('<span class="qnaIco qnaIco1">리스트보기</span>');
+				$('#text_list_all').html('<span class="qnaIco qnaIco1">실시간현황</span>');
 				div_html(data);
 			}
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
             alert("실패.")
 		}
-	});
+	});	
+	
 }
 
 function initFunction(){
@@ -407,7 +414,38 @@ function div_html(data){
 function div_html_list(data){
 	let htmlStr = "";
 	var iconList;
+	htmlStr += '<div class="likeTbl">';
+	htmlStr += '  <ul>';
+	htmlStr += '    <li class="likeTblTr likeTblTh">';
+	htmlStr += '   	 <div class="mvInlineN td_zero">번호</div>';
+	htmlStr += '   	 <div class="mvInlineN td_num">차량번호</div>';
+	htmlStr += '   	 <div class="mvInlinev td_board">모델명</div>';
+	htmlStr += '   	 <div class="mvInlinev td_chk">연료</div>';
+	htmlStr += '  	 <div class="mvInlineN td_num">연식</div>';
+	htmlStr += '   	 <div class="mvInlineN td_num">신차가격</div>';
+	htmlStr += '     <div class="mvInlineN td_zero">약정기간</div>';
+	htmlStr += '     <div class="mvInlinev td_zero">보증금</div>';
+	htmlStr += '     <div class="mvInlinev td_zero">렌트료</div>';
+	htmlStr += '    </li>';
+	
+	for(let i=0; i<data.length; i++) {
 
+    	htmlStr += '<li class="bo_notice likeTblTr likeTblTd">';
+		htmlStr += '  <div class="mvInlineN td_zero">'+(i+1)+'</div>';
+        htmlStr += '  <div class="mvInlineN td_num">'+Right(data[i].CAR_NO,4)+'</div>';
+        htmlStr += '  <div class="mvInlinev td_board">'+data[i].SALES_BIZ_ITEM_NM+'</div>';
+        htmlStr += '  <div class="mvInlinev td_chk">'+data[i].FUEL_NM+'</div>';
+        htmlStr += '  <div class="mvInlineN td_num">'+data[i].vehicle_year.substring(0,4)+'.'+data[i].vehicle_year.substring(4,6)+'</div>';
+        htmlStr += '  <div class="mvInlineN td_num">'+data[i].trim_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+'</div>';
+        htmlStr += '  <div class="mvInlineN td_zero">'+data[i].BASE_MM+'</div>';
+        htmlStr += '  <div class="mvInlinev td_zero">'+data[i].deposit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+'</div>';
+        htmlStr += '  <div class="mvInlinev td_zero">'+data[i].rentfee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+'</div>';
+        htmlStr += '</li>'
+	}
+    htmlStr += '</ul>'
+    htmlStr += '</div>'
+    
+/*	
 	htmlStr += '<div class="likeTbl">';
 	htmlStr += '  <ul>';
 	htmlStr += '    <li class="likeTblTr likeTblTh">';
@@ -442,7 +480,7 @@ function div_html_list(data){
 	}
     htmlStr += '</ul>'
     htmlStr += '</div>'
-    
+*/    
 	$('#carList').html("");
 	$('#carList').html(htmlStr);
 	$('#page_box').html("");

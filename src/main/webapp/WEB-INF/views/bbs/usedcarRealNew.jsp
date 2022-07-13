@@ -329,7 +329,7 @@ $(function(){
 					div_html_list(data);
 				}
 				else{
-					$('#text_list_all').html('<span class="qnaIco qnaIco1">리스트보기</span>');
+					$('#text_list_all').html('<span class="qnaIco qnaIco1">실시간현황</span>');
 					div_html(data);
 				}
 			},

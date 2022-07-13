@@ -1,5 +1,4 @@
 package com.harmony.longterm.controller;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,8 +24,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.harmony.longterm.service.CarService;
 import com.harmony.longterm.service.ISiteinfoService;
+import com.harmony.longterm.service.IUsedCarService;
 import com.harmony.longterm.utils.Paging;
-import com.harmony.longterm.vo.CarVO;
 import com.harmony.longterm.vo.SiteinfoVO;
 import com.harmony.longterm.vo.UsedCarVO;
 
@@ -44,7 +43,10 @@ public class LongtermController
 	private SqlSessionTemplate sqlSession;
 
 	@Autowired
-	private ISiteinfoService siteinfoService;	
+	private ISiteinfoService siteinfoService;
+	
+	@Autowired
+	private IUsedCarService usedCarService;	
 /*    */   
 /*    */   @RequestMapping({"/", "/{menu}"})
 /*    */   public String index(HttpServletRequest request, @PathVariable(value = "menu", required = false) String menu) {
@@ -109,7 +111,6 @@ logger.debug("longtermControler" + String.valueOf(prefix) + menu);
 @RequestMapping({"/main"})
 public String main_view(HttpServletRequest request, @RequestParam HashMap<String, String> map, Model model) throws Exception {
 
-	
 //	Date now = new Date();
 	SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
 	Calendar cal = Calendar.getInstance();
@@ -121,13 +122,24 @@ public String main_view(HttpServletRequest request, @RequestParam HashMap<String
     } else if (device.isTablet()) {
     	prefix = "m-rent.";
     } 
-	
+    HashMap<String, Object> queryMap = new HashMap<>();
+    queryMap.put("sell_state", "판매중");
+	queryMap.put("car_type", "신차");
+	queryMap.put("page", 1);
+	queryMap.put("count", 3);
+	List<UsedCarVO> newUsedCarVO = usedCarService.selectUsedCarList(queryMap);
+	queryMap.put("car_type", "중고차");
+	List<UsedCarVO> oldUsedCarVO = usedCarService.selectUsedCarList(queryMap);
+
 	SiteinfoVO siteinfoVO = new SiteinfoVO();
 	siteinfoVO.setPc_type("1");
 	siteinfoVO.setStart_date(to_day);
 	siteinfoVO.setEnd_date(to_day);
 	siteinfoVO = siteinfoService.selectSiteinfo(siteinfoVO);
 	model.addAttribute("siteinfoVO", siteinfoVO);
+	model.addAttribute("newUsedCarVO", newUsedCarVO);
+	model.addAttribute("oldUsedCarVO", oldUsedCarVO);
+
 	return prefix+"main";
 }
 

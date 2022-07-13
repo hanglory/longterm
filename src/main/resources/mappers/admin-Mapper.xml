@@ -59,6 +59,53 @@
 	<select id="colorlist" resultType="com.harmony.longterm.vo.ColorVO">
 		SELECT * from colorview where model_id=#{model_id}
 	</select>
-	
 
+	<select id="selectAccountByUserIDCount" resultType="int">
+		SELECT count(*) 
+		FROM bank_account 
+		WHERE reg_id=#{reg_id}
+	</select>
+	
+	<select id="selectAccountByUserID" resultType="com.harmony.longterm.vo.BankAccountVO">
+		SELECT bank_name, account, carno, user_name, reg_id, memo, used_code, recv_date 
+		FROM bank_account 
+		WHERE reg_id=#{reg_id}
+		ORDER BY recv_date DESC
+		LIMIT #{page}, #{count}
+	</select>
+	
+	<insert id="insertAccount" parameterType="com.harmony.longterm.vo.BankAccountVO"> 
+        INSERT INTO bank_account 
+        	( 
+        		bank_name, 
+				account
+        	)
+        VALUES 
+        	(
+        		${bank_name}, 
+        		${account}
+        	) 
+    </insert>
+    <update id="updateAccount" parameterType="Map">
+		UPDATE bank_account 
+		<set>
+			<if test="carno != null and carno != ''">carno = #{carno},</if>
+			<if test="user_name != null and user_name != ''">user_name = #{user_name},</if>
+			<if test="memo != null and memo != ''">memo = #{memo},</if>
+			<if test="used_code != null and used_code != ''">used_code = #{used_code},</if>
+		</set>
+    	WHERE account=#{account}
+    	AND used_code = '1'
+    	AND reg_id = #{reg_id}
+    </update> 
+    <update id="updateAccountRecv" parameterType="com.harmony.longterm.vo.BankAccountVO">
+		UPDATE bank_account AS ba, (SELECT account FROM bank_account WHERE used_code='0' LIMIT 1) AS ac
+		SET
+			used_code = '1',
+			recv_date = now(),
+			reg_id = #{reg_id}
+    	WHERE ba.account=ac.account
+    	AND used_code = '0'
+    </update>
+    
 </mapper>

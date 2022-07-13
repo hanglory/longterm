@@ -13,43 +13,43 @@
 	<select id="selectUsedCarTotCnt" resultType="int">
 		SELECT count(id) FROM usedcar
 		<where>
-		<if test="rentfee_min != '' ">
+		<if test="rentfee_min!=null and !rentfee_min.equals('')">
 			AND rentfee >= #{rentfee_min}
 		</if>
-		<if test="rentfee_max != '' ">
+		<if test="rentfee_max !=null and !rentfee_max.equals('')">
 			<![CDATA[
 			AND rentfee <= #{rentfee_max}
 			]]>
 		</if>
 		
-		<if test="deposit != '' ">
+		<if test="deposit !=null and !deposit.equals('')" >
 		<![CDATA[
 			AND deposit <= #{deposit}
 		]]>
 		</if>		
-		<if test="maker != '' ">
+		<if test="maker !=null and !maker.equals('') ">
 			AND maker = #{maker}
 		</if>
-		<if test="car_type != '' ">
+		<if test="car_type !=null and !car_type.equals('') ">
 			AND car_type = #{car_type}
 		</if>						
-		<if test="sell_state != '' ">
+		<if test="sell_state !=null and !sell_state.equals('') ">
 			AND sell_state = #{sell_state}
 		</if>
-		<if test="trim_name != '' ">
+		<if test="trim_name !=null and !trim_name.equals('') ">
 			AND 
 		</if>
-		<if test="trim_name != '' and car_no !=''">
+		<if test="trim_name !=null and !trim_name.equals('') and car_no !=''">
 			(
 		</if>
-		<if test="trim_name != '' ">
+		<if test="trim_name !=null and !trim_name.equals('') ">
 			trim_name  LIKE concat('%',#{trim_name},'%')
 		</if>
 		
-		<if test="car_no != '' ">
+		<if test="car_no !=null and !car_no.equals('') ">
 			OR car_no LIKE concat('%',#{car_no},'%')
 		</if>
-		<if test="trim_name != '' and car_no !=''">
+		<if test="trim_name !=null and !trim_name.equals('') and !car_no.equals('')">
 			)
 		</if>
 
@@ -60,53 +60,53 @@
 		SELECT *
 		FROM usedcar
 		<where>
-		<if test="rentfee_min != '' ">
+		<if test="rentfee_min !=null and !rentfee_min.equals('') ">
 			AND rentfee >= #{rentfee_min}
 		</if>
-		<if test="rentfee_max != '' ">
+		<if test="rentfee_max !=null and !rentfee_max.equals('') ">
 		<![CDATA[
 			AND rentfee <= #{rentfee_max}
 		]]>
 		</if>		
 		
-		<if test="deposit != '' ">
+		<if test="deposit !=null and !deposit.equals('') ">
 		<![CDATA[
 			AND deposit <= #{deposit}
 		]]>
 		</if>		
-		<if test="maker != '' ">
+		<if test="maker !=null and !maker.equals('') ">
 			AND maker = #{maker}
 		</if>
-		<if test="car_type != '' ">
+		<if test="car_type !=null and !car_type.equals('') ">
 			AND car_type = #{car_type}
 		</if>		
-		<if test="sell_state != '' ">
+		<if test="sell_state !=null and !sell_state.equals('') ">
 			AND sell_state = #{sell_state}
 		</if>		
-		<if test="trim_name != '' ">
+		<if test="trim_name !=null and !trim_name.equals('') ">
 			AND 
 		</if>
-		<if test="trim_name != '' and car_no !=''">
+		<if test="trim_name !=null and !trim_name.equals('') and car_no !=''">
 			(
 		</if>
-		<if test="trim_name != '' ">
+		<if test="trim_name !=null and !trim_name.equals('') ">
 			trim_name  LIKE concat('%',#{trim_name},'%')
 		</if>
-		<if test="car_no != '' ">
+		<if test="car_no !=null and !car_no.equals('') ">
 			OR car_no LIKE concat('%',#{car_no},'%')
 		</if>
-		<if test="trim_name != '' and car_no !=''">
+		<if test="trim_name !=null and !trim_name.equals('') and car_no !=''">
 			)
 		</if>
 		</where>
 		ORDER BY 
 		<trim prefixOverrides="," >
-		<if test="orderby != '' ">
+		<if test="orderby !=null and !orderby.equals('') ">
 		<![CDATA[
 			${orderby},
 		]]>
 		</if>
-		`ranking`, id DESC
+		ranking, id DESC
 		</trim>
 		limit #{page}, #{count}
 		

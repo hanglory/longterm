@@ -1,13 +1,4 @@
 /*     */ package com.harmony.longterm.controller;
-import com.harmony.longterm.utils.DateUtil;
-/*     */ 
-/*     */ import com.harmony.longterm.utils.Paging;
-import com.harmony.longterm.utils.Utils;
-import com.harmony.longterm.vo.CarVO;
-import com.harmony.longterm.vo.ColorVO;
-/*     */ import com.harmony.longterm.vo.EstimateVO;
-import com.harmony.longterm.vo.OptionVO;
-/*     */ import com.harmony.longterm.vo.UserVO;
 /*     */ import java.text.DateFormat;
 /*     */ import java.text.ParseException;
 /*     */ import java.text.SimpleDateFormat;
@@ -15,10 +6,12 @@ import java.util.ArrayList;
 /*     */ import java.util.Calendar;
 /*     */ import java.util.HashMap;
 /*     */ import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 /*     */ import javax.servlet.http.HttpServletRequest;
 /*     */ import javax.servlet.http.HttpSession;
+
 /*     */ import org.mybatis.spring.SqlSessionTemplate;
 /*     */ import org.slf4j.Logger;
 /*     */ import org.slf4j.LoggerFactory;
@@ -30,6 +23,17 @@ import java.util.stream.Stream;
 /*     */ import org.springframework.web.bind.annotation.PathVariable;
 /*     */ import org.springframework.web.bind.annotation.RequestMapping;
 /*     */ import org.springframework.web.bind.annotation.RequestParam;
+
+import com.harmony.longterm.utils.DateUtil;
+/*     */ 
+/*     */ import com.harmony.longterm.utils.Paging;
+import com.harmony.longterm.utils.Utils;
+import com.harmony.longterm.vo.BankAccountVO;
+import com.harmony.longterm.vo.CarVO;
+import com.harmony.longterm.vo.ColorVO;
+/*     */ import com.harmony.longterm.vo.EstimateVO;
+import com.harmony.longterm.vo.OptionVO;
+/*     */ import com.harmony.longterm.vo.UserVO;
 /*     */ 
 /*     */ 
 /*     */ 
@@ -202,6 +206,64 @@ public String estimateDetail(HttpServletRequest request, Model model, @RequestPa
 	model.addAttribute("estimateList", estimateList);
 	return String.valueOf(prefix) +"estimateDetail";
 }
+
+@RequestMapping({ "/{member}/bankAccountMy" })
+public String bankAccountMy(HttpServletRequest request, Model model, @RequestParam(value = "page", defaultValue = "1") Integer page) {
+	String prefix = "member.";
+	HttpSession session = request.getSession();
+	HashMap<String, Object> queryMap = new HashMap<>();
+	if (page.intValue() < 1) page = Integer.valueOf(1);
+
+//    if (session.getAttribute("userId") != null) {
+//    }
+    int pageSize = 20;
+    Paging paging = new Paging();
+    paging.setPageNo(page.intValue());
+    paging.setPageSize(pageSize);
+    queryMap.put("page", Integer.valueOf((page.intValue() - 1) * pageSize));
+    queryMap.put("reg_id", session.getAttribute("userId"));
+    queryMap.put("count", Integer.valueOf(pageSize));
+    int count = ((Integer)this.sqlSession.selectOne("admin.selectAccountByUserIDCount",  queryMap)).intValue();
+    List<BankAccountVO> bankAccountVo  = this.sqlSession.selectList("admin.selectAccountByUserID", queryMap);
+    model.addAttribute("BankAccountVO", bankAccountVo);
+    model.addAttribute("paging", paging);
+    paging.setTotalCount(count);
+
+	return String.valueOf(prefix) +"bankAccountMy";
+}
+
+@RequestMapping({ "/{member}/bankAccountRecv" })
+public String bankAccountRecv(HttpServletRequest request, Model model) {
+	String prefix = "member.";
+	HttpSession session = request.getSession();
+	HashMap<String, Object> queryMap = new HashMap<>();
+
+	if((Integer) session.getAttribute("level") > 4) {
+	    if (session.getAttribute("userId") != null) {
+	        queryMap.put("reg_id", session.getAttribute("userId"));
+	        int result  = this.sqlSession.update("admin.updateAccountRecv", queryMap);
+	
+	    }
+	}
+	return "redirect:/member/"+session.getAttribute("userId")+"/bankAccountMy";
+}
+
+@RequestMapping({ "/{member}/bankAccountUpdate" })
+public String bankAccountUpdate(HttpServletRequest request, Model model, @RequestParam Map<String, Object> param) {
+//	String prefix = "member.";
+	HttpSession session = request.getSession();
+//	HashMap<String, Object> queryMap = new HashMap<>();
+
+    if (session.getAttribute("userLevel") != null && (Integer)session.getAttribute("userLevel") > 4) {
+//        queryMap.put("reg_id", session.getAttribute("userId"));
+        param.put("reg_id", session.getAttribute("userId"));
+        int result  = this.sqlSession.update("admin.updateAccount", param);
+
+    }
+    
+	return "redirect:/member/"+session.getAttribute("userId")+"/bankAccountMy";
+}
+
 /*     */   
 /*     */   @RequestMapping({"/{member}/{url}"})
 /*     */   public String estimate(HttpServletRequest request, Model model, @PathVariable(required = false) String member, @PathVariable(required = false) String url) {
@@ -221,6 +283,8 @@ public String estimateDetail(HttpServletRequest request, Model model, @RequestPa
 /* 162 */     return String.valueOf(prefix) + url;
 /*     */   }
 /*     */ }
+
+
 
 
 /* Location:              D:\web\base\ROOT\WEB-INF\classes\!\com\harmony\longterm\controller\MemberController.class

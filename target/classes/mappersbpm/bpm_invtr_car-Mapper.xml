@@ -55,7 +55,7 @@
 								ifnull(DEPOSIT36, 0) + ifnull(MM_RENT36 , 0) + ifnull(ACQ_PRICE36 , 0) + ifnull(DEPOSIT48 , 0) + ifnull(MM_RENT48, 0) + ifnull(ACQ_PRICE48 , 0) + 
 								ifnull(DEPOSIT60 , 0) + ifnull(MM_RENT60 , 0) + ifnull(ACQ_PRICE60, 0) ) > 0 
 							AND autocare_cd = 'AC01' 
-							AND 'NC01' like concat('%', ( case when ifnull(P.new_car_gbn_cd, '') = '' 
+							AND #{new_car_gbn_cd} like concat('%', ( case when ifnull(P.new_car_gbn_cd, '') = '' 
 									then 'EMPTY' else P.new_car_gbn_cd end ) , '%') 
 						) P order by P.PRODUCT_REGDT desc , P.INVTR_PRODUCT_NID ) A 
 						<where>

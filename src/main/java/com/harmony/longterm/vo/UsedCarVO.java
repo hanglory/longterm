@@ -22,6 +22,7 @@ public class UsedCarVO {
 	private String trim_name;
 	private String vehicle_year;
 	private String period;
+	private String another;
 	private String deposit;
 	private String rentfee;
 	private String rentfee_1;

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+
 <script language="JavaScript"> 
 var isPhoneAuth = false;
 
@@ -202,38 +204,231 @@ jQuery(document).ready(function(){
 #vagree2 div ul{margin:5px 0 10px;}
 #vagree2 div ul li{font-size:11px; line-height:20px; color:#909090;}
 .dn{display:none;}
+
+/* style_new.css */
+.car_list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.car_item {
+  width: 285px;
+  display: flex;
+  flex-direction:column;
+  margin-bottom: 20px;
+}
+
+.car_item:not(:nth-child(4n)){
+  margin-right: 20px;
+}
+
+.car_item img {
+  width: 100%;
+  height: 188px;
+}
+
+.car_content {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  border: 1px solid #eee;
+  padding-top: 16px;
+  height: 175px
+}
+
+.car_content .top_area {
+  display: flex;
+  justify-content: space-between;
+}
+
+.car_content .left_area {
+  padding-left: 16px;
+  width: calc(100% - 60px);
+}
+
+.car_content .left_area h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+.car_content .left_area li {
+  display: flex;
+}
+
+.car_content .left_area li span{
+  white-space: nowrap;
+  font-size: 14px;
+}
+.car_content .left_area .title {
+  color: #cacaca;
+  display: inline-block;
+  margin-right: 8px;
+}
+  
+.car_content .right_area strong {
+  display: block;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  font-size: 13px;
+  color: #fff;
+  padding: 2px 0;
+  width: 75px;
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+.car_content .right_area strong.red {
+ background-color: #ed145b;
+}
+.car_content .right_area strong.orange {
+ background-color: #f26522;
+}
+
+.car_content .bottom_area {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 16px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.car_content .label {
+  width: 51px;
+  height: 60px;
+  border-top-right-radius: 40px;
+  border-top-left-radius: 40px;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 6px;
+  background-color: #7accc8;
+}
+.car_content .label.new {
+  color: #f90000;
+}
+.car_content .label.used {
+  color: #0a10ff;
+}
+.car_content .rent {
+  padding-right: 16px;
+  font-size: 18px;
+  font-weight: 500;
+}
+.car_content .rent .title{
+  color: #c2bfbf;
+  font-weight: inherit;
+  margin-right: 10px;
+}
+.car_content .rent .price{
+  color: #d52323;
+  font-weight: inherit;
+}
+
+.car_list.thumbnail {
+  justify-content: flex-start;				/* space-between;*/
+  padding: 0 20px;
+  margin: 20px 0 40px 0;
+}
+
+.car_list.thumbnail .car_item{
+  width: 370px;
+  height: 420px;
+  margin-right: 16px;
+}
+
+.car_list.thumbnail .car_item img {
+  height: 220px;
+}
+.car_list.thumbnail .car_content .rent {
+  text-align: center;
+  /*width: calc(100% - 51px ); */
+  display: flex;
+  justify-content: center;
+}
+.car_list.thumbnail .car_content .label{
+  background-color: #e1e1e1;
+}
+
+@media screen and (max-width: 790px) {
+  .car_list {
+    display: block;
+  }
+  
+  .car_item {
+    width: 100%;
+    display: flex;
+    flex-direction:column;
+    margin-bottom: 16px;
+  }
+  
+  .car_item:not(:nth-child(4n)){
+    margin-right: 0;
+  }
+  
+  .car_item img {
+    height: 220px;
+  }
+  
+ 
+  
+  .car_content .left_area {
+    padding-left: 14px;
+  }
+
+  .car_content .left_area li span{
+    white-space: nowrap;
+    font-size: 13px;
+  }
+
+  .car_content .bottom_area {
+    padding-left: 14px;
+    margin-top: 16px;
+  }
+  
+  .car_content .label {
+    width: 45px;
+    height: 50px;
+    border-top-right-radius: 22px;
+    border-top-left-radius: 22px;
+    font-size: 12px;
+    padding-bottom: 5px;
+  }
+
+  .car_content .rent {
+    padding-right: 14px;
+    font-size: 16px;
+  }
+  .car_content .rent .title{
+    margin-right: 8px;
+  }
+  
+  .car_list.thumbnail {
+    justify-content: space-between;
+    padding: 0;
+    margin: 20px 0 0 0;
+  }
+  
+  .car_list.thumbnail .car_item{
+    width: 100%;
+    height: 420px;
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+  
+  .car_list.thumbnail .car_content .rent {
+    text-align: right;
+    width: calc(100% - 45px);
+    justify-content: flex-end;
+  }
+}
 </style>
+  <link rel="stylesheet" href="/css/static.css">
 
 <c:if test="${siteinfoVO.id > 0 }">
 	<c:if test="${cookie.maindiv.value ne 'done' }">
-
-	<!--임시레이어팝업 
-	<div id="divpop" style="position:absolute;left:${siteinfoVO.left_postion}px;top:${siteinfoVO.top_postion }px;z-index:200;visibility:hidden;"> 
-	<table width=${siteinfoVO.width }px height=${siteinfoVO.height }px cellpadding=0 cellspacing=0> 
-	<tr> <td style="border:1px #666666 solid" height=${siteinfoVO.height-10 }px align=center bgcolor=white>
-	 <a href="${siteinfoVO.link_url }"> <img src="${siteinfoVO.contents }" alt="설명설명"></a></td> </tr>
-	 <tr> <td height=25 align=right bgcolor="#FFFFFF" valign=middle> 
-	<input type="checkbox" name="chkbox" id="chkbox" value="checkbox"> <font color=#eeeeee>오늘 하루 이 창을 열지 않음 </font> 
-	<a href="javascript:closeWin();"> <font color=#eeeeee> <B>[닫기]</B> </font></a> </td></tr> </table> </div>
-	
-
-<script language="Javascript"> 
-cookiedata = document.cookie; 
-if ( cookiedata.indexOf("maindiv=done") < 0 ){ 
-	document.all['divpop'].style.visibility = "visible"; 
-} else { 
-	document.all['divpop'].style.visibility = "hidden"; 
-} 
-
-function closeWin() { 
-	if ( $("input[type=checkbox]").is(':checked') ){ 
-		setCookie( "maindiv", "done" , 1 ); 
-	}
- 	document.all['divpop'].style.visibility = "hidden"; } 
-</script>
--->	
-
-<!-- 팝업레이어 시작 {  } 팝업레이어 끝 -->
 
 <div id="hd_pop">
     <h2>팝업레이어 알림</h2>
@@ -330,7 +525,81 @@ $(document).ready(function(){
 		</div>
 	</div>
 </div>
-				
+<ul class='car_list thumbnail'>
+<c:forEach var="usedCarVO" items="${newUsedCarVO }">
+<li class="car_item">
+<a href="/bbs/usedcarDetail?car_id=${usedCarVO.id}"><img src="${usedCarVO.image}" alt="">
+  <div class="car_content">
+    <div class="top_area">
+      <div class="left_area">
+      <h3>${usedCarVO.trim_name}</h3>
+      <ul>
+        <li>
+          <span class="title">차량유종</span>
+          <span class="ellipsis">${usedCarVO.fuel}</span>
+        </li>
+      </ul>
+    </div>
+    <div class="right_area">
+       <strong class="red">선택항목</strong>
+       <script>
+        iconList = "${usedCarVO.icon}".split('|');
+		for(var nCnt in iconList){
+			if(iconList[nCnt] != "")
+				document.writeln('<strong class="orange">'+iconList[nCnt]+'</strong>');
+		}
+		</script>
+    </div>
+  </div>
+  <div class="bottom_area">
+    <p class="rent">
+      <span class="title">월렌트료</span>
+      <span class="price"><fmt:formatNumber type="number" maxFractionDigits="3" value="${usedCarVO.rentfee_1}" /> 원</span>
+    </p>
+  </div>
+</div></a>
+</li>
+</c:forEach>
+</ul>
+
+<ul class='car_list thumbnail'>
+<c:forEach var="usedCarVO" items="${oldUsedCarVO }">
+<li class="car_item">
+  <a href="/bbs/usedcarDetail?car_id=${usedCarVO.id}"><img src="${usedCarVO.image}" alt="">
+   <div class="car_content">
+    <div style="display: flex;flex-wrap: wrap; margin-bottom: 10px;">
+<script>
+        iconList = "${usedCarVO.icon}".split('|');
+		for(var nCnt in iconList){
+			if(iconList[nCnt] != "")
+				document.writeln('<span style="font-size: 12px;color: #fff;border-radius: 5px;padding: 2px 18px;background-color: #4e6c8a;">'+iconList[nCnt]+'</span>');
+		}
+</script>
+    </div>
+      <h3>${ usedCarVO.trim_name}</h3>
+      <ul>
+        <li>
+          <span class="title">차량유종</span>
+          <span class="ellipsis">${usedCarVO.fuel}</span>
+        </li>
+        <li>
+          <span class="title">주행거리</span>
+          <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${usedCarVO.distance}" /> Km</span>
+        </li>
+        <li>
+          <span class="title">약정개월</span>
+          <span class="ellipsis">${ usedCarVO.period} 개월</span>
+        </li>
+      </ul>        
+    <p class="rent">
+      <span class="title">월렌트</span>
+      <span class="price"><fmt:formatNumber type="number" maxFractionDigits="3" value="${usedCarVO.rentfee}" />원</span>
+    </p>
+   </div>
+  </a>
+</li>
+</c:forEach>
+</ul>
 	
 		<div class="sector2">
 

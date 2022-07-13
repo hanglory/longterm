@@ -71,6 +71,11 @@ public class BpmController {
 		   }else {
 			   map.put("maker", "");
 		   }
+		   if(map.get("car_type").equals("중고차")) {
+			   map.put("new_car_gbn_cd", "NC02");
+		   }else {
+			   map.put("new_car_gbn_cd", "NC01");
+		   }
 		   
 		   return sqlSessionbpm.selectList(MAPPER_PATH + "productInvtrCarList", map);
 	   }

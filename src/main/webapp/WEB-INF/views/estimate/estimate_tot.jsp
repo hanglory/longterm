@@ -348,7 +348,13 @@ textarea {
 
 
 			div {
-				overflow-x: auto;
+				/* overflow-x: auto; */
+
+
+
+
+
+
               /*  width: 1050px; */
               /*  margin: auto; */
                 /*text-align: center;*/
