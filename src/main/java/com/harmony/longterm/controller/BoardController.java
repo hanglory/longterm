@@ -359,7 +359,7 @@ public class BoardController {
 	}
 
 	@RequestMapping({"/usedcarDetail"})
-	public String usedcarReal(HttpServletRequest request,@RequestParam HashMap<String, String> map, Model model, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "car_id", defaultValue = "") String id, @RequestParam(value = "rentfee_hi", defaultValue = "") String rentfee_hi,@RequestParam(value = "rentfee_my", defaultValue = "") String rentfee_my,@RequestParam(value = "rentfee_ou", defaultValue = "") String rentfee_ou, @RequestParam(value = "rentfee_no", defaultValue = "") String rentfee_no) throws Exception {
+	public String usedcarReal(HttpServletRequest request,@RequestParam HashMap<String, Object> map, Model model, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "car_id", defaultValue = "") String id, @RequestParam(value = "rentfee_hi", defaultValue = "") String rentfee_hi,@RequestParam(value = "rentfee_my", defaultValue = "") String rentfee_my,@RequestParam(value = "rentfee_ou", defaultValue = "") String rentfee_ou, @RequestParam(value = "rentfee_no", defaultValue = "") String rentfee_no) throws Exception {
 
 			int pageSize = 200;
 			Paging paging = new Paging();
@@ -376,6 +376,17 @@ public class BoardController {
 			usedCarService.updateUsedCarViewCnt(queryMap);
 			
 			UsedCarVO usedCarVO = usedCarService.selectUsedCar(queryMap);
+// 렌트료 비슷한 차량 1건 광고
+			map.put("rentfee_min", usedCarVO.getRentfee());
+			map.put("orderby", "rentfee" );
+			map.put("page", 0);
+			map.put("count", 1);
+			map.put("notid", id);
+			map.put("sell_state", "판매중");
+			map.put("car_type", usedCarVO.getCar_type());
+			List<UsedCarVO> usedCarVOPop = usedCarService.selectUsedCarList(map);
+			
+			model.addAttribute("usedCarVOPop", usedCarVOPop);
 			model.addAttribute("usedCarVO", usedCarVO);
 			model.addAttribute("queryMap", queryMap);
 			model.addAttribute("reqParam", map);

@@ -331,6 +331,8 @@ jQuery(document).ready(function(){
   justify-content: flex-start;				/* space-between;*/
   padding: 0 20px;
   margin: 20px 0 40px 0;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .car_list.thumbnail .car_item{
@@ -409,6 +411,7 @@ jQuery(document).ready(function(){
     justify-content: space-between;
     padding: 0;
     margin: 20px 0 0 0;
+    text-align: center;
   }
   
   .car_list.thumbnail .car_item{

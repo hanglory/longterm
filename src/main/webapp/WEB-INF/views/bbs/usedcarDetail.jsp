@@ -6,6 +6,122 @@
 
   <link rel="stylesheet" href="/css/static.css">
   <link rel="stylesheet" href="/css/detail_style.css">
+<style>
+#quick{width:127px; top:102px; right:137px; position:absolute;}
+#quick .quick-input{width:200px; border:1px solid #478ed1; background:#f1f6f6; float:left;}
+#quick .quick-btn{width:195px; margin-top:5px; float:left;}
+
+#quick .quick-input h1{padding-top:20px; font-weight:600; font-size:16px; text-align:center; color:#478ed1; display:block;}
+#quick .quick-input ul{padding:5px 25px 15px; float:left;}
+#quick .quick-input ul li{margin-top:3px; float:left;}
+#quick .quick-input ul li input{width:150px; height:24px; border:1px solid #242424; background:#fbfbfb;}
+#quick .quick-input span{margin-right:1px; position:relative; _display:inline; float:left;}
+#quick .quick-input span label{top:5px; left:6px; position:absolute; letter-spacing:-1px; color:#999;}
+#quick .quick-input div.agree{width:140px; margin-top:2px; margin-left:30px; font-size:11px; color:#999; float:left;}
+#quick .quick-input div.agree a{margin:3px 5px; text-align:center; display:block;}
+#quick .quick-input div.submit{width:127px; float:left;}
+#quick .quick-input div.submit input{width: 200px; height:29px; font-weight:600; color:#fff; border:0; background:#478ed1;}
+.car_content {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  border: 1px solid #eee;
+  padding-top: 16px;
+  height: 175px
+}
+
+.car_content .top_area {
+  display: flex;
+  justify-content: space-between;
+}
+
+.car_content .left_area {
+  padding-left: 16px;
+  width: calc(100% - 60px);
+}
+
+.car_content .left_area h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+.car_content .left_area li {
+  display: flex;
+}
+
+.car_content .left_area li span{
+  white-space: nowrap;
+  font-size: 14px;
+}
+.car_content .left_area .title {
+  color: #cacaca;
+  display: inline-block;
+  margin-right: 8px;
+}
+  
+.car_content .right_area strong {
+  display: block;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  font-size: 13px;
+  color: #fff;
+  padding: 2px 0;
+  width: 75px;
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+.car_content .right_area strong.red {
+ background-color: #ed145b;
+}
+.car_content .right_area strong.orange {
+ background-color: #f26522;
+}
+
+.car_content .bottom_area {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 10px;
+  margin-top: 0px;
+  margin-bottom: 20px;
+}
+
+.car_content .label {
+  width: 51px;
+  height: 60px;
+  border-top-right-radius: 40px;
+  border-top-left-radius: 40px;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 6px;
+  background-color: #7accc8;
+}
+.car_content .label.new {
+  color: #f90000;
+}
+.car_content .label.used {
+  color: #0a10ff;
+}
+.car_content .pop_rent {
+  padding-right: 16px;
+  font-size: 18px;
+  font-weight: 500;
+}
+.car_content .pop_rent .title{
+  color: #c2bfbf;
+  font-weight: inherit;
+  margin-right: 10px;
+}
+.car_content .pop_rent .price{
+  color: #d52323;
+  font-weight: inherit;
+}
+
+</style>
 <script>
 var optionListArr = ["네비게이션","전동시트","블랙박스","전방감지센서","후방감지센서","후방카메라","크루즈컨트롤","스마트키","하이패스","열선시트","통풍시트","열선핸들","썬루프"];
 var iconListArr = ["엔진오일2회","엔진오일4회","즉시출고","신차급"];
@@ -194,10 +310,51 @@ $(function(){
 ${usedCarVO.contents }
     </div>
   </div>
-
+<c:forEach var="usedCarVoPop" items="${usedCarVOPop }">
+<div id="quick">
+	<div class="quick-input">
+		<li class="car_item">
+		<a href="/bbs/usedcarDetail?car_id=${usedCarVoPop.id}"><img src="${usedCarVoPop.image}" width="100%" height="100%">
+		  <div class="car_content">
+		    <div class="top_area">
+		      <div class="left_area">
+		      <h2>${usedCarVoPop.trim_name}</h2>
+		       <p class="pop_rent">
+		          <span class="title">차량유종</span>
+		          <span class="ellipsis">${usedCarVoPop.fuel}</span>
+		       </p>
+		    </div>
+		  </div>
+		  <div class="bottom_area">
+		    <p class="pop_rent">
+		      <span class="title">월렌트료</span>
+		      <span class="price"><fmt:formatNumber type="number" maxFractionDigits="3" value="${usedCarVoPop.rentfee}" /> 원</span>
+		    </p>
+		  </div>
+		</div></a>
+		</li>	
+	</div>
+</div>
+</c:forEach>
 <script>
 
 window.addEventListener("load", function() {
 	//getEstimateList();
+});
+
+jQuery(document).ready(function(){
+	var quick_rmenu = jQuery("#quick");
+	var quick_rtop = 102;
+	jQuery(document).ready(function(){
+		jQuery(window).scroll(function(){
+			quick_rmenu.stop().animate({"top":jQuery(document).scrollTop()+quick_rtop+"px"}, 1000 );
+		});
+	});
+	$("#re_phone").on("propertychange change keyup paste input", function() {
+		var _val = $(this).val();
+		
+		var tel_val = autoHypenPhone(_val) ;
+		$(this).val(tel_val);
+	});	
 });
 </script>
