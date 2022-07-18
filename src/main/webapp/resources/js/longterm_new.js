@@ -235,6 +235,7 @@ var UpdateSummary = function(kind=5) {
 			car.acquisition_no = data.acquisition;
 			car.agent_fee_rate = car.agent_fee_rate_no;
 			var no_price = Math.floor((car.preprice_no*10000/car.period_no)/1000)*1000;
+			
 //			$('#rentfee_no').html(Number( car.rentfee_no - no_price).toLocaleString('en') + "원/월");
 			car.rentfee_no = Number( car.rentfee_no - no_price);
 			$('#deposit_no').html(Number(Math.round( data.deposit / 10000)).toLocaleString('en') + "만원");
@@ -243,6 +244,8 @@ var UpdateSummary = function(kind=5) {
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
 		    alert("실패.")
+			
+			
 		}		
 	});	
   }

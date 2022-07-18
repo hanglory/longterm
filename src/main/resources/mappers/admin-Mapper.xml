@@ -73,7 +73,60 @@
 		ORDER BY recv_date DESC
 		LIMIT #{page}, #{count}
 	</select>
+
+	<select id="selectAccountCount" resultType="int">
+		SELECT count(*) 
+		FROM bank_account 
+		<where> 
+		<if test=" reg_id != null and !reg_id.equals('') " >
+			reg_id = #{reg_id}
+		</if>
+		<if test="user_name !=null and !user_name.equals('')" >
+			user_name= #{user_name}
+		</if>
+		<if test="account !=null and !account.equals('')" >
+			account= #{account}
+		</if>
+		<if test="used_code !=null and !used_code.equals('')" >
+			used_code = #{used_code}
+		</if>
+		<if test="seqno !=null and !seqno.equals('')" >
+			seqno = #{seqno}
+		</if>
+		</where>
+	</select>
 	
+	<select id="selectAccount" resultType="com.harmony.longterm.vo.BankAccountVO">
+		SELECT *
+		FROM bank_account
+		<where> 
+		<if test=" reg_id != null and !reg_id.equals('') " >
+			reg_id = #{reg_id}
+		</if>
+		<if test="user_name !=null and !user_name.equals('')" >
+			user_name= #{user_name}
+		</if>
+		<if test="account !=null and !account.equals('')" >
+			account= #{account}
+		</if>
+		<if test="used_code !=null and !used_code.equals('')" >
+			used_code = #{used_code}
+		</if>
+		<if test="seqno !=null and !seqno.equals('')" >
+			seqno = #{seqno}
+		</if>
+		</where> 
+		ORDER BY recv_date DESC
+		LIMIT #{page}, #{count}
+	</select>
+
+	<select id="selectAccountExcel"  resultType="xml" >
+		SELECT seqno, bank_name, account, carno, user_name,name, reg_id,  recv_date, memo
+		FROM bank_account ba LEFT JOIN USER us 
+		ON ba.reg_id=us.nickname
+		ORDER BY seqno;
+	</select>
+
 	<insert id="insertAccount" parameterType="com.harmony.longterm.vo.BankAccountVO"> 
         INSERT INTO bank_account 
         	( 
@@ -98,6 +151,19 @@
     	AND used_code = '1'
     	AND reg_id = #{reg_id}
     </update> 
+    <update id="updateAccountBySeqno" parameterType="Map">
+		UPDATE bank_account 
+		<set>
+			<if test="bank_name != null and bank_name != ''">bank_name = #{bank_name},</if>
+			<if test="account != null and account != ''">account = #{account},</if>
+			<if test="recv_date != null and recv_date != ''">recv_date = NOW(),</if>
+			<if test="carno != null and carno != ''">carno = #{carno},</if>
+			<if test="user_name != null and user_name != ''">user_name = #{user_name},</if>
+			<if test="memo != null and memo != ''">memo = #{memo},</if>
+			<if test="used_code != null and used_code != ''">used_code = #{used_code},</if>
+		</set>
+    	WHERE seqno=#{seqno}
+    </update>     
     <update id="updateAccountRecv" parameterType="com.harmony.longterm.vo.BankAccountVO">
 		UPDATE bank_account AS ba, (SELECT account FROM bank_account WHERE used_code='0' LIMIT 1) AS ac
 		SET

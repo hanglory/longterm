@@ -20,6 +20,25 @@ window.onload = function(){
 	} 
 } 
 </script>
+    
+<script>
+function check() {
+	if ($("input:checkbox[name='ck[]']").is(":checked")==false) {
+		alert("개인정보 수집 동의란에 체크해주세요.");
+		$("#ck1").focus();
+		return;
+	}
+}
+</script>    
+ 	
+<script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
+<script type="text/javascript">
+if(!wcs_add) var wcs_add = {};
+wcs_add["wa"] = "14e79358f12c520";
+if(window.wcs) {
+wcs_do();
+}
+</script>  
 <style>
 .folder:after {
 	position: absolute;
@@ -181,6 +200,12 @@ textarea {
 			                        	<div class="imagecontainer">
 			                        		<img src="${RPATH}/images/logo/쌍용.png" alt="" />
 			                        		<span style="display:block; text-align:center;">쌍용</span>
+			                        	</div>
+									</li>
+					            <li class="maker" data-maker="벤츠">
+			                        	<div class="imagecontainer">
+			                        		<img src="${RPATH}/images/logo/벤츠.png" alt="" />
+			                        		<span style="display:block; text-align:center;">벤츠</span>
 			                        	</div>
 									</li>
 			                    </ul>
@@ -510,14 +535,19 @@ textarea {
 		</div>
 							
 </div>
+<br>
 <c:if test="${userLevel <= 0 || empty userLevel }">
 					<div style="text-align : center;">
-<br><br>
 						<div class="add-info flex-center">
-							<input type="text" id="customer" name="customer" placeholder="   고객이름" style="height:35px; width:95%; margin-bottom:5px;"/>
-							<input type="tel" id="phone" name="tel" placeholder="   010-1234-5678" pattern="(010)-\d{3,4}-\d{4}" title="연락처" style="height:35px;width:95%;margin-bottom:5px;"/><br>
-							<input type="number" id="authNumber" name="authNumber" placeholder="   인증번호" class="authNumber" style="display:none;height:35px;width:95%;margin-bottom:5px;" maxlength=6 /><br>
-							<button id="authHpno" style="background-color:rgb(0 123 255 / 48%);" name="authHpno" style="height:35px;">인증번호받기</button><br>
+                             <form name="f" method="post" style="color:red; font-weight:bold;">
+            <input type="checkbox" id="ck1" name="ck[]" value="y" checked="checked" onclick="check()"> 개인정보 수집 동의
+
+</form>                        
+							<a href="javascript:check()"><input type="text" id="customer" name="customer" placeholder="고객이름" style="width:90%;height:40px;"/></a>
+                            <br>
+							<a href="javascript:check()"><input type="tel" id="phone" name="tel" placeholder="010-1234-5678" pattern="(010)-\d{3,4}-\d{4}" title="연락처" style="width:90%;height:40px;"/></a><br>
+							<a href="javascript:check()"><input type="number" id="authNumber" name="authNumber" placeholder="인증번호" class="authNumber" style="display:none;width:90%;height:40px;" maxlength=6 /><br></a>
+							<button id="authHpno" style="background-color:rgb(0 123 255 / 48%);" name="authHpno">인증번호받기</button><br>
 						</div>
 					</div>
 </c:if>

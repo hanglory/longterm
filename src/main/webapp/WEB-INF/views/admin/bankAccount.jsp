@@ -92,37 +92,52 @@ input[type=text], input[type=button], input[type=date], input[type=submit], inpu
 	}
 %>
 
-
 <div class="main">
-	<h1>나의 신청 계좌</h1>
-	
+	<form class="search-form" action="/admin/bankAccount" mothod="POST" onSubmit="return checkInput(this)">
+		<select name="type1" id="type1">
+			<option value="account">계좌번호</option>
+			<option value="user_name">입금자명</option>
+			<option value="reg_id">관리자ID</option>
+		</select>
+		<input type="search" name="search1" id="search1" value="${search1 }"/>
+		<input type="submit" value="검색" />
+	</form>
 	<div>
-		<span>발급계좌 총 ${paging.totalCount} 개</span> &nbsp; <a href="bankAccountRecv"><input type="button" align="right" value="계좌신청하기"  style="float: right;"></a>
+		<span>발급계좌 총 ${paging.totalCount} 개</span>
 		<table id="list">
-
+		<colgroup>
+			<col width="5%">
+			<col width="8%">
+			<col width="10%">
+			<col width="20%">
+			<col width="8%">
+			<col width="14%">
+			<col width="15%">
+			<col width="20%">
+			
+		</colgroup>		
 			<tr>
+				<th>번호</th>
 				<th>은행</th>
 				<th>계좌번호</th>
 				<th>입금자명</th>
 				<th>차량번호</th>
-				<th>메모</th>
                 <th>발급일시</th>
-                <th>수정</th>
+                <th>관리자</th>
+				<th>메모</th>
 			</tr>
 			
 			<c:forEach var="bankAccount" items="${BankAccountVO }">
-				<form action="bankAccountUpdate" method="post" onSubmit="return checkInput(this)">
-				<input type="hidden" name="account" value="${bankAccount.account }" >
-				<tr>
+				<tr data-e_id=${bankAccount.seqno} data-t_id=${bankAccount.account }>
+				    <td>${bankAccount.seqno}</td>				
 				    <td>${bankAccount.bank_name}</td>
 					<td>${bankAccount.account }</td>
-					<td><input name="user_name" value="${bankAccount.user_name }" maxlength="10"></td>
-					<td><input name="carno" value="${bankAccount.carno }" maxlength="10"></td>
-					<td><input name="memo" style="width:100%;"  value="${bankAccount.memo }" maxlength='20'></td>
+					<td>${bankAccount.user_name }</td>
+					<td>${bankAccount.carno }</td>
                     <td>${bankAccount.recv_date }</td>
-                    <td><input type="submit" value="수정"></td>
+					<td>${bankAccount.reg_id }</td>
+					<td>${bankAccount.memo }</td>
 				</tr>
-				</form>
 			</c:forEach>
 
 		</table>
@@ -145,9 +160,10 @@ input[type=text], input[type=button], input[type=date], input[type=submit], inpu
 
 <script>
 
+
 function checkInput(frm){
-	if(frm.user_name.value == '' && frm.carno.value=='' && frm.memo.value == ''){
-		alert('값을 입력해 주세요.');
+	if(frm.search1.value == ''){
+		alert('검색할 값을 입력해 주세요.');
 		return false;
 	}
 	return true;
@@ -176,17 +192,18 @@ var searchToday = function() {
 
 var goPage = function(page) {
 	var type1Sel = document.getElementById("type1");
-	var type2Sel = document.getElementById("type2");
+//	var type2Sel = document.getElementById("type2");
 
-	location.href = "./estimatelist?"
+	location.href = "./bankAccount?"
 			+ "type1="+ type1Sel[type1Sel.selectedIndex].value
 			+ "&search1=" + document.getElementById("search1").value.trim()
-			+ "&type2="+ type2Sel[type2Sel.selectedIndex].value
-			+ "&search2=" + document.getElementById("search2").value.trim()
-			+ "&search-start=" + document.getElementById("start").value
-			+ "&search-end=" + document.getElementById("end").value
+//			+ "&type2="+ type2Sel[type2Sel.selectedIndex].value
+//			+ "&search2=" + document.getElementById("search2").value.trim()
+//			+ "&search-start=" + document.getElementById("start").value
+//			+ "&search-end=" + document.getElementById("end").value
 			+ "&page=" + page;
 }
+
 
 document.querySelector("#list").addEventListener("dblclick", function (e){
 	var elems = document.querySelectorAll(".sel-item");
@@ -225,7 +242,7 @@ document.querySelector("#list").addEventListener('touchend', function (e) {
 }, false);
 
 var getEstimateOne = function(estimate_id, node) {
-	location.href="estimateDetail?estimate_id="+estimate_id;
+	location.href="bankAccountUpdate?seqno="+estimate_id;
 
 /*	
 	var xhr = new XMLHttpRequest();
@@ -289,5 +306,10 @@ var saveEstimate = function() {
 
 window.addEventListener("load", function() {
 	//getEstimateList();
+});
+
+$(document).ready(function(){
+	
+	$("#type1").val("${type1 }").prop("selected",true);
 });
 </script>

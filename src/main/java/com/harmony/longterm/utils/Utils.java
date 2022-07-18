@@ -274,5 +274,14 @@ public class Utils {
 		} 
 		return -1;
    }
+
+	public static boolean isStringDouble(String s) {
+	     try {
+	       Double.parseDouble(s);
+	       return true;
+	     } catch (NumberFormatException e) {
+	       return false;
+	     } 
+	}	
 	
 }

@@ -26,6 +26,7 @@
         </li>
          <li class="main_item"><a href="/admin/userList">이용자리스트</a></li>
          <li class="main_item"><a href="/admin/siteinfoList">사이트관리</a></li>
+         <li class="main_item"><a href="/admin/bankAccount">계좌관리</a></li>
          <li class="main_item"><a href="https://analytics.google.com/analytics/web/?authuser=1#/p307749999/reports/reportinghub?params=_u..nav%3Dmaui" target="_new">구글통계</a></li>
         
       </ul>

@@ -4,7 +4,8 @@
 
 <script language="JavaScript"> 
 var isPhoneAuth = false;
-
+var isAuthBtn = false;
+var getAuthNum = "0";
 function setCookie( name, value, expiredays ){ 
 	var todayDate = new Date(); todayDate.setDate( todayDate.getDate() + expiredays ); 
 	document.cookie = name + "=" + escape( value ) + "; path=/; expires=" + todayDate.toGMTString() + ";" 
@@ -16,9 +17,52 @@ function sendSmsMsg(formVal) {
 	var customerval = "";
 		phoneval = document.getElementById("re_phone").value;
 		customerval = document.getElementById("re_name").value;
+		authNumber = document.getElementById("re_auth").value;
 		carKindSel = formVal.re_credit.value;
 		if(!fn_mbtlnumChk(phoneval) ){
 			document.getElementById("re_phone").focus();
+			return false;
+		}
+
+		var smsSendAuth = {phoneNo: phoneval,
+				customerNm: customerval,
+				carKindSel: carKindSel,
+			 	keyType:"MAIN_STATIC"
+			 };
+	
+		if($('#submitbtn').val() == "인증번호받기"){
+			$('#submitbtn').val("신청하기");
+			smsSendAuth.keyType = "STATIC";
+			$.ajax({
+				type: "POST",
+				url: baseUrl+"bbs/smsSendAjax",
+				data    :JSON.stringify(smsSendAuth),
+				async: false,
+				//dataType: "json",          // ajax 통신으로 받는 타입
+				contentType: "application/json",  // ajax 통신으로 보내는 타입
+				success: function(data) {
+					data.smsCode;
+					data.keyValue;
+					getAuthNum = data.authKey;
+					if(data.smsCode != "0000"){
+						alert("인증문자 전송 실패");
+						isAuthBtn = false;
+						return false;
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+					alert("실패.")
+					return false;
+				}
+			});			
+			return false;
+		}
+		if(authNumber.length != 4) {
+			alert('인증문자를 입력해 주세요');
+			return false;
+		}
+		if(authNumber != getAuthNum){
+			alert('인증번호가 맞지 않습니다.');
 			return false;
 		}
 		if(isPhoneAuth){
@@ -26,13 +70,11 @@ function sendSmsMsg(formVal) {
 			return false;
 		}
 		isPhoneAuth = true;
+//		$('#submitbtn').val("신청하기");
+		
 //	$(this).val('인증번호확인');
 //	addClass('selected');
-	var smsSendAuth = {phoneNo: phoneval,
-						customerNm: customerval,
-						carKindSel: carKindSel,
-					 	keyType:"MAIN_STATIC"
-					 };
+	
 	$.ajax({
 		type: "POST",
 		url: baseUrl+"bbs/smsSendHelpAjax",
@@ -59,6 +101,35 @@ function sendSmsMsg(formVal) {
 		}
 	});
 } // <------ 현드폰번호 인증	
+
+function authSms(){
+	var smsSendAuth = {phoneNo: phoneval,
+		 	keyType:"STATIC"
+		 };
+	$.ajax({
+		type: "POST",
+		url: baseUrl+"bbs/smsSendAjax",
+		data    :JSON.stringify(smsSendAuth),
+		async: false,
+		//dataType: "json",          // ajax 통신으로 받는 타입
+		contentType: "application/json",  // ajax 통신으로 보내는 타입
+		success: function(data) {
+			data.smsCode;
+			data.keyValue;
+			car.authNumber = data.authKey;
+			if(data.smsCode != "0000"){
+				alert("인증문자 전송 실패");
+				isPhoneAuth = false;
+				return false;
+			}
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+			alert("실패.")
+			return false;
+		}
+	});
+}
+
 
 function fn_mbtlnumChk(mbtlnum){
 	  var regExp = /^(?:(010-\d{4})|(01[1|6|7|8|9]-\d{3,4}))(-\d{4})$/;
@@ -113,6 +184,18 @@ jQuery(document).ready(function(){
 
 </script>
 
+	
+<script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
+<script type="text/javascript">
+if(!wcs_add) var wcs_add = {};
+wcs_add["wa"] = "14e79358f12c520";
+if(window.wcs) {
+wcs_do();
+}
+</script>
+
+
+
 <style>
 	.sector1 {
 		height: 972px;
@@ -134,7 +217,7 @@ jQuery(document).ready(function(){
 	}
 	
 	.box {
-		width: 1040px;
+		width: 780px;
 		height: 100%;
 		margin: 0px auto;
 		padding: 20px 0;
@@ -447,6 +530,8 @@ jQuery(document).ready(function(){
 </div>
 
 <script>
+
+<script>
 $(function() {
     $(".hd_pops_reject").click(function() {
         $('#hd_pop').css("display", "none");
@@ -481,7 +566,7 @@ $(document).ready(function(){
 		<ul>
 			<li><span><input type="text" id="re_name" name="re_name" required class="focusInput" placeholder="이름"/></span></li>
 			<li><span><input type="text" id="re_phone" name="re_phone" required class="focusInput" pattern="(010)-\d{3,4}-\d{4}" placeholder="010-1234-5678"/></span></li>
-			<!--<li><span><input type="text" id="qre_ncar" name="re_ncar" required class="focusInput" /><label for="qre_ncar">차종</label></span></li>-->
+			<li><span><input type="text" id="re_auth" name="re_auth" class="focusInput" placeholder="인증번호" /></li>
             <li>
 			<span>
 				<select id="re_credit" name="re_credit" required class="required">
@@ -493,7 +578,7 @@ $(document).ready(function(){
 			</li>
 		</ul>
 		<div class="agree"><input type="checkbox" id="agree" name="agree" required value="1" /> <label for="agree">개인정보취급방침</label> <a href="javascript:;" class="btn-vagree2"><img src="${RPATH}/images/btn_vagree.png"></a></div>
-		<div class="submit"><input type="submit" value="신청하기 >" /></div>
+		<div class="submit"><input type="submit" value="인증번호받기" id="submitbtn" /></div>
 		</form>
 
 		<script type="text/javascript">
@@ -515,7 +600,11 @@ $(document).ready(function(){
 				<ul>
 					<li>- 필수항목: 성명/회사명, 연락처, 차종, 지역, 개인정보취급방침</li>
 				</ul>
-				<h3>3. 개인정보의 보유 및 이용 기간</h3>
+				<h3>3. 개인정보의 보유 및 이용 기간</h3
+
+
+
+>
 				<ul>
 					<li>개인정보 보유 기간은 상담완료 시 까지이며, 상담 완료시 개인정보 및 관련 정보를 데이터베이스에서 삭제가 됩니다.</li>
 				</ul>
@@ -528,6 +617,7 @@ $(document).ready(function(){
 		</div>
 	</div>
 </div>
+
 <ul class='car_list thumbnail'>
 <c:forEach var="usedCarVO" items="${newUsedCarVO }">
 <li class="car_item">
@@ -609,27 +699,27 @@ $(document).ready(function(){
 				<img src="${RPATH}/images/total-top2.jpg"  name = "mainvisualimg" usemap="#Map" >
 
 <map name= "Map" id="Map">
-    <area shape="rect" coords="1162,315,1351,438" href="https://www.harmonyrent.co.kr/bbs/usedcarRealNew" onmouseover="if(document.images) mainvisualimg.src='${RPATH}/images/main-new.png'" onmouseout="if(document.images) mainvisualimg.src='${RPATH}/images/total-top2.jpg'" onfocus="blur();"/>
-    <area shape="rect" coords="1418,326,1604,482" href="https://www.harmonyrent.co.kr/bbs/usedcarReal" onmouseover="if(document.images) mainvisualimg.src='${RPATH}/images/main-used.png'" onmouseout="if(document.images) mainvisualimg.src='${RPATH}/images/total-top2.jpg'" onfocus="blur();"/>
-    <area shape="rect" coords="1110,444,1285,627" href="https://www.harmonyrent.co.kr/bbs/usedcarDetail?car_id=368" onmouseover="if(document.images) mainvisualimg.src='${RPATH}/images/main-new2.png'" onmouseout="if(document.images) mainvisualimg.src='${RPATH}/images/total-top2.jpg'" onfocus="blur();"/>
-    <area shape="rect" coords="1349,477,1556,667" href="https://www.harmonyrent.co.kr/bbs/usedcarReal" onmouseover="if(document.images) mainvisualimg.src='${RPATH}/images/main-used2.png'" onmouseout="if(document.images) mainvisualimg.src='${RPATH}/images/total-top2.jpg'" onfocus="blur();"/>
-    <area shape="rect" coords="750,425,1013,690" href="https://harmonyrent.co.kr/totalrent" onmouseover="if(document.images) mainvisualimg.src='${RPATH}/images/main-total.png'" onmouseout="if(document.images) mainvisualimg.src='${RPATH}/images/total-top2.jpg'" onfocus="blur();"/>
+    <area shape="rect" coords="1162,315,1351,438" href="${RPATH}/bbs/usedcarRealNew" onmouseover="if(document.images) mainvisualimg.src='${RPATH}/images/main-new.png'" onmouseout="if(document.images) mainvisualimg.src='${RPATH}/images/total-top2.jpg'" onfocus="blur();"/>
+    <area shape="rect" coords="1418,326,1604,482" href="${RPATH}/bbs/usedcarReal" onmouseover="if(document.images) mainvisualimg.src='${RPATH}/images/main-used.png'" onmouseout="if(document.images) mainvisualimg.src='${RPATH}/images/total-top2.jpg'" onfocus="blur();"/>
+    <area shape="rect" coords="1110,444,1285,627" href="${RPATH}/bbs/usedcarDetail?car_id=368" onmouseover="if(document.images) mainvisualimg.src='${RPATH}/images/main-new2.png'" onmouseout="if(document.images) mainvisualimg.src='${RPATH}/images/total-top2.jpg'" onfocus="blur();"/>
+    <area shape="rect" coords="1349,477,1556,667" href="${RPATH}/bbs/usedcarReal" onmouseover="if(document.images) mainvisualimg.src='${RPATH}/images/main-used2.png'" onmouseout="if(document.images) mainvisualimg.src='${RPATH}/images/total-top2.jpg'" onfocus="blur();"/>
+    <area shape="rect" coords="750,425,1013,690" href="${RPATH}/totalrent" onmouseover="if(document.images) mainvisualimg.src='${RPATH}/images/main-total.png'" onmouseout="if(document.images) mainvisualimg.src='${RPATH}/images/total-top2.jpg'" onfocus="blur();"/>
 </map>
 
 	</div>
 	<div class="sector3">
 		<div class="box">
 			<div class="col3">
-				<a href="https://harmonyrentcar2.imweb.me/Crew"><img src="/images/Link4.png" alt=""></a>
+				<a href="https://harmonyrentcar2.imweb.me/Crew" target='_blank'><img src="/images/Link4.png" alt=""></a>
 			</div>
 			<div class="col3">
-				<a href="https://blog.naver.com/harmony_rentcar"><img src="${RPATH}/images/Link2.png" alt="" /></a>
+				<a href="https://blog.naver.com/harmony_rentcar" target='_blank'><img src="${RPATH}/images/Link2.png" alt="" /></a>
 			</div>
-			<div class="col3">
+			<!--<div class="col3">
 				<a href="http://harmonyrentcar.kr"><img src="${RPATH}/images/Link3.png" alt="" /></a>
-			</div>
+			</div>-->
 			<div class="col3">
-				<a href="http://aprentcar.com/"><img src="${RPATH}/images/Link1.png" alt="" /></a>
+				<a href="http://aprentcar.com/" target='_blank' ><img src="${RPATH}/images/Link1.png" alt="" /></a>
 			</div>
 		</div>
 	</div> 

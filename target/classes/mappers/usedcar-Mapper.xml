@@ -83,6 +83,9 @@
 		<if test="sell_state !=null and !sell_state.equals('') ">
 			AND sell_state = #{sell_state}
 		</if>		
+		<if test="notid !=null and !notid.equals('') ">
+			AND id NOT IN (#{notid})
+		</if>
 		<if test="trim_name !=null and !trim_name.equals('') ">
 			AND 
 		</if>

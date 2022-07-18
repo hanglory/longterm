@@ -9,16 +9,21 @@
 
   gtag('config', 'G-06Y9Z40Y53');
 </script>
-<script language="JavaScript"> 
-function setCookie( name, value, expiredays )
-{ 
-	var todayDate = new Date(); todayDate.setDate( todayDate.getDate() + expiredays ); 
-	document.cookie = name + "=" + escape( value ) + "; path=/; expires=" + todayDate.toGMTString() + ";" 
+<script language="JavaScript"> function setCookie( name, value, expiredays )
+ { var todayDate = new Date(); todayDate.setDate( todayDate.getDate() + expiredays ); 
+document.cookie = name + "=" + escape( value ) + "; path=/; expires=" + todayDate.toGMTString() + ";" }
+ function closeWin() { if ( document.notice_form.chkbox.checked ){ setCookie( "maindiv", "done" , 1 ); }
+ document.all['divpop'].style.visibility = "hidden"; } 
+</script>
+
+	
+<script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
+<script type="text/javascript">
+if(!wcs_add) var wcs_add = {};
+wcs_add["wa"] = "14e79358f12c520";
+if(window.wcs) {
+wcs_do();
 }
-function closeWin() {
-	if ( document.notice_form.chkbox.checked ){ setCookie( "maindiv", "done" , 1 ); }
- 	document.all['divpop'].style.visibility = "hidden"; 
- } 
 </script>
 
 <style>
@@ -236,12 +241,11 @@ $(document).ready(function(){
 						<img src="${RPATH}/images/mb_main2.png"  name = "mainvisualimg" usemap="#Map" >
 
 	<map name= "Map" id="Map">
-    		<area shape="rect" coords="84,283,188,362" href="https://www.harmonyrent.co.kr/totalrent" onfocus="blur();"/>
-    		<area shape="rect" coords="229,300,335,377" href="https://harmonyrentcar.com/bbs/usedcarRealNew" onfocus="blur();"/>
-    		<area shape="rect" coords="49,370,145,479" href="https://harmonyrentcar.com/bbs/usedcarReal" onfocus="blur();"/>
-    		<area shape="rect" coords="184,393,318,507" href="https://harmonyrentcar.com/bbs/usedcarDetail?car_id=368" onfocus="blur();"/>
-	</map>
-		<!--<video autoplay muted loop>
+    		<area shape="rect" coords="84,283,188,362" href="${RPATH}/totalrent" onfocus="blur();"/>
+    		<area shape="rect" coords="229,300,335,377" href="${RPATH}/bbs/usedcarRealNew" onfocus="blur();"/>
+    		<area shape="rect" coords="49,370,145,479" href="${RPATH}/bbs/usedcarReal" onfocus="blur();"/>
+    		<area shape="rect" coords="184,393,318,507" href="${RPATH}/bbs/usedcarDetail?car_id=368" onfocus="blur();"/>
+	</map>		<!--<video autoplay muted loop>
 			<source src="${RPATH}/images/harmony.mp4" type="video/mp4">-->
 	
 		<!--<video width="427" height="240" controls>
@@ -319,7 +323,6 @@ $(document).ready(function(){
 		</div>
 	</div>
 </div>
-
 
 	<!--임시레이어팝업
 	<div id="divpop" style="position:absolute;left:100px;top:150px;z-index:200;visibility:hidden;"> 

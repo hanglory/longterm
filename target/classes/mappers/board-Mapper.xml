@@ -13,13 +13,13 @@
 	<select id="selectBoardTotCnt" resultType="int">
 		SELECT count(bd_no) FROM board
 		<where>
-		<if test="bd_type != '' ">
+		<if test="bd_type != null and bd_type != '' ">
 			AND bd_type = #{bd_type}
 		</if>
-		<if test="bd_isdel != '' ">
+		<if test="bd_isdel != null and bd_isdel != '' ">
 			AND bd_isdel = #{bd_isdel}
 		</if>
-		<if test="search != '' ">
+		<if test="search != null and search != '' ">
 			AND bd_title  LIKE concat('%',#{search},'%')
 			OR bd_contents LIKE concat('%',#{search},'%')
 		</if>
@@ -30,13 +30,13 @@
 		SELECT *
 		FROM board
 		<where>
-		<if test="bd_type != '' ">
+		<if test="bd_type != null and bd_type != '' ">
 			AND bd_type = #{bd_type}
 		</if>
-		<if test="bd_isdel != '' ">
+		<if test="bd_isdel != null and bd_isdel != '' ">
 			AND bd_isdel = #{bd_isdel}
 		</if>
-		<if test="search != '' ">
+		<if test="search != null and search != '' ">
 			AND bd_title  LIKE concat('%',#{search},'%')
 			OR bd_contents LIKE concat('%',#{search},'%')
 		</if>

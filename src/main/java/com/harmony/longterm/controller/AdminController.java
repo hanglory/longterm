@@ -3,15 +3,20 @@ package com.harmony.longterm.controller;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.jdom2.Document;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,10 +35,15 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.harmony.longterm.service.ISiteinfoService;
 import com.harmony.longterm.service.ISummernoteService;
 import com.harmony.longterm.service.IUsedCarService;
+import com.harmony.longterm.utils.CommonUtil;
 import com.harmony.longterm.utils.DateUtil;
+import com.harmony.longterm.utils.ExcelDown;
+import com.harmony.longterm.utils.ExcelUtil;
 import com.harmony.longterm.utils.Paging;
 import com.harmony.longterm.utils.Utils;
 import com.harmony.longterm.utils.VOUtils;
+import com.harmony.longterm.utils.XmlIbatis;
+import com.harmony.longterm.vo.BankAccountVO;
 import com.harmony.longterm.vo.BaseColorVO;
 import com.harmony.longterm.vo.CarVO;
 import com.harmony.longterm.vo.ColorVO;
@@ -402,6 +412,123 @@ public String estimateDetail(Model model,
 
 	return "admin.estimateDetail";
 }
+
+@RequestMapping({ "/bankAccount" })
+public String bankAccount(HttpServletRequest request, Model model,@RequestParam(value = "page", defaultValue = "1") Integer page,
+		@RequestParam(value = "type1", defaultValue = "") String type1,
+		@RequestParam(value = "search1", defaultValue = "") String search1 ) { 
+	HttpSession session = request.getSession();
+	HashMap<String, Object> queryMap = new HashMap<>();
+	if (page.intValue() < 1) page = Integer.valueOf(1);
+
+//    if (session.getAttribute("userId") != null) {
+//    }
+    int pageSize = 20;
+    Paging paging = new Paging();
+    paging.setPageNo(page.intValue());
+    paging.setPageSize(pageSize);
+    queryMap.put("page", Integer.valueOf((page.intValue() - 1) * pageSize));
+//    queryMap.put("reg_id", session.getAttribute("userId"));
+    queryMap.put("count", Integer.valueOf(pageSize));
+    queryMap.put(type1, search1);
+    int count = ((Integer)this.sqlSession.selectOne("admin.selectAccountCount",  queryMap)).intValue();
+    List<BankAccountVO> bankAccountVo  = this.sqlSession.selectList("admin.selectAccount", queryMap);
+    model.addAttribute("BankAccountVO", bankAccountVo);
+    model.addAttribute("paging", paging);
+    model.addAttribute("type1", type1);
+    model.addAttribute("search1", search1);
+    paging.setTotalCount(count);
+
+	return "admin.bankAccount";
+}
+
+@RequestMapping({ "/bankAccountUpdate" })
+public String bankAccountUpdate(HttpServletRequest request, Model model, @RequestParam(value = "seqno", defaultValue = "0") Integer seqno) {
+	HttpSession session = request.getSession();
+	HashMap<String, Object> queryMap = new HashMap<>();
+
+    queryMap.put("page", 0);
+    queryMap.put("count", 1);
+    queryMap.put("seqno",seqno);
+    
+    BankAccountVO bankAccountVo  = this.sqlSession.selectOne("admin.selectAccount", queryMap);
+    model.addAttribute("bankAccountVo", bankAccountVo);
+
+	return "admin.bankAccountUpdate";
+}
+
+@RequestMapping({ "/bankAccountAction" })
+@ResponseBody
+public Map<String, Object> bankAccountAction(HttpServletRequest request, Model model,
+		@ModelAttribute BankAccountVO bankAccountVo) throws Exception {
+
+	this.sqlSession.update("admin.updateAccountBySeqno", bankAccountVo);
+
+	bankAccountVo.setResultCode("0000");
+	Map<String, Object> objectAsMap = VOUtils.convert(bankAccountVo, new String[] { "resultCode", "id" });
+
+	return objectAsMap;
+}
+
+@RequestMapping({"/bankAccountExcelDown"})
+public void bankAccountExcelDown(HttpServletRequest request, HttpServletResponse response) throws Exception{
+	
+	Map mapReq = CommonUtil.getRequestMap(request);
+	Map mapParam = new HashMap();
+	
+	
+	int  nRowCount =0;
+	
+	try{ 
+
+//        String strGbnIn = CommonUtil.DecodeXSS( CommonUtil.nvlMap(mapReq, "autocare_gbn_in"));
+		
+//        mapReq.put("autocare_gbn_in", strGbnIn);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		List<?> xmlResult = null;
+    	String sheetName 	= "가상계좌리스트";
+		String fileName 	= sheetName + "-"+sdf.format(new Date());
+		
+        XmlIbatis xmlIbatis = new XmlIbatis();
+        Document document   = new Document();
+        String menuCode     = "";
+        
+//    	xmlResult 	= dbSvc.dbList("contract_mst.autoCareExcelDown", mapReq);
+//        List<BankAccountVO> bankAccountVo 
+//        xmlResult = this.sqlSession.selectList("admin.selectAccountExcel", "");
+        List<Map<String, Object>> bankAccountVo = this.sqlSession.selectList("admin.selectAccountExcel", "");
+        
+        ExcelUtil excelUtil = new ExcelUtil();
+
+        excelUtil.createExcelToResponse(
+        		bankAccountVo,
+                String.format("%s-%s", "data", LocalDate.now().toString()),
+                response
+        );        
+        
+        
+    	String[][] title 	= {{"기본정보"},{""},{"번호", "은행명", "계좌", "차량번호", "사용자명", "관리자명", "관리자ID", "날짜", "메모"}};
+//    	document =  xmlIbatis.iBATISForMake(xmlResult);
+    	document =  (Document) bankAccountVo;
+        	
+    	ExcelDown.downloadExcel(response, title, menuCode, sheetName, fileName, document);
+		
+	    request.setAttribute("mapReq", mapReq);
+
+	}catch (Exception e) {	 
+//		BaseLog.logError(this.getClass().getName()+"autocareExcelDown==>" , e);
+	}finally{
+		 
+	}
+	 
+}		
+
+
+
+
+
+
 
 	/*     */ @RequestMapping({ "/member" })
 	/*     */ public String user(Model model) {
