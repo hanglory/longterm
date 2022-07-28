@@ -84,7 +84,7 @@ header li a {
 <c:if test="${userLevel > 0 }">
         <li><a href="/download">계약/설명서</a></li>
 </c:if>
-	<c:if test="${userLevel > 1 }">
+	<c:if test="${userLevel == 10 }">
 		<li><a href="${CPATH}/admin/estimatelist">관리자</a></li>
 	</c:if>
 

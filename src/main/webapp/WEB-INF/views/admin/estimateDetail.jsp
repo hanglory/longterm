@@ -210,6 +210,16 @@ tr:hover td {
 		<td>
 			<fmt:formatNumber type="number" maxFractionDigits="3" value="${empty estimate.acquisition ? 0 : estimate.acquisition }" /> 원
 			<c:if test="${userLevel == 10 }"> 
+			  	<c:choose>
+			  		<c:when test="${fn:indexOf(estimate.type,'O') >= 0 }">
+			  		/ 잔가(0%)
+			  		</c:when>
+			  		<c:otherwise>
+			  			/ 잔가(<fmt:formatNumber type="number" maxFractionDigits="0" value="${estimate.acquisition/cal_price*100 }" />%)
+			  		</c:otherwise>
+			  	</c:choose>
+			
+<!-- 			
 				<c:if test="${fn:indexOf(estimate.type,'H') >= 0 }">
 					<c:choose>
 						<c:when test="${estimate.period == 24}">
@@ -252,6 +262,7 @@ tr:hover td {
 				<c:if test="${fn:indexOf(estimate.type,'O') >= 0 }">
 							/ 잔가(0%)
 				</c:if>
+-->				
 			</c:if>
 		</td>
 	</tr>

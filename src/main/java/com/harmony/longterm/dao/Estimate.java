@@ -1,9 +1,4 @@
 /*     */ package com.harmony.longterm.dao;
-/*     */ 
-/*     */ import com.harmony.longterm.vo.CarVO;
-/*     */ import com.harmony.longterm.vo.ColorVO;
-/*     */ import com.harmony.longterm.vo.EstimateVO;
-/*     */ import com.harmony.longterm.vo.OptionVO;
 /*     */ import java.text.SimpleDateFormat;
 /*     */ import java.util.ArrayList;
 /*     */ import java.util.Calendar;
@@ -11,6 +6,9 @@
 /*     */ import java.util.HashMap;
 /*     */ import java.util.List;
 /*     */ import java.util.stream.Stream;
+
+import javax.servlet.http.HttpServletRequest;
+
 /*     */ import org.mybatis.spring.SqlSessionTemplate;
 /*     */ import org.slf4j.Logger;
 /*     */ import org.slf4j.LoggerFactory;
@@ -23,6 +21,13 @@
 /*     */ import org.springframework.web.bind.annotation.RequestMethod;
 /*     */ import org.springframework.web.bind.annotation.RequestParam;
 /*     */ import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.harmony.longterm.service.IBoardService;
+/*     */ 
+/*     */ import com.harmony.longterm.vo.CarVO;
+/*     */ import com.harmony.longterm.vo.ColorVO;
+/*     */ import com.harmony.longterm.vo.EstimateVO;
+/*     */ import com.harmony.longterm.vo.OptionVO;
 /*     */ 
 /*     */ 
 /*     */ 
@@ -35,7 +40,9 @@
 /*     */   
 /*  36 */   private final String NS = "estimate.";
 /*     */ 
-/*     */   
+			@Autowired
+			private IBoardService boardService;
+
 /*     */   @Autowired
 /*     */   private SqlSessionTemplate sqlSession;
 /*     */ 
@@ -78,7 +85,7 @@
 /* 여러 견적서를 한번에 저장 하려면 이용. 하려고 했는데 map구조 변경을 우선 해야 함.
 /*     */   @PostMapping({"/saveall"})
 /*     */   @ResponseBody
-/*     */   public HashMap<String, String> saveall(@RequestBody HashMap<String, Object> map) {
+/*     */   public HashMap<String, String> saveall(@RequestBody HashMap<String, Object> map, HttpServletRequest request) {
 /*  46 */     HashMap<String, String> returnMap = new HashMap<>();
 /*  47 */     returnMap.put("estimate_no", "???");
 /*     */     
@@ -98,17 +105,23 @@
 /*  62 */       endValue = Long.valueOf(Long.parseLong(start));
 /*     */     }
 /*     */     
-/*  83 */     map.put("estimate_no", Long.toString(endValue.longValue()));
+/*  83 */     map.put("estimate_no", Long.toString(endValue.longValue() + 1));
 
 /*     */     int insSuccCnt = this.sqlSession.insert("estimate.insertestimateall", map);
 /*  85 */     if ( insSuccCnt == 0) {
 /*  86 */       returnMap.put("estimate_type", "?");
 /*  87 */       return returnMap;
 /*     */     }
+			String strMsg = "견적서 다운로드URL : https://www.harmonyrent.co.kr/total/pdfForm?id="+insSuccCnt +"";
+			if(map.get("email").toString().equals("sendSms")) {
+				map.put("message", strMsg);
+				map.put("phoneNo", map.get("tel").toString());
+				boardService.sendSms( request, map);
+			}
 			// 몇개가 입력된줄 모르니 그냥 최대값을 한번더 가져옴
-/*  59 */     endValue = (Long)this.sqlSession.selectOne("estimate.estimate_no", queryMap);
+/*  59 */   //  endValue = (Long)this.sqlSession.selectOne("estimate.estimate_no", queryMap);
 /*     */     
-/*  90 */     returnMap.put("estimate_no", Long.toString(endValue.longValue()));
+/*  90 */     returnMap.put("estimate_no", Long.toString(endValue.longValue() + 1 ));
 /*     */     
 /*  97 */     returnMap.put("estimate_type", map.get("estimate_type").toString());
 /*  98 */     return returnMap;

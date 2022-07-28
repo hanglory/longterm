@@ -60,6 +60,7 @@ tr:hover td {
 .input {
 	width:100%;
 }
+
 button {
     border: none;
     background-color: transparent;
@@ -74,6 +75,7 @@ input[type=text], input[type=button], input[type=date], input[type=submit], inpu
     padding: 0;
     border: 1px solid #999;
 }
+
 </style>
 
     <% 
@@ -92,6 +94,69 @@ input[type=text], input[type=button], input[type=date], input[type=submit], inpu
 	}
 %>
 
+  <canvas id="canvas" style="display:none"></canvas>  
+<script>
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+function showPer(per) { 
+	ctx.clearRect(0, 0, 400, 400);  //바깥쪽 써클 그리기  
+	ctx.strokeStyle = "#f66";  
+	ctx.lineWidth=1000;  
+	ctx.beginPath();  
+	ctx.arc(60, 60, 500, 0, Math.PI * 2 * per / 100);  
+	ctx.stroke();  //숫자 올리기  
+	ctx.font = '32px serif';  
+	ctx.fillStyle = "#000";  
+	ctx.textAlign = 'center';  
+	ctx.textBaseline = 'middle';
+	ctx.fillText("다운로드중 잠시만 기다려 주세요",60,60);
+//	ctx.fillText(per + '%', 60, 60);
+}
+	var url = '/admin/bankAccountExcelDown';
+
+//	$("#btnSubmit").on("click", function(e) {  
+	function btnClick(){
+		$.ajax({    
+			url: url,    
+			type : 'get',    
+			xhrFields: {  //response 데이터를 바이너리로 처리한다.      
+				responseType: 'blob'    
+				},    
+			beforeSend : function() {  //ajax 호출전 progress 초기화      
+				showPer(0);      
+				canvas.style.display = 'block';    
+			},    
+			xhr: function() {  //XMLHttpRequest 재정의 가능      
+				var xhr = $.ajaxSettings.xhr();      
+				xhr.onprogress = function(e) {        
+					showPer(Math.floor(e.loaded / e.total * 100));      
+				};      
+				return xhr;    
+			},        
+			success : function(data) {      
+				console.log("완료");      
+				var blob = new Blob([data]);       //파일저장      
+				if (navigator.msSaveBlob) {        
+					return navigator.msSaveBlob(blob, "전용계좌관리.xlsx");       
+				}else {        
+					var link = document.createElement('a');         
+					link.href = window.URL.createObjectURL(blob);         
+					link.download = "전용계좌관리.xlsx";        
+					link.click();      
+				}    
+			},    
+			complete : function() {      
+				canvas.style.display = 'none';    
+				}  
+		});
+	}
+//	});
+
+	function fnExcelDownload()
+	{
+		window.location.href="/admin/bankAccountExcelDown";
+	}
+</script>
 <div class="main">
 	<form class="search-form" action="/admin/bankAccount" mothod="POST" onSubmit="return checkInput(this)">
 		<select name="type1" id="type1">
@@ -100,10 +165,10 @@ input[type=text], input[type=button], input[type=date], input[type=submit], inpu
 			<option value="reg_id">관리자ID</option>
 		</select>
 		<input type="search" name="search1" id="search1" value="${search1 }"/>
-		<input type="submit" value="검색" />
+		<input type="submit"  value="검색" style='cursor:pointer;'/>
 	</form>
 	<div>
-		<span>발급계좌 총 ${paging.totalCount} 개</span>
+		<span>발급계좌 총 ${paging.totalCount} 개</span> <input type="button" id="btnSubmit" value="엑셀다운로드" onclick="fnExcelDownload(); return false;" style='cursor:pointer;'>
 		<table id="list">
 		<colgroup>
 			<col width="5%">

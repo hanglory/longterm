@@ -179,6 +179,14 @@ public class BoardController {
 
 	   Map<String, Object> resultMap = new HashMap<String,Object>();
 	   
+	   
+	   String authNumber = Utils.randomAlphaNumeric(4);
+	   String strMsg = "하모니렌트카 인증번호는["+authNumber+"]입니다.";
+	   param.put("message", strMsg);
+	   resultMap = boardService.sendSms(request, param);
+	   resultMap.put("authKey", authNumber);
+	   return resultMap;
+/*	   
 	   String api_id = "inacar2011";		// sms.gabia.com 이용 ID
 	   String api_key = "0e79114156e076bad7b1b06a1d94d7ae";	// 환결설정에서 확인 가능한 SMS API KEY
 	   String resultXml = "";
@@ -227,32 +235,9 @@ public class BoardController {
 	   resultMap.put("smsCode", res.getCode());
 	   resultMap.put("keyValue", timeInMillis);
 	   resultMap.put("authKey", authNumber);
-/*	   
-	    //실제 발송 결과 조회
-	   // String arr[] = new String[7];
-	   arr[0] = "status_by_ref";
-	   arr[1] = String.valueOf(timeInMillis);	// 발송 시 사용하였던 _UNIQUE_KEY_ 로 조회
-	   // 확인할 수 있는 건수는 제한이 될수도 있습니다. 같은 키가 존재하는 경우 최근의 한건이 나오게 변경될 예정입니다.
 
-	   //ApiClass api = new ApiClass(arr[0], arr[1]);
-	   // String responseXml = api.send(arr);
-	   responseXml = api.send(arr);
-	   logger.debug("response xml : \n" + responseXml);
-
-
-	   // ApiResult res = api.getResult( responseXml );
-	   res = api.getResult( responseXml );
-	   logger.debug( "code = [" + res.getCode() + "] mesg=[" + res.getMesg() + "]" );
-
-	   if( res.getCode().compareTo("0000") == 0 )
-	   {
-	   		resultXml = api.getResultXml(responseXml);
-	   		resultMap.put("resultXml", resultXml);
-	   		logger.debug("resultxml : " + resultXml);
-	   }
-*/	   
 	   return resultMap;
-
+*/
    }	
 	@RequestMapping({"/smsSendHelpAjax"})
 	@ResponseBody
@@ -314,7 +299,24 @@ public class BoardController {
 
 	   return resultMap;
 
-   }		
+   }
+	@RequestMapping({"/smsSendPdfAjax"})
+	@ResponseBody
+	public Map<String, Object> smsSendPdfAjax(HttpServletRequest request, Model model, @RequestBody HashMap<String, Object> param) throws Exception {
+
+	   Map<String, Object> resultMap = new HashMap<String,Object>();
+	   
+	   
+	   String authNumber = Utils.randomAlphaNumeric(4);
+	   String strMsg = "하모니 렌트카 견적서 다운로드URL : https://www.harmonyrent.co.kr/total/pdfForm?id="+param.get("id").toString() +"";
+	   param.put("message", strMsg);
+	   resultMap = boardService.sendSms(request, param);
+	   resultMap.put("authKey", authNumber);
+	   return resultMap;
+	
+	}
+	
+	
 		/**
 		 * <pre>
 		 * 설명 : 전문가카페 공지사항 상세

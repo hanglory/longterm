@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <link rel="stylesheet" href="/css/static.css" />
 <link rel="stylesheet" href="/css/estimate.css" />
@@ -74,7 +75,60 @@
 	    
 	    });
     }
-    
+
+    function createPdf_Send(filename) {
+
+    	
+	    var lists = document.querySelectorAll(".pdf_page"),
+	        deferreds = [],
+	        doc = new jsPDF("p", "mm", "a4"),
+	        listsLeng = lists.length;
+		var sx = window.scrollX,
+        	sy = window.scrollY;
+        window.scrollTo(0,0);
+	    for (var i = 0; i < listsLeng; i++) { // pdf_page 적용된 태그 개수만큼 이미지 생성
+	        var deferred = $.Deferred();
+	        deferreds.push(deferred.promise());
+	        generateCanvas(i, doc, deferred, lists[i]);
+	    }
+        window.scrollTo(sx, sy);
+
+	    $.when.apply($, deferreds).then(function () { // 이미지 렌더링이 끝난 후
+	        var sorted = renderedImg.sort(function(a,b){return a.num < b.num ? -1 : 1;}), // 순서대로 정렬
+	            curHeight = padding, //위 여백 (이미지가 들어가기 시작할 y축)
+	            sortedLeng = sorted.length;
+	    
+	        for (var i = 0; i < sortedLeng; i++) {
+		        var sortedHeight = sorted[i].height, //이미지 높이
+		            sortedImage = sorted[i].image; //이미지
+	    		console.log("INFO: " + curHeight + " " + sortedHeight);
+		            
+		        if( curHeight + sortedHeight > 297 - padding * 2 ) { // a4 높이에 맞게 남은 공간이 이미지높이보다 작을 경우 페이지 추가
+		            doc.addPage(); // 페이지를 추가함
+		            curHeight = padding; // 이미지가 들어갈 y축을 초기 여백값으로 초기화
+		            doc.addImage(sortedImage, 'jpeg', padding , curHeight, contWidth, sortedHeight); //이미지 넣기
+		            curHeight += sortedHeight; // y축 = 여백 + 새로 들어간 이미지 높이
+		            curHeight += 10; // 여백을 주기 위해서
+		        } else { // 페이지에 남은 공간보다 이미지가 작으면 페이지 추가하지 않음
+		            doc.addImage(sortedImage, 'jpeg', padding , curHeight, contWidth, sortedHeight); //이미지 넣기
+		            curHeight += sortedHeight; // y축 = 기존y축 + 새로들어간 이미지 높이
+		            curHeight += 10; // 여백을 주기 위해서
+		        }
+	        }
+	        var pdf = doc.output('blob');
+//	        doc.save(filename + '.pdf'); //pdf 저장
+	    	var data = new FormData();
+	    	data.append("data" , pdf);
+	    	
+	        var xhr = new XMLHttpRequest();
+	        xhr.open( 'post', 'upload.php', true ); //Post to php Script to save to server
+	        xhr.send(data);
+	        
+	        curHeight = padding; //y축 초기화
+	        renderedImg = new Array; //이미지 배열 초기화
+	    
+	    });
+    }       
     function generateCanvas(i, doc, deferred, curList) { //페이지를 이미지로 만들기
         var pdfWidth = $(curList).outerWidth() * 0.2645, //px -> mm로 변환
             pdfHeight = $(curList).outerHeight() * 0.2645,
@@ -497,7 +551,8 @@ var estimateall = {
 		preprice_hi :${preprice_hi},
 		preprice_my :${preprice_my},
 		preprice_ou :${preprice_ou},
-		preprice_no :${preprice_no}
+		preprice_no :${preprice_no},
+		cal_price: ${cal_price}
 	}	
 	
 	
@@ -847,7 +902,11 @@ var estimateall = {
 </c:if>
 	<div id="screen-box">		
 	<div class="submit_btn">
-      <button type="button" id="btn-save">견적서 저장</button>
+      <button type="button" id="btn-save">견적서 저장</button> 
+      	 ${fn:length(phone) } - 0
+      <c:if test="${fn:length(phone) lt 8 }" >
+      	<button type="button" id="btn-save2">견적서 문자로받기</button>
+   	  </c:if>
       <!--   p>판매수수료: 670,000원</p -->
 	</div>
 	</div>	
@@ -1053,6 +1112,128 @@ window.addEventListener("load", function() {
 			xhttp.send(JSON.stringify(estimateall));
 //		}
 	});
+	
+	// "견적서 문자 받기"
+	document.getElementById('btn-save2').addEventListener('click', function () {
+
+		
+		let xhttp = new XMLHttpRequest();
+	
+		// XmlHttpRequest의 요청
+		xhttp.onreadystatechange = function(e) {
+			let req = e.target;
+			if(req.readyState === XMLHttpRequest.DONE) {
+				// Http response 응답코드가 200(정상)이면
+				if(req.status === 200) {
+					
+					console.log(req.responseText);	
+				
+					if(req.responseText === undefined) return;
+					
+					// json 타입이므로 object 형식으로 변환
+					var data = JSON.parse(req.responseText);
+					document.getElementById("estimate-no").innerHTML = "${empty userId ? '' : 'A'}"+"${type }" + data.estimate_no;
+					document.getElementById("screen-box").style.display = "none";
+<c:if test="${userLevel > 0 }">  					
+					document.getElementById("memo-box").style.display = "none";
+					document.getElementById("feeview").style.display = "none";
+					if(document.getElementById("feeview1"))	document.getElementById("feeview1").style.display = "none";
+					if(document.getElementById("feeview2")) document.getElementById("feeview2").style.display = "none";
+					if(document.getElementById("feeview3")) document.getElementById("feeview3").style.display = "none";
+					if(document.getElementById("feeview4")) document.getElementById("feeview4").style.display = "none";
+</c:if>					
+					if (data.estimate_type !== "?") {
+						// save file
+						setTimeout(function() {
+//							createPdf_Send(data.estimate_no);
+						}, 100);
+		
+						alert("문자를 전송 합니다. \n\n[견적번호 " + "${empty userId ? '' : 'A'}"+"${type }" + data.estimate_no + "]");
+					}
+				}
+			}
+		}
+		// http 요청 타입과 주소, 동기식 여부
+		xhttp.open("POST", "${CPATH}/esti/saveall", true);
+		xhttp.setRequestHeader('Content-Type', 'application/json')
+/*
+		if ("${userLevel}".length == 0) {
+			alert("처음부터 다시 시작해 주세요");
+		}
+		else if (("${userLevel}" != 0) && (estimateall.user_id.length == 0)) {
+			alert("NO USER ID. 다시 MEMBER = " + "${userLevel}");
+		}
+		else {
+*/			
+			console.log("Request Send");
+
+			// 견적일, 유효기간
+			var today = new Date();
+			document.querySelector("#created-date").innerHTML = today.toLocaleDateString('ko-KR'); 
+			var due_date = new Date(today.setDate(today.getDate() + 14));
+//			document.querySelector("#due-date").innerHTML = due_date.toLocaleDateString('ko-KR'); 
+			estimateall.email = "sendSms";
+			estimateall.customer = document.getElementsByName('customer')[0].value;
+			estimateall.tel = document.getElementsByName('tel')[0].value;
+//			estimateall.email = document.getElementsByName('email')[0].value;
+<c:if test="${userLevel > 0 }"> 	
+			// 메모
+			estimateall.memo = document.getElementById("memo").value;
+</c:if>			
+			if("${rentname_hi}" != ""){
+				estimateall.estimatetype_hi = "${empty userId ? '' : 'A'}"+"H";
+				estimateall.depositratio_hi = ${depositratio_hi}
+				estimateall.deposit_hi = ${deposit_hi}
+				estimateall.period_hi = ${period_hi}
+				estimateall.rentfee_hi = ${rentfee_hi}
+				estimateall.acquisition_hi = ${acquisition_hi}
+				estimateall.prepayment_hi = ${preprice_hi}*10000
+
+//				xhttp.open("POST", "${CPATH}/esti/save", true);
+//				xhttp.setRequestHeader('Content-Type', 'application/json')
+//				xhttp.send(JSON.stringify(estimate));
+			}
+			if("${rentname_my}" !=""){
+				estimateall.estimatetype_my = "${empty userId ? '' : 'A'}"+"M";
+				estimateall.depositratio_my = ${depositratio_my}
+				estimateall.deposit_my = ${deposit_my}
+				estimateall.period_my = ${period_my}
+				estimateall.rentfee_my = ${rentfee_my}
+				estimateall.acquisition_my = ${acquisition_my}
+				estimateall.prepayment_my = ${preprice_my}*10000
+				
+//				xhttp.open("POST", "${CPATH}/esti/save", true);
+//				xhttp.setRequestHeader('Content-Type', 'application/json')
+//				xhttp.send(JSON.stringify(estimate));				
+			}
+			if("${rentname_ou}" != ""){
+				estimateall.estimatetype_ou = "${empty userId ? '' : 'A'}"+"O";				
+				estimateall.depositratio_ou = ${depositratio_ou}
+				estimateall.deposit_ou = ${deposit_ou}
+				estimateall.period_ou = ${period_ou}
+				estimateall.rentfee_ou = ${rentfee_ou}
+				estimateall.acquisition_ou = ${acquisition_ou}
+				estimateall.prepayment_ou = ${preprice_ou}*10000
+				
+//				xhttp.open("POST", "${CPATH}/esti/save", true);
+//				xhttp.setRequestHeader('Content-Type', 'application/json')
+//				xhttp.send(JSON.stringify(estimate));				
+			}
+			if("${rentname_no}" != ""){				
+				estimateall.estimatetype_no = "${empty userId ? '' : 'A'}"+"N";
+				estimateall.depositratio_no = ${depositratio_no}
+				estimateall.deposit_no = ${deposit_no}
+				estimateall.period_no = ${period_no}
+				estimateall.rentfee_no = ${rentfee_no}
+				estimateall.acquisition_no = ${acquisition_no}
+				estimateall.prepayment_no = ${preprice_no}*10000
+				
+//				xhttp.open("POST", "${CPATH}/esti/save", true);
+//				xhttp.setRequestHeader('Content-Type', 'application/json')
+			}
+			xhttp.send(JSON.stringify(estimateall));
+//		}
+	});	
 });
 
 

@@ -82,7 +82,7 @@ header li a {
 		<li><a href="${CPATH}/member/${userId}/estimatelist">마이페이지</a></li>
 		
 
-	<c:if test="${userLevel > 1 }">
+	<c:if test="${userLevel == 10 }">
 		<li><a href="${CPATH}/admin/estimatelist">관리자</a></li>
 	</c:if>
 		

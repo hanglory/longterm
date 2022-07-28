@@ -151,7 +151,7 @@
 		
 	</select>
 	
-	<insert id="insertestimate"> 
+	<insert id="insertestimate" useGeneratedKeys="true" keyProperty="id"> 
         INSERT IGNORE INTO estimate 
         	(
         		estimate_no, type, trim_id, user_id, color_id,
@@ -161,7 +161,7 @@
         		acquisition,
         		tagsong, blackbox, etcprice,
         		memo, customer, tel, email, trim_price,
-        		user_name, user_manager
+        		user_name, user_manager, group_no, cal_price
         	)
         VALUES 
         	(
@@ -173,10 +173,12 @@
         		#{tagsong}, #{blackbox}, #{etcprice},
         		#{memo}, #{customer}, #{tel}, #{email}, #{trim_price},
         		(SELECT name FROM user where nickname=#{user_id} ),
-        		(SELECT name FROM user where nickname=#{user_id} )
+        		(SELECT name FROM user where nickname=#{user_id} ),
+        		#{estimate_no},
+        		${cal_price}
         	) 
     </insert>
-	<insert id="insertestimateall"> 
+	<insert id="insertestimateall" useGeneratedKeys="true" keyProperty="id"> 
         INSERT IGNORE INTO estimate 
         	(
         		estimate_no, type, trim_id, user_id, color_id,
@@ -186,14 +188,14 @@
         		acquisition,
         		tagsong, blackbox, etcprice,
         		memo, customer, tel, email, trim_price,
-        		user_name, user_manager, prepayment
+        		user_name, user_manager, prepayment, group_no, cal_price
         	)
         	VALUES 
       <trim suffixOverrides=",">
     		<if test='estimatetype_hi != ""' >
  				<![CDATA[
  			(	
-        		${estimate_no}+1, #{estimatetype_hi}, #{trim_id}, #{user_id},#{color_id},
+        		${estimate_no}, #{estimatetype_hi}, #{trim_id}, #{user_id},#{color_id},
         		#{deposit_hi}, #{depositratio_hi},
         		#{period_hi}, #{distance_hi}, #{rentfee_hi}, #{agent_fee_rate}, #{agentfee_hi},
         		#{options}, #{total_option_price},
@@ -202,14 +204,16 @@
         		#{memo}, #{customer}, #{tel}, #{email}, #{trim_price},
         		(SELECT name FROM user where nickname=#{user_id} ),
         		(SELECT name FROM user where nickname=#{user_id} ),
-        		#{prepayment_hi}
+        		#{prepayment_hi},
+        		${estimate_no},
+        		${cal_price}
         	),
 				]]>
 			</if>
     		<if test='estimatetype_my != ""'>
  				<![CDATA[
         	(
-        		${estimate_no}+2, #{estimatetype_my}, #{trim_id}, #{user_id},#{color_id},
+        		${estimate_no}+1, #{estimatetype_my}, #{trim_id}, #{user_id},#{color_id},
         		#{deposit_my}, #{depositratio_my},
         		#{period_my}, #{distance_my}, #{rentfee_my}, #{agent_fee_rate}, #{agentfee_my},
         		#{options}, #{total_option_price},
@@ -218,14 +222,16 @@
         		#{memo}, #{customer}, #{tel}, #{email}, #{trim_price},
         		(SELECT name FROM user where nickname=#{user_id} ),
         		(SELECT name FROM user where nickname=#{user_id} ),
-        		#{prepayment_my}
+        		#{prepayment_my},
+        		${estimate_no},
+        		${cal_price}
         	),
 				]]>
 			</if>
     		<if test='estimatetype_ou != ""'>
  				<![CDATA[
         	(
-        		${estimate_no}+3, #{estimatetype_ou}, #{trim_id}, #{user_id},#{color_id},
+        		${estimate_no}+2, #{estimatetype_ou}, #{trim_id}, #{user_id},#{color_id},
         		#{deposit_ou}, #{depositratio_ou},
         		#{period_ou}, #{distance_ou}, #{rentfee_ou}, #{agent_fee_rate}, #{agentfee_ou},
         		#{options}, #{total_option_price},
@@ -234,14 +240,16 @@
         		#{memo}, #{customer}, #{tel}, #{email}, #{trim_price},
         		(SELECT name FROM user where nickname=#{user_id} ),
         		(SELECT name FROM user where nickname=#{user_id} ),
-        		#{prepayment_ou}
+        		#{prepayment_ou},
+        		${estimate_no},
+        		${cal_price}
         	),
 				]]>
 			</if>
     		<if test='estimatetype_no != ""'>
  				<![CDATA[
         	(
-        		${estimate_no}+4, #{estimatetype_no}, #{trim_id}, #{user_id},#{color_id},
+        		${estimate_no}+3, #{estimatetype_no}, #{trim_id}, #{user_id},#{color_id},
         		#{deposit_no}, #{depositratio_no},
         		#{period_no}, #{distance_no}, #{rentfee_no}, 0, 0,
         		#{options}, #{total_option_price},
@@ -250,7 +258,9 @@
         		#{memo}, #{customer}, #{tel}, #{email}, #{trim_price},
         		(SELECT name FROM user where nickname=#{user_id} ),
         		(SELECT name FROM user where nickname=#{user_id} ),
-        		#{prepayment_no}
+        		#{prepayment_no},
+        		${estimate_no},
+        		${cal_price}
         	),
 				]]>
 			</if>

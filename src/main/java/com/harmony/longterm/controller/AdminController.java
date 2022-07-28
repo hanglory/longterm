@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.jdom2.Document;
+import org.jdom2.Element;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.harmony.longterm.service.IAdminService;
 import com.harmony.longterm.service.ISiteinfoService;
 import com.harmony.longterm.service.ISummernoteService;
 import com.harmony.longterm.service.IUsedCarService;
@@ -71,6 +73,9 @@ public class AdminController {
 	
 	@Autowired
 	private ISiteinfoService siteinfoService;
+
+	@Autowired
+	private IAdminService adminService;
 
 	@RequestMapping({ "/", "/{url}" })
 	public String main(@PathVariable(required = false) String url) {
@@ -376,7 +381,10 @@ public String estimate(Model model, @RequestParam(value = "page", defaultValue =
 
 @RequestMapping({ "/estimateDetail" })
 public String estimateDetail(Model model,
-		@RequestParam(value = "estimate_id", required = false, defaultValue = "0") int estimate_id) {
+		@RequestParam(value = "estimate_id", required = false, defaultValue = "0") int estimate_id) throws Exception {
+	
+	model = adminService.estimateDetail(model,estimate_id);
+	/*
 	List<OptionVO> selOptions = new ArrayList<>();
 	EstimateVO estimate = (EstimateVO) this.sqlSession.selectOne("estimate.estimate_one",Integer.valueOf(estimate_id));
 	List<EstimateVO> estimateList = this.sqlSession.selectList("estimate.estimate_one_group",Integer.valueOf(estimate_id));
@@ -409,7 +417,7 @@ public String estimateDetail(Model model,
 	model.addAttribute("car", car);
 	model.addAttribute("color", color);
 	model.addAttribute("estimateList", estimateList);
-
+	*/
 	return "admin.estimateDetail";
 }
 
@@ -476,9 +484,9 @@ public void bankAccountExcelDown(HttpServletRequest request, HttpServletResponse
 	Map mapReq = CommonUtil.getRequestMap(request);
 	Map mapParam = new HashMap();
 	
-	
+	adminService.getBankAcntExcel(request, response);
 	int  nRowCount =0;
-	
+/*	
 	try{ 
 
 //        String strGbnIn = CommonUtil.DecodeXSS( CommonUtil.nvlMap(mapReq, "autocare_gbn_in"));
@@ -491,7 +499,6 @@ public void bankAccountExcelDown(HttpServletRequest request, HttpServletResponse
 		String fileName 	= sheetName + "-"+sdf.format(new Date());
 		
         XmlIbatis xmlIbatis = new XmlIbatis();
-        Document document   = new Document();
         String menuCode     = "";
         
 //    	xmlResult 	= dbSvc.dbList("contract_mst.autoCareExcelDown", mapReq);
@@ -507,6 +514,7 @@ public void bankAccountExcelDown(HttpServletRequest request, HttpServletResponse
                 response
         );        
         
+        Document document   = new Document((Element) bankAccountVo);
         
     	String[][] title 	= {{"기본정보"},{""},{"번호", "은행명", "계좌", "차량번호", "사용자명", "관리자명", "관리자ID", "날짜", "메모"}};
 //    	document =  xmlIbatis.iBATISForMake(xmlResult);
@@ -521,7 +529,7 @@ public void bankAccountExcelDown(HttpServletRequest request, HttpServletResponse
 	}finally{
 		 
 	}
-	 
+*/	 
 }		
 
 

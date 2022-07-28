@@ -147,7 +147,7 @@
 			<span>${userId} 님</span>
 <%-- 			<button onclick="location.href='${CPATH}/member/${userId}/memberpage';">마이페이지</button> --%>
 			<button onclick="location.href='${CPATH}/member/${userId}/estimatelist';">마이페이지</button>
-			<c:if test="${userLevel > 1 }">
+			<c:if test="${userLevel == 10 }">
 			<button onclick="location.href='${CPATH}/admin/estimatelist'" value="관리자">관리자</button>
 			</c:if>
 			<button onclick="javascript:logout();" value="로그아웃">로그아웃</button>

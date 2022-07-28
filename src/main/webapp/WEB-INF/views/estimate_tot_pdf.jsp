@@ -4,92 +4,32 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<!-- 공통변수 처리 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1">
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+
+<meta name="title" content="하모니렌트카의 특별한 렌트  I 하모니크">
+<meta name="description" content=" 장기렌트의 모든 솔루션을 하모니렌트카에서 제공합니다. 24개월 신차장기렌트부터 중고장기렌트, 오너형장기렌트까지  합리적인 가격. 온라인 간편 견적신청가능 ">
+<meta name="keywords" content="신차장기렌트,중고장기렌트, 24개월장기렌트,1년렌트, 자동차일시불, 자동차할부, 자동차구매,장기렌트보증금">
+<meta property="og:site_name" content="하모니렌트카의 특별한 렌트  I 하모니크">
+<meta property="og:type" content="wepsite">
+<meta property="og:title" content="(주)하모니렌트카">
+<meta property="og:description" content=" 장기렌트의 모든 솔루션을 하모니렌트카에서 제공합니다. 24개월 신차장기렌트부터 중고장기렌트, 오너형장기렌트까지  합리적인 가격. 온라인 간편 견적신청가능 ">
+<meta property="og:image" content="">
+<meta property="og:url" content="harmonyrent.co.kr">
+
+
+<title>하모니렌트카</title>
 <link rel="stylesheet" href="/css/static.css" />
 <link rel="stylesheet" href="/css/estimate.css" />
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.auto.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
-<script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-<script>
-/*
-    window.addEventListener("load", function() {
-        var content_option = 	"width=device-width, " + 
-								"initial-scale="+ screen.width / 1500 + ", " +
-								"minimum-scale="+ screen.width / 2400 + ", " +
-								"maximum-scale=2.0, " + 
-								"user-scalable=yes ";
-		document.querySelector("meta[name=viewport]").setAttribute("content", content_option);
-	});
-*/
-    var renderedImg = new Array;
-    
-    var contWidth = 190, // 너비(mm) (a4에 맞춤)
-        padding = 10; //상하좌우 여백(mm)
-    
-    //이미지를 pdf로 만들기
-    // 저장하고자 하는 엘리먼트의 class를 pdf_page로 설정해야 한다.
-    function createPdf(filename) {
-
-	
-	    var lists = document.querySelectorAll(".pdf_page"),
-	        deferreds = [],
-	        doc = new jsPDF("p", "mm", "a4"),
-	        listsLeng = lists.length;
-		var sx = window.scrollX,
-        	sy = window.scrollY;
-        window.scrollTo(0,0);
-	    for (var i = 0; i < listsLeng; i++) { // pdf_page 적용된 태그 개수만큼 이미지 생성
-	        var deferred = $.Deferred();
-	        deferreds.push(deferred.promise());
-	        generateCanvas(i, doc, deferred, lists[i]);
-	    }
-        window.scrollTo(sx, sy);
-
-	    $.when.apply($, deferreds).then(function () { // 이미지 렌더링이 끝난 후
-	        var sorted = renderedImg.sort(function(a,b){return a.num < b.num ? -1 : 1;}), // 순서대로 정렬
-	            curHeight = padding, //위 여백 (이미지가 들어가기 시작할 y축)
-	            sortedLeng = sorted.length;
-	    
-	        for (var i = 0; i < sortedLeng; i++) {
-		        var sortedHeight = sorted[i].height, //이미지 높이
-		            sortedImage = sorted[i].image; //이미지
-	    		console.log("INFO: " + curHeight + " " + sortedHeight);
-		            
-		        if( curHeight + sortedHeight > 297 - padding * 2 ) { // a4 높이에 맞게 남은 공간이 이미지높이보다 작을 경우 페이지 추가
-		            doc.addPage(); // 페이지를 추가함
-		            curHeight = padding; // 이미지가 들어갈 y축을 초기 여백값으로 초기화
-		            doc.addImage(sortedImage, 'jpeg', padding , curHeight, contWidth, sortedHeight); //이미지 넣기
-		            curHeight += sortedHeight; // y축 = 여백 + 새로 들어간 이미지 높이
-		            curHeight += 10; // 여백을 주기 위해서
-		        } else { // 페이지에 남은 공간보다 이미지가 작으면 페이지 추가하지 않음
-		            doc.addImage(sortedImage, 'jpeg', padding , curHeight, contWidth, sortedHeight); //이미지 넣기
-		            curHeight += sortedHeight; // y축 = 기존y축 + 새로들어간 이미지 높이
-		            curHeight += 10; // 여백을 주기 위해서
-		        }
-	        }
-	        doc.save(filename + '.pdf'); //pdf 저장
-	    
-	        curHeight = padding; //y축 초기화
-	        renderedImg = new Array; //이미지 배열 초기화
-	    
-	    });
-	    onCloseModal();
-    }
-    
-    function generateCanvas(i, doc, deferred, curList) { //페이지를 이미지로 만들기
-        var pdfWidth = $(curList).outerWidth() * 0.2645, //px -> mm로 변환
-            pdfHeight = $(curList).outerHeight() * 0.2645,
-            heightCalc = contWidth * pdfHeight / pdfWidth; //비율에 맞게 높이 조절
-
-		html2canvas( curList ).then(function (canvas) {
-            var img = canvas.toDataURL('image/jpeg', 1.0); //이미지 형식 지정
-            renderedImg.push({num:i, image:img, height:heightCalc}); //renderedImg 배열에 이미지 데이터 저장(뒤죽박죽 방지)     
-            deferred.resolve(); //결과 보내기
-        });
-    }
-
-</script>
 
 <style>
 
@@ -439,30 +379,110 @@ body {
 .table_style .product strong {
   color: #f43e3f;
 }
-
-#input[type='tel'] {
-    border-radius:5px; // 테두리 둥글게 5px 값을 준다
-
-}
+            
 </style>
 
+</head>
+<body>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.auto.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script>
 
-  <div class="modal_wrap">
-    <div class="estimeate_modal">
-      <div class="close_wrap">
-        <img src="/images/others/close.svg" alt="" onclick="onCloseModal()">
+    window.addEventListener("load", function() {
+    /*	
+        var content_option = 	"width=device-width, " + 
+								"initial-scale="+ screen.width / 1500 + ", " +
+								"minimum-scale="+ screen.width / 2400 + ", " +
+								"maximum-scale=2.0, " + 
+								"user-scalable=yes ";
+		document.querySelector("meta[name=viewport]").setAttribute("content", content_option);
+	*/ 
+		createPdf("하모니렌트카견적서");
+	});
+    var renderedImg = new Array;
+    
+    var contWidth = 190, // 너비(mm) (a4에 맞춤)
+        padding = 10; //상하좌우 여백(mm)
+    
+    //이미지를 pdf로 만들기
+    // 저장하고자 하는 엘리먼트의 class를 pdf_page로 설정해야 한다.
+    function createPdf(filename) {
+
+	
+	    var lists = document.querySelectorAll(".pdf_page"),
+	        deferreds = [],
+	        doc = new jsPDF("p", "mm", "a4"),
+	        listsLeng = lists.length;
+		var sx = window.scrollX,
+        	sy = window.scrollY;
+        window.scrollTo(0,0);
+	    for (var i = 0; i < listsLeng; i++) { // pdf_page 적용된 태그 개수만큼 이미지 생성
+	        var deferred = $.Deferred();
+	        deferreds.push(deferred.promise());
+	        generateCanvas(i, doc, deferred, lists[i]);
+	    }
+        window.scrollTo(sx, sy);
+
+	    $.when.apply($, deferreds).then(function () { // 이미지 렌더링이 끝난 후
+	        var sorted = renderedImg.sort(function(a,b){return a.num < b.num ? -1 : 1;}), // 순서대로 정렬
+	            curHeight = padding, //위 여백 (이미지가 들어가기 시작할 y축)
+	            sortedLeng = sorted.length;
+	    
+	        for (var i = 0; i < sortedLeng; i++) {
+		        var sortedHeight = sorted[i].height, //이미지 높이
+		            sortedImage = sorted[i].image; //이미지
+	    		console.log("INFO: " + curHeight + " " + sortedHeight);
+		            
+		        if( curHeight + sortedHeight > 297 - padding * 2 ) { // a4 높이에 맞게 남은 공간이 이미지높이보다 작을 경우 페이지 추가
+		            doc.addPage(); // 페이지를 추가함
+		            curHeight = padding; // 이미지가 들어갈 y축을 초기 여백값으로 초기화
+		            doc.addImage(sortedImage, 'jpeg', padding , curHeight, contWidth, sortedHeight); //이미지 넣기
+		            curHeight += sortedHeight; // y축 = 여백 + 새로 들어간 이미지 높이
+		            curHeight += 10; // 여백을 주기 위해서
+		        } else { // 페이지에 남은 공간보다 이미지가 작으면 페이지 추가하지 않음
+		            doc.addImage(sortedImage, 'jpeg', padding , curHeight, contWidth, sortedHeight); //이미지 넣기
+		            curHeight += sortedHeight; // y축 = 기존y축 + 새로들어간 이미지 높이
+		            curHeight += 10; // 여백을 주기 위해서
+		        }
+	        }
+	        doc.save(filename + '.pdf'); //pdf 저장
+	    
+	        curHeight = padding; //y축 초기화
+	        renderedImg = new Array; //이미지 배열 초기화
+	    
+	    });
+//	    onCloseModal();
+    }
+    
+    function generateCanvas(i, doc, deferred, curList) { //페이지를 이미지로 만들기
+        var pdfWidth = $(curList).outerWidth() * 0.2645, //px -> mm로 변환
+            pdfHeight = $(curList).outerHeight() * 0.2645,
+            heightCalc = contWidth * pdfHeight / pdfWidth; //비율에 맞게 높이 조절
+
+		html2canvas( curList ).then(function (canvas) {
+            var img = canvas.toDataURL('image/jpeg', 1.0); //이미지 형식 지정
+            renderedImg.push({num:i, image:img, height:heightCalc}); //renderedImg 배열에 이미지 데이터 저장(뒤죽박죽 방지)     
+            deferred.resolve(); //결과 보내기
+        });
+    }
+
+</script>
+
+
+  <div class="pdf_page content_box">
+   <div class="estimate_header">
+      <div class="left_area">
+      	<img src="${RPATH }/images/logo2.png" style="padding: 20px 0px;" alt="" />
+        <h1 class="mobile_title">
+          견 적 서
+        </h1>
+        <p>
+          <strong>■ <input type="text" placeholder="홍길동" value="${estimate.user_name }" name="customer"> 고객</strong>
+          <span>님 귀하</span>
+        </p>
       </div>
-<div class="pdf_page" style="display:block">      
-      <div class="estimate_header">
-        <div class="left_area">
-          <h1 class="mobile_title">
-            견 적 서
-          </h1>
-          <p>
-            <strong>■ ${estimate.customer } 고객</strong>
-            <span>님 귀하</span>
-          </p>
-        </div>
         <h1 class="pc_title">
           견 적 서
         </h1>
@@ -637,39 +657,39 @@ body {
 				<c:if test="${fn:indexOf(estimate.type,'H') >= 0 }">
 					<c:choose>
 						<c:when test="${estimate.period == 24}">
-							(<fmt:formatNumber type="number" value="${(car.janga24+0.1)*100 }" pattern="#.##"/>%)
+							<fmt:formatNumber type="number" value="${(car.janga24+0.1)*100 }" pattern="#.##"/>%
 						</c:when>
 						<c:when test="${estimate.period == 36}">
-							(<fmt:formatNumber type="number" value="${(car.janga36+0.1)*100 }" pattern="#.##"/>%)
+							<fmt:formatNumber type="number" value="${(car.janga36+0.1)*100 }" pattern="#.##"/>%
 						</c:when>
 						<c:when test="${estimate.period == 48}">
-							(<fmt:formatNumber type="number" value="${(car.janga48+0.1)*100 }" pattern="#.##"/>%)
+							<fmt:formatNumber type="number" value="${(car.janga48+0.1)*100 }" pattern="#.##"/>%
 						</c:when>
 					</c:choose>
 				</c:if>
 				<c:if test="${fn:indexOf(estimate.type,'N') >= 0 }">
 					<c:choose>
 						<c:when test="${estimate.period == 24}">
-							(<fmt:formatNumber type="number" value="${(car.janga24+0.1)*100 }" pattern="#.##"/>%)
+							<fmt:formatNumber type="number" value="${(car.janga24+0.1)*100 }" pattern="#.##"/>%
 						</c:when>
 						<c:when test="${estimate.period == 36}">
-							(<fmt:formatNumber type="number" value="${(car.janga36+0.1)*100 }" pattern="#.##"/>%)
+							<fmt:formatNumber type="number" value="${(car.janga36+0.1)*100 }" pattern="#.##"/>%
 						</c:when>
 						<c:when test="${estimate.period == 48}">
-							(<fmt:formatNumber type="number" value="${(car.janga48+0.1)*100 }" pattern="#.##"/>	%)
+							<fmt:formatNumber type="number" value="${(car.janga48+0.1)*100 }" pattern="#.##"/>%
 						</c:when>
 					</c:choose>
 				</c:if>
 				<c:if test="${fn:indexOf(estimate.type,'M') >= 0 }">
 					<c:choose>
 						<c:when test="${estimate.period == 24}">
-							(<fmt:formatNumber type="number" value="${(car.janga24+0.04)*100 }"  pattern="#.##"/>%)
+							<fmt:formatNumber type="number" value="${(car.janga24+0.04)*100 }"  pattern="#.##"/>%
 						</c:when>
 						<c:when test="${estimate.period == 36}">
-							(<fmt:formatNumber type="number" value="${(car.janga36+0.04)*100 }"  pattern="#.##"/>%)
+							<fmt:formatNumber type="number" value="${(car.janga36+0.04)*100 }"  pattern="#.##"/>%
 						</c:when>
 						<c:when test="${estimate.period == 48}">
-							(<fmt:formatNumber type="number" value="${(car.janga48+0.04)*100 }"  pattern="#.##"/>%)
+							<fmt:formatNumber type="number" value="${(car.janga48+0.04)*100 }"  pattern="#.##"/>%
 						</c:when>
 					</c:choose>
 				</c:if>
@@ -686,7 +706,7 @@ body {
 			  			<fmt:formatNumber type="number" maxFractionDigits="0" value="${estimate.acquisition/cal_price*100 }" />%
 			  		</c:otherwise>
 			  	</c:choose>
-			  </span>			  
+			  </span>
               <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${empty estimate.acquisition ? 0 : estimate.acquisition/10000 }" />만원</span>
             </div>
             <div class="color between">
@@ -708,20 +728,13 @@ body {
       법인 - 사업자등록증 사본, 법인등기부 등본, 법인 인감증명서, 재무제표(최근2년), 주주명부, 대표이사  개인인감, 개인등본, 신분증 사본
     </p>
 
-      <div class="memo" style="display:none">
-        <p class="title">메모</p>
-        <input type="text" placeholder="고객의 상황이나 특이사항을 적어두시면 추후 관리에 용이합니다.">
-      </div>
-</div>
+    <p class="warning">
+      ※ 본 견적서는 참고용이며 계약시 최종 확정된 조건을 반영하여 다시 작성 후 계약에 반영합니다.
+    </p>
 
-      <div class="submit_btn" style="float:right;display:flex;flex-direction: row;align-items: baseline;">
-         <div><button type="button" id="btn-save">견적서 PDF</button></div>
-         <div style="width:120px"></div>
-         <div><input type="tel" id="phone" name="phone" placeholder="010-1234-5678" pattern="(010)-\d{3,4}-\d{4}" title="연락처" style="width:200px;outline: 2px solid #d50000;"/></div>
-         <div><button type="button" id="btn-save2">견적서 문자</button></div>
-      </div>
+</div>
  
- 		<div class="pdf_page" style="display:block">
+ 		<div class="pdf_page">
 			<table>
             
             	<tr>
@@ -775,116 +788,5 @@ body {
 			</table>
 			<img src="${RPATH }/images/owner.jpg" alt="" />			
 		</div>
- 
-      
-      
-    </div>
-  </div>
-
-<script>
-
-var setDeposit = function(event) {
-	
-	estimate.deposit = estimate.deposit / estimate.deposit_ratio * event.target.value;
-	estimate.deposit_ratio = event.target.value;
-	document.getElementById('deposit').innerHTML = ""
-					+ Number(estimate.deposit / 10000).toLocaleString('en') + '만원<br>'
-					+ "(차량가의 "
-					+ Number(estimate.deposit_ratio * 100).toLocaleString('en')
-					+ "%)";
-
-}
-
-
-window.addEventListener("load", function() {
-	
-//	document.querySelector(".output").innerHTML = window.innerWidth + " " + screen.width;
-
-	// "이 견적서 저장하기 버튼"
-	document.getElementById('btn-save').addEventListener('click', function () {
-		setTimeout(function() {
-			createPdf('${estimate.type}${estimate.estimate_no}');
-		}, 100);
-		alert("파일저장합니다.\n\n[견적번호 " + ${estimate.type}${estimate.estimate_no} + "]");
-
-	});
-	var isPhoneAuth = false;
-	// "이 견적서 문자 보내기"
-	document.getElementById('btn-save2').addEventListener('click', function () {
-
-		
-		phoneval = $('#phone').val();
-//			customerval = document.getElementById("customer").value;
-			if(!fn_mbtlnumChk(phoneval) ){
-				document.getElementsByName('phone')[0].focus();
-				return false;
-			}
-			if(isPhoneAuth){
-				alert('문자전송중 입니다. 잠시 기다려 주세요. 문자를 받지 못하셨으면 스팸함을 확인해 주세요.');
-				return false;
-			}
-			isPhoneAuth = true;
-		var smsSendAuth = {phoneNo: phoneval,
-							id:${estimate.id},
-						 	keyType:"STATIC"
-						 };
-		$.ajax({
-			type: "POST",
-			url: baseUrl+"bbs/smsSendPdfAjax",
-			data    :JSON.stringify(smsSendAuth),
-			async: false,
-			//dataType: "json",          // ajax 통신으로 받는 타입
-            contentType: "application/json",  // ajax 통신으로 보내는 타입
-			success: function(data) {
-					data.smsCode;
-					data.keyValue;
-					if(data.smsCode != "0000"){
-						alert("문자 전송 실패");
-						isPhoneAuth = false;
-						return false;
-					}else{
-						alert('견적서 분자를 전송 하였습니다.');
-					}
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
-                alert("실패.")
-                return false;
-			}
-		});
-	}); // <------ 현드폰번호 인증		
-
-});
-
-function fn_mbtlnumChk(mbtlnum){
-	  var regExp = /^(?:(010-\d{4})|(01[1|6|7|8|9]-\d{3,4}))(-\d{4})$/;
-	  if(!regExp.test(mbtlnum)){
-	    alert(mbtlnum+"휴대폰번호가 올바르지 않습니다.");
-	    return false;
-	  }
-	  return true;
-}	
-
-
-window.onpageshow = function(event) {
-	//console.log(event.persisted);
-	
-	//alert("touch points : " + navigator.maxTouchPoints);
-	// cache에서 로드된 경우에는 
-    if (event.persisted && isSafari) {
-        //document.location.reload();
-        //window.history.back();
-        //alert("window.onpageshow => reload \n" + userAgent + "\n ");
-    }
-}
-
-const modal = document.querySelector('.modal_wrap');
-
-function onActiveModal() {
-  modal.classList.add('on');
-}
-function onCloseModal() {
-  modal.classList.remove('on');
-}
-
-
-</script>
+</body>
+</html>

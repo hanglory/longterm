@@ -4,6 +4,7 @@
 /*     */ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 /*     */ import java.util.Calendar;
+import java.util.Enumeration;
 /*     */ import java.util.HashMap;
 /*     */ import java.util.List;
 import java.util.Map;
@@ -237,8 +238,15 @@ public String bankAccountRecv(HttpServletRequest request, Model model) {
 	String prefix = "member.";
 	HttpSession session = request.getSession();
 	HashMap<String, Object> queryMap = new HashMap<>();
-
-	if((Integer) session.getAttribute("level") > 4) {
+	
+	Enumeration<String> attributes = request.getSession().getAttributeNames();
+	while (attributes.hasMoreElements()) {
+	    String attribute = (String) attributes.nextElement();
+	    System.err.println(attribute+" : "+request.getSession().getAttribute(attribute));
+	}
+	
+	
+	if((Integer) session.getAttribute("userLevel") > 4) {
 	    if (session.getAttribute("userId") != null) {
 	        queryMap.put("reg_id", session.getAttribute("userId"));
 	        int result  = this.sqlSession.update("admin.updateAccountRecv", queryMap);

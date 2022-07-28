@@ -523,7 +523,7 @@ wcs_do();
         <div class="hd_pops_con" style="width:${siteinfoVO.width }px;height:${siteinfoVO.height }px">
             <p><a href="${siteinfoVO.link_url }"><img src="${siteinfoVO.contents }" title="광고이미지" alt="광고이미지" /></a><br style="clear:both;" /> </p>        </div>
         <div class="hd_pops_footer">
-            <button class="hd_pops_reject hd_pops_40 24"><strong>24</strong>시간 동안 다시 열람하지 않습니다.</button>
+            <button class="hd_pops_reject hd_pops_40 24">24시간 동안 다시 열람하지 않습니다.</button>
             <button class="hd_pops_close hd_pops_40">닫기</button>
         </div>
     </div>

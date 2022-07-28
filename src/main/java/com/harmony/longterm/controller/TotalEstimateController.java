@@ -1,7 +1,5 @@
 package com.harmony.longterm.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,10 +10,20 @@ import java.util.stream.Stream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.core.appender.rewrite.MapRewritePolicy.Mode;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.harmony.longterm.service.IAdminService;
 import com.harmony.longterm.utils.CommonUtil;
 import com.harmony.longterm.utils.DateUtil;
 import com.harmony.longterm.utils.Utils;
@@ -26,15 +34,18 @@ import com.harmony.longterm.vo.ColorVO;
 import com.harmony.longterm.vo.EstimateVO;
 import com.harmony.longterm.vo.OptionVO;
 
+@Controller
+@RequestMapping({"/total"})
 public class TotalEstimateController {
 	
-	@Controller
-	@RequestMapping({"/total"})
-	public class UserController
-	{
-
-
-		@RequestMapping(value = "estimateTotPDFDownload", method = RequestMethod.POST)
+		private static final Logger logger = LoggerFactory.getLogger(TotalEstimateController.class);
+		@Autowired
+		private SqlSessionTemplate sqlSession;
+	
+		@Autowired
+		private IAdminService adminService;
+		
+		@RequestMapping(value = "estimateTotPDFDownload")
 		public void estimateTotPDFDownload(HttpServletRequest request, HttpServletResponse response) throws Exception{
 
 			Map mapReq = CommonUtil.getRequestMap(request);
@@ -47,13 +58,13 @@ public class TotalEstimateController {
 //						 	getVendorNid(request, mapParam);
 				 	
 				//String strUrl = CommonUtil.getDomain(request) + "/contract_management/contractLongFormPDF.act?rent_seq=" + CommonUtil.DSEncode(CommonUtil.nvlMap(mapReq, "pdf_rent_seq"));
-				String strUrl = CommonUtil.getDomain(request) + "/total/estimate_tot_pdf?rent_seq=" +  CommonUtil.nvlMap(mapReq, "pdf_rent_seq");
+				String strUrl = CommonUtil.getDomain(request) + "/total/estimate_tot_pdf?estimate_id=" +  CommonUtil.nvlMap(mapReq, "estimate_id");
 				
 				String strHtml = CommonUtil.getHtml( strUrl );
 				
-				String strRentSeq = CommonUtil.DSDecode(CommonUtil.nvlMap(mapReq, "pdf_rent_seq"));
+//				String strRentSeq = CommonUtil.DSDecode(CommonUtil.nvlMap(mapReq, "estimate_id"));
 				
-				mapReq.put("rent_seq", strRentSeq);
+//				mapReq.put("rent_seq", strRentSeq);
 				
 	 
 //							Map mapRs = dbSvc.dbDetail("contract_mst.rentContractDetail", mapReq);
@@ -61,14 +72,14 @@ public class TotalEstimateController {
 //							mapParam.put("partner_nid", CommonUtil.nvlMap(mapRs, "RENT_PARTNER_NID"));  // 렌트 이용자
 //							Map mapRentRs = dbSvc.dbDetail("contract_mst.partnerDetail", mapParam);					
 							
-				String strFileNm = CommonUtil.getUniqueId().replaceAll("-", "");
+//				String strFileNm = CommonUtil.getUniqueId().replaceAll("-", "");
 //							String strFileView = CommonUtil.nvlMap(mapRentRs, "PARTNER_NM");
 			 
 				
 				try {
 			        
 					// 다운로드 파일명
-			        Object fileName = "하모니렌트견적서(" + request.getQueryString() + ").pdf";
+			        Object fileName = "하모니렌트견적서(" + CommonUtil.nvlMap(mapReq, "estimate_id") + ").pdf";
 			        
 			       
 			        System.out.print(strHtml);
@@ -89,20 +100,31 @@ public class TotalEstimateController {
 			}
 				
 		}
-		
-		@RequestMapping(value = "estimate_tot_pdf", method = RequestMethod.POST)
-		public void estimate_tot_pdf(HttpServletRequest request, HttpServletResponse response) throws Exception{
-
-			Map mapReq = CommonUtil.getRequestMap(request);
-			Map mapParam  = new HashMap();
-/*				
+		 
+		@RequestMapping(value = {"estimate_tot_pdf", "pdfForm"})
+		public String estimate_tot_pdf(Model model,	@RequestParam(value = "id", required = false, defaultValue = "0") int id) throws Exception{
+			model = adminService.estimateDetail(model, id);
+			/*
 			List<OptionVO> selOptions = new ArrayList<>();
-			EstimateVO estimate = (EstimateVO) this.sqlOSession.selectOne("estimate.estimate_one",Integer.valueOf(estimate_id));
-			List<EstimateVO> estimateList = this.sqlSession.selectList("estimate.estimate_one_group",Integer.valueOf(estimate_id));
+			EstimateVO estimate = (EstimateVO) this.sqlSession.selectOne("estimate.estimate_one",Long.valueOf(estimate_id));
+			List<EstimateVO> estimateList = this.sqlSession.selectList("estimate.estimate_one_group",Long.valueOf(estimate_id));
 			CarVO car = (CarVO) this.sqlSession.selectOne("rent.car.trim", Integer.valueOf(estimate.getTrim_id()));
 			ColorVO color = (ColorVO) this.sqlSession.selectOne("rent.car.color", Integer.valueOf(estimate.getColor_id()));
 
-			logger.debug(String.valueOf(Integer.toString(estimate_id)) + " " + Integer.toString(estimate.getColor_id()));
+			//cal_price를 가지고 요율을 결정함
+			int price = car.getPrice() + estimateList.get(0).getOption_price();
+		    int reg_car_price = (int)(price / 1.1D / (1.0F + car.getTax_rate()));
+		    float cal_tax_rate = 0.0455F;
+		    int cal_price = 0;
+		    if (car.getTax_type().equals("면세")) {
+		      cal_price = (int)(reg_car_price * 1.1D);
+		    }
+		    else if (car.getFuel().equals("전기")) {
+		      cal_price = (int)(reg_car_price * 1.1D);
+		    } else {
+		      cal_price = (int)((reg_car_price * (1.0F + cal_tax_rate)) * 1.1D);
+		    }
+			logger.debug(String.valueOf(Long.toString(estimate_id)) + " " + Integer.toString(estimate.getColor_id()));
 
 			if (estimate != null) {
 				String optionStr = estimate.getOptions().trim();
@@ -127,10 +149,32 @@ public class TotalEstimateController {
 			model.addAttribute("options", selOptions);
 			model.addAttribute("car", car);
 			model.addAttribute("color", color);
+			model.addAttribute("cal_price", cal_price);
 			model.addAttribute("estimateList", estimateList);
-*/
+			*/
+			return "estimate_tot_pdf";
+		}	
+		
+		@RequestMapping(value = "uploadFile", method = RequestMethod.POST)
+		public void uploadFile(HttpServletRequest request, HttpServletResponse response) throws Exception{
+
+			Map mapReq = CommonUtil.getRequestMap(request);
+			Map mapParam  = new HashMap();
+			
+			//첨부파일
+			MultipartHttpServletRequest multipartRequest =  (MultipartHttpServletRequest)request;
+			MultipartFile attechFiles = multipartRequest.getFile("attechFiles");
+			/*
+			boardVO.setAttechFiles(attechFiles);
+
+			if(attechFiles != null) {
+				String resultCd = boardService.uploadAddFile(attechFiles, boardVO);
+				objectAsMap.put("resultCode", resultCd);
+//					return objectAsMap;
+			}
+			*/
+
 				
 		}				
-	}
 
 }
