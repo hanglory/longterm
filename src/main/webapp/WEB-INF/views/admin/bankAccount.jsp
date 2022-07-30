@@ -62,11 +62,15 @@ tr:hover td {
 }
 
 button {
-    border: none;
     background-color: transparent;
     box-sizing: border-box;
     font-family: 'NotoSansKR';
     cursor: pointer;
+    width: 150px;
+    height: 30px;
+    margin: 4px 0;
+    padding: 0;
+    border: 1px solid #999;
 }
 input[type=text], input[type=button], input[type=date], input[type=submit], input[type=number] {
     width: 150px;
@@ -95,6 +99,11 @@ input[type=text], input[type=button], input[type=date], input[type=submit], inpu
 %>
 
   <canvas id="canvas" style="display:none"></canvas>  
+  
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.0/themes/redmond/jquery-ui.min.css"/>
+<script src="<c:url value="//code.jquery.com/jquery-3.1.0.min.js"/>"></script>
+<script src="<c:url value="//code.jquery.com/ui/1.12.0/jquery-ui.min.js"/>"></script>
+<script src="<c:url value="/js/jquery.fileDownload.js"/>"></script>
 <script>
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
@@ -152,6 +161,29 @@ function showPer(per) {
 	}
 //	});
 
+	//<![CDATA[
+	$(function() {
+		$("#btn-excel").on("click", function () {
+			var $preparingFileModal = $("#preparing-file-modal");
+			$preparingFileModal.dialog({ modal: true });
+			$("#progressbar").progressbar({value: false});
+			$.fileDownload("/admin/bankAccountExcelDown", {
+				successCallback: function (url) {
+					$preparingFileModal.dialog('close');
+				},
+				failCallback: function (responseHtml, url) {
+					$preparingFileModal.dialog('close');
+					$("#error-modal").dialog({ modal: true });
+				}
+			});
+
+			// 버튼의 원래 클릭 이벤트를 중지 시키기 위해 필요합니다.
+			return false;
+		});
+	});
+	//]]>
+
+
 	function fnExcelDownload()
 	{
 		window.location.href="/admin/bankAccountExcelDown";
@@ -168,7 +200,20 @@ function showPer(per) {
 		<input type="submit"  value="검색" style='cursor:pointer;'/>
 	</form>
 	<div>
-		<span>발급계좌 총 ${paging.totalCount} 개</span> <input type="button" id="btnSubmit" value="엑셀다운로드" onclick="fnExcelDownload(); return false;" style='cursor:pointer;'>
+		<span>발급계좌 총 ${paging.totalCount} 개</span> 		
+		<button id="btn-excel" style='cursor:pointer;'>엑셀 다운로드</button>
+		
+		<!-- 파일 생성중 보여질 진행막대를 포함하고 있는 다이얼로그 입니다. -->
+		<div title="Data Download" id="preparing-file-modal" style="display: none;">
+			<div id="progressbar" style="width: 100%; height: 22px; margin-top: 20px;"></div>
+		</div>
+		
+		<!-- 에러발생시 보여질 메세지 다이얼로그 입니다. -->
+		<div title="Error" id="error-modal" style="display: none;">
+			<p>생성실패.</p>
+		</div>
+		
+		
 		<table id="list">
 		<colgroup>
 			<col width="5%">
@@ -193,14 +238,14 @@ function showPer(per) {
 			</tr>
 			
 			<c:forEach var="bankAccount" items="${BankAccountVO }">
-				<tr data-e_id=${bankAccount.seqno} data-t_id=${bankAccount.account }>
+				<tr data-e_id="${bankAccount.seqno}" data-t_id="${bankAccount.account }">
 				    <td>${bankAccount.seqno}</td>				
 				    <td>${bankAccount.bank_name}</td>
 					<td>${bankAccount.account }</td>
 					<td>${bankAccount.user_name }</td>
 					<td>${bankAccount.carno }</td>
                     <td>${bankAccount.recv_date }</td>
-					<td>${bankAccount.reg_id }</td>
+					<td>${bankAccount.name }</td>
 					<td>${bankAccount.memo }</td>
 				</tr>
 			</c:forEach>
@@ -309,72 +354,18 @@ document.querySelector("#list").addEventListener('touchend', function (e) {
 var getEstimateOne = function(estimate_id, node) {
 	location.href="bankAccountUpdate?seqno="+estimate_id;
 
-/*	
-	var xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function() {
-		if (xhr.readyState == xhr.DONE ) {
-			if (xhr.status == 200 || xhr.status == 201) {
-				document.querySelector('.optionBox').style.display = "block";
-				document.querySelector('.main').style.display = "none";
-				document.getElementById("optionInfo").innerHTML = xhr.responseText;
-
-			} else {
-				console.log(xhr.responseText);
-			}
-		}
-	};
-	
-	document.querySelector('.optionBox').style.display = "block";
-	document.querySelector('.main').style.display = "none";
-	document.getElementById("optionInfo").innerHTML = xhr.responseText;
-
-	xhr.open("POST", "${CPATH}/esti/detail");
-	//xhr.setRequestHeader("content-type", "application/json");
-	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-	var arg = "estimate_id=" + estimate_id;
-	xhr.send(arg);
-*/	
-
 };
 
-    /**
- * 수정된 견적 내용을 저장한다.
- * (진행상태, 메모)
- */
-var saveEstimate = function() {
-	var xhr = new XMLHttpRequest();
-	var data = {};
-	data.id = document.getElementById("detail").dataset.id;
-	var sel = document.getElementById("state-sel");
-	data.state = sel[sel.selectedIndex].value;
-	data.memo = document.getElementById("memo").value;
-
-	xhr.onreadystatechange = function() {
-		if (xhr.readyState == xhr.DONE ) {
-			if (xhr.status == 200 || xhr.status == 201) {
-				// 동작을 마쳤으면, 페이지를 다시 불러온다.
-				location.reload();
-			} else {
-				console.log(xhr.responseText);
-			}
-		}
-	};
-
-	
-	xhr.open("POST", "${CPATH}/esti/update");
-	xhr.setRequestHeader("content-type", "application/json");
-	//xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-	console.log(JSON.stringify(data));
-	xhr.send(JSON.stringify(data));
-}
 
 window.addEventListener("load", function() {
 	//getEstimateList();
 });
 
 $(document).ready(function(){
-	
-	$("#type1").val("${type1 }").prop("selected",true);
+	if('${type1}' == ''){
+		$("#type1").val("account").prop("selected",true);
+	}else{
+		$("#type1").val("${type1 }").prop("selected",true);
+	}
 });
 </script>

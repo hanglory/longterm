@@ -1,5 +1,6 @@
 package com.harmony.longterm.service.impl;
 
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +9,11 @@ import java.util.stream.Stream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.session.ResultContext;
+import org.apache.ibatis.session.ResultHandler;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.openxml4j.util.ZipSecureFile;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -17,11 +21,14 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.harmony.longterm.service.IAdminService;
@@ -38,6 +45,9 @@ public class AdminService implements IAdminService {
 	private static final Logger logger = LoggerFactory.getLogger(AdminService.class);
 	@Autowired
 	private SqlSessionTemplate sqlSession;
+
+	@Autowired
+	private SqlSessionFactory sqlSessionFactory;
 	
 	private void setHeaderCS(CellStyle cs, Font font, Cell cell) {
 		  cs.setAlignment(CellStyle.ALIGN_CENTER);
@@ -69,7 +79,163 @@ public class AdminService implements IAdminService {
 	}
 	
 	@Override
+	@Transactional
 	public void getBankAcntExcel( HttpServletRequest request, HttpServletResponse response) throws Exception{
+//		SqlSession sqlSession = ((SqlSessionFactory) sqlSessionTemplate).openSession();
+		SqlSession sqlSession2 = sqlSessionFactory.openSession();
+		SXSSFWorkbook wb = new SXSSFWorkbook(1000);
+		Sheet sheet = wb.createSheet();
+		  sheet.setColumnWidth((short) 0, (short) 2000);	//번호
+		  sheet.setColumnWidth((short) 1, (short) 3000);	//은행
+		  sheet.setColumnWidth((short) 2, (short) 8000);	//계좌번호
+		  sheet.setColumnWidth((short) 3, (short) 3000);	//차량번호
+		  sheet.setColumnWidth((short) 4, (short) 8000);	//계약자명
+		  sheet.setColumnWidth((short) 5, (short) 5000);	//담당자명
+		  sheet.setColumnWidth((short) 6, (short) 3000);	//담당자ID
+		  sheet.setColumnWidth((short) 7, (short) 5000);	//등록일시
+		  sheet.setColumnWidth((short) 8, (short) 3000);	//참조
+		  
+		  Row row = sheet.createRow(0);
+		  Cell cell = null;
+		  CellStyle cs = wb.createCellStyle();
+		  Font font = wb.createFont();
+		  cell = row.createCell(0);
+//		  cell.setEncoding(XSSFCell..ENCODING_UTF_16);
+		  cell.setCellValue(new XSSFRichTextString("가상계좌 관리 - 전체 리스트"));
+		  setHeaderCS(cs, font, cell);
+		  sheet.addMergedRegion(new CellRangeAddress(row.getRowNum(), row.getRowNum(), 0, 8));
+		  
+		  row = sheet.createRow(1);
+		  cell = null;
+		  cs = wb.createCellStyle();
+		  font = wb.createFont();
+		  
+		  cell = row.createCell(0);
+		  cell.setCellValue(new XSSFRichTextString("번호"));
+		  setHeaderCS(cs, font, cell);
+		 
+		  cell = row.createCell(1);
+		  cell.setCellValue(new XSSFRichTextString("은행"));
+		  setHeaderCS(cs, font, cell);
+		  
+		  cell = row.createCell(2);
+		  cell.setCellValue(new XSSFRichTextString("계좌번호"));
+		  setHeaderCS(cs, font, cell);
+		  
+		  cell = row.createCell(3);
+		  cell.setCellValue(new XSSFRichTextString("차량번호"));
+		  setHeaderCS(cs, font, cell);
+		  
+		  cell = row.createCell(4);
+		  cell.setCellValue(new XSSFRichTextString("계약자명"));
+		  setHeaderCS(cs, font, cell);
+		  
+		  cell = row.createCell(5);
+		  cell.setCellValue(new XSSFRichTextString("담당자명"));
+		  setHeaderCS(cs, font, cell);
+		  
+		  cell = row.createCell(6);
+		  cell.setCellValue(new XSSFRichTextString("담당자ID"));
+		  setHeaderCS(cs, font, cell);
+		  
+		  cell = row.createCell(7);
+		  cell.setCellValue(new XSSFRichTextString("등록일시"));
+		  setHeaderCS(cs, font, cell);
+
+		  cell = row.createCell(8);
+		  cell.setCellValue("참조");
+		  setHeaderCS(cs, font, cell);		
+		
+		
+		try {
+			
+			sqlSession2.select("admin.selectAccountExcel", "", new ResultHandler<BankAccountVO>() {
+				@Override
+				public void handleResult(ResultContext<? extends BankAccountVO> context) {
+					BankAccountVO vo = context.getResultObject();
+					Row row = sheet.createRow(context.getResultCount()+1);
+					Cell cell  = null;
+//					CellStyle cs = wb.createCellStyle();
+					  cell = row.createCell(0);
+					  cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+					  cell.setCellValue(vo.getSeqno());
+//					  setCmmnCS2(cs, cell);
+					  cell = row.createCell(1);
+					  cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+					  cell.setCellValue(new XSSFRichTextString(vo.getBank_name()));
+//					  setCmmnCS2(cs, cell);
+					  
+					  cell = row.createCell(2);
+					  cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+					  cell.setCellValue(vo.getAccount());
+//					  setCmmnCS2(cs, cell);
+					  
+					  cell = row.createCell(3);
+					  cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+					  cell.setCellValue(new XSSFRichTextString(vo.getCarno()));
+//					  setCmmnCS2(cs, cell);
+					  
+					  cell = row.createCell(4);
+					  cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+					  cell.setCellValue(new XSSFRichTextString(vo.getUser_name()));
+//					  setCmmnCS2(cs, cell);
+
+					  cell = row.createCell(5);
+					  cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+					  cell.setCellValue(new XSSFRichTextString(vo.getName()));
+//					  setCmmnCS2(cs, cell);
+
+					  cell = row.createCell(6);
+					  cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+					  cell.setCellValue(vo.getReg_id());
+//					  setCmmnCS2(cs, cell);
+			
+					  cell = row.createCell(7);
+					  cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+					  cell.setCellValue(vo.getRecv_date());
+//					  setCmmnCS2(cs, cell);
+			
+					  cell = row.createCell(8);
+					  cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+					  cell.setCellValue(new XSSFRichTextString(vo.getMemo()));
+//					  setCmmnCS2(cs, cell);
+				}
+			});
+
+			String fileName = "가상계좌 관리.xlsx";
+	        String outputFileName = new String(fileName.getBytes("KSC5601"), "8859_1");
+			response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+			response.setHeader("Content-Disposition", "attachment; fileName=\"" + outputFileName + "\"");
+//			response.setHeader("Content-Disposition", String.format("attachment; filename="));
+			wb.write(response.getOutputStream());
+
+		} catch(Exception e) {
+
+			response.setHeader("Set-Cookie", "fileDownload=false; path=/");
+			response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+			response.setHeader("Content-Type","text/html; charset=utf-8");
+
+			OutputStream out = null;
+			try {
+				out = response.getOutputStream();
+				byte[] data = new String("fail..").getBytes();
+				out.write(data, 0, data.length);
+			} catch(Exception ignore) {
+				ignore.printStackTrace();
+			} finally {
+				if(out != null) try { out.close(); } catch(Exception ignore) {}
+			}
+
+		} finally {
+			sqlSession2.close();
+
+			// 디스크 적었던 임시파일을 제거합니다.
+			wb.dispose();
+			try { wb.close(); } catch(Exception ignore) {}
+		}
+		
+		
+/*		
 		List<BankAccountVO> list = this.sqlSession.selectList("admin.selectAccountExcel", "");
 		ZipSecureFile.setMinInflateRatio(0);
 		SXSSFWorkbook wb = new SXSSFWorkbook();
@@ -189,7 +355,7 @@ public class AdminService implements IAdminService {
 		  response.setHeader("Set-Cookie", "fileDownload=true; path=/");
 		  response.setHeader("Content-Disposition", String.format("attachment; filename=\"bankAccount.xlsx\""));
 		  wb.write(response.getOutputStream());
-		 
+*/		 
 		}
 		
 	@Override

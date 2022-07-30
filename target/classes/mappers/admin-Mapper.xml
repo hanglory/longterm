@@ -67,8 +67,9 @@
 	</select>
 	
 	<select id="selectAccountByUserID" resultType="com.harmony.longterm.vo.BankAccountVO">
-		SELECT bank_name, account, carno, user_name, reg_id, memo, used_code, recv_date 
-		FROM bank_account 
+		SELECT bank_name, account, carno, user_name, name, reg_id, memo, used_code, recv_date 
+		FROM bank_account  ba LEFT JOIN USER us 
+		ON ba.reg_id=us.nickname
 		WHERE reg_id=#{reg_id}
 		ORDER BY recv_date DESC
 		LIMIT #{page}, #{count}
@@ -97,8 +98,9 @@
 	</select>
 	
 	<select id="selectAccount" resultType="com.harmony.longterm.vo.BankAccountVO">
-		SELECT *
-		FROM bank_account
+		SELECT seqno, bank_name, account, carno, user_name, name, reg_id, memo, used_code, recv_date 
+		FROM bank_account  ba LEFT JOIN USER us 
+		ON ba.reg_id=us.nickname
 		<where> 
 		<if test=" reg_id != null and !reg_id.equals('') " >
 			reg_id = #{reg_id}
@@ -120,7 +122,7 @@
 		LIMIT #{page}, #{count}
 	</select>
 
-	<select id="selectAccountExcel"  resultType="com.harmony.longterm.vo.BankAccountVO" >
+	<select id="selectAccountExcel"  resultType="com.harmony.longterm.vo.BankAccountVO" fetchSize="1000" >
 		SELECT seqno, bank_name, account, carno, user_name,name, reg_id,  recv_date, memo
 		FROM bank_account ba LEFT JOIN USER us 
 		ON ba.reg_id=us.nickname
