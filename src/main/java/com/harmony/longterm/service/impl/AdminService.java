@@ -1,5 +1,6 @@
 package com.harmony.longterm.service.impl;
 
+import java.io.BufferedOutputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -99,12 +100,15 @@ public class AdminService implements IAdminService {
 		  Cell cell = null;
 		  CellStyle cs = wb.createCellStyle();
 		  Font font = wb.createFont();
+		  
+		  font.setFontName("나눔고딕");
 		  cell = row.createCell(0);
+/*		  
 //		  cell.setEncoding(XSSFCell..ENCODING_UTF_16);
 		  cell.setCellValue(new XSSFRichTextString("가상계좌 관리 - 전체 리스트"));
 		  setHeaderCS(cs, font, cell);
 		  sheet.addMergedRegion(new CellRangeAddress(row.getRowNum(), row.getRowNum(), 0, 8));
-		  
+*/		  
 		  row = sheet.createRow(1);
 		  cell = null;
 		  cs = wb.createCellStyle();
@@ -157,58 +161,78 @@ public class AdminService implements IAdminService {
 					Cell cell  = null;
 //					CellStyle cs = wb.createCellStyle();
 					  cell = row.createCell(0);
-					  cell.setCellType(XSSFCell.CELL_TYPE_STRING);
 					  cell.setCellValue(vo.getSeqno());
 //					  setCmmnCS2(cs, cell);
 					  cell = row.createCell(1);
-					  cell.setCellType(XSSFCell.CELL_TYPE_STRING);
-					  cell.setCellValue(new XSSFRichTextString(vo.getBank_name()));
+					  cell.setCellValue(vo.getBank_name());
 //					  setCmmnCS2(cs, cell);
 					  
 					  cell = row.createCell(2);
-					  cell.setCellType(XSSFCell.CELL_TYPE_STRING);
 					  cell.setCellValue(vo.getAccount());
 //					  setCmmnCS2(cs, cell);
 					  
 					  cell = row.createCell(3);
-					  cell.setCellType(XSSFCell.CELL_TYPE_STRING);
-					  cell.setCellValue(new XSSFRichTextString(vo.getCarno()));
+					  cell.setCellValue(vo.getCarno());
 //					  setCmmnCS2(cs, cell);
 					  
 					  cell = row.createCell(4);
-					  cell.setCellType(XSSFCell.CELL_TYPE_STRING);
-					  cell.setCellValue(new XSSFRichTextString(vo.getUser_name()));
+					  cell.setCellValue(vo.getUser_name());
 //					  setCmmnCS2(cs, cell);
 
 					  cell = row.createCell(5);
-					  cell.setCellType(XSSFCell.CELL_TYPE_STRING);
-					  cell.setCellValue(new XSSFRichTextString(vo.getName()));
+					  cell.setCellValue(vo.getName());
 //					  setCmmnCS2(cs, cell);
 
 					  cell = row.createCell(6);
-					  cell.setCellType(XSSFCell.CELL_TYPE_STRING);
 					  cell.setCellValue(vo.getReg_id());
 //					  setCmmnCS2(cs, cell);
 			
 					  cell = row.createCell(7);
-					  cell.setCellType(XSSFCell.CELL_TYPE_STRING);
 					  cell.setCellValue(vo.getRecv_date());
 //					  setCmmnCS2(cs, cell);
 			
 					  cell = row.createCell(8);
-					  cell.setCellType(XSSFCell.CELL_TYPE_STRING);
-					  cell.setCellValue(new XSSFRichTextString(vo.getMemo()));
+					  cell.setCellValue(vo.getMemo());
 //					  setCmmnCS2(cs, cell);
 				}
 			});
+			
+/*
+			ByteArrayOutputStream bout = new ByteArrayOutputStream();
+			wb.write(bout);
+			bout.close();
 
 			String fileName = "가상계좌 관리.xlsx";
 	        String outputFileName = new String(fileName.getBytes("KSC5601"), "8859_1");
 			response.setHeader("Set-Cookie", "fileDownload=true; path=/");
 			response.setHeader("Content-Disposition", "attachment; fileName=\"" + outputFileName + "\"");
-//			response.setHeader("Content-Disposition", String.format("attachment; filename="));
-			wb.write(response.getOutputStream());
+			response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8;");
 
+			response.setContentLength(bout.size());
+
+			ServletOutputStream out = response.getOutputStream();
+
+			out.write(bout.toByteArray());
+			out.flush();
+			out.close();			
+*/			
+			
+//			OutputStream out = null;
+			String fileName = "가상계좌 관리.xlsx";
+	        String outputFileName = new String(fileName.getBytes("KSC5601"), "8859_1");
+			response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+			response.setHeader("Content-Disposition", "attachment; fileName=\"" + outputFileName + "\"");
+			response.setContentType("application/vnd.ms-excel; charset=UTF-8");
+//			response.setHeader("Content-Disposition", String.format("attachment; filename="));
+			
+//			out = new BufferedOutputStream(response.getOutputStream());
+			wb.write(response.getOutputStream());
+			response.getOutputStream().close();
+//			wb.write(out);
+//			out.flush(); // 이 부분을
+//          out.close(); // 잊지말자!!!
+			
+			
 		} catch(Exception e) {
 
 			response.setHeader("Set-Cookie", "fileDownload=false; path=/");

@@ -126,7 +126,7 @@
 		SELECT seqno, bank_name, account, carno, user_name,name, reg_id,  recv_date, memo
 		FROM bank_account ba LEFT JOIN USER us 
 		ON ba.reg_id=us.nickname
-		ORDER BY seqno;
+		ORDER BY seqno
 	</select>
 
 	<insert id="insertAccount" parameterType="com.harmony.longterm.vo.BankAccountVO"> 

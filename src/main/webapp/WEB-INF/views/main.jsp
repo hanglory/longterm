@@ -212,7 +212,7 @@ wcs_do();
 	}	
 	.sector3 {
 		min-width: 1200px;
-		height: 306px;
+		height: 330px;
 		background-color: #f7f3f0;
 	}
 	
@@ -413,7 +413,7 @@ wcs_do();
 .car_list.thumbnail {
   justify-content: flex-start;				/* space-between;*/
   padding: 0 20px;
-  margin: 20px 0 40px 0;
+ 
   margin-left: auto;
   margin-right: auto;
 }
@@ -425,7 +425,7 @@ wcs_do();
 }
 
 .car_list.thumbnail .car_item img {
-  height: 220px;
+  height: 240px;
 }
 .car_list.thumbnail .car_content .rent {
   text-align: center;
@@ -497,19 +497,116 @@ wcs_do();
     text-align: center;
   }
   
-  .car_list.thumbnail .car_item{
+.car_list.thumbnail .car_item{
     width: 100%;
     height: 420px;
     margin-right: 0;
     margin-bottom: 15px;
   }
   
-  .car_list.thumbnail .car_content .rent {
+    .car_list.thumbnail .car_content .rent {
     text-align: right;
     width: calc(100% - 45px);
     justify-content: flex-end;
   }
+    
+   
 }
+    
+slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+}
+
+/* 이미지를 숨기는데 사용 */
+.mySlides {
+    display: none;
+}
+
+/* 다음, 이전 버튼 */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  margin-top: -300px;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 80px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+}
+
+/* "다음 버튼"을 오른쪽에 위치 */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* 마우스를 올리면 배경색을 변경 */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* 캡션 부분 */
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+/* 숫자 부분 위에 적은 (1/3) <-- 이런거 */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* 하단의 점들 */
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active, .dot:hover {
+  background-color: #717171;
+}
+
+/* 페이드 효과 */
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@-webkit-keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+@keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}    
+    
+    
+    
+    
 </style>
   <link rel="stylesheet" href="/css/static.css">
 
@@ -523,7 +620,7 @@ wcs_do();
         <div class="hd_pops_con" style="width:${siteinfoVO.width }px;height:${siteinfoVO.height }px">
             <p><a href="${siteinfoVO.link_url }"><img src="${siteinfoVO.contents }" title="광고이미지" alt="광고이미지" /></a><br style="clear:both;" /> </p>        </div>
         <div class="hd_pops_footer">
-            <button class="hd_pops_reject hd_pops_40 24">24시간 동안 다시 열람하지 않습니다.</button>
+            <button class="hd_pops_reject hd_pops_40 24"><strong>24</strong>시간 동안 다시 열람하지 않습니다.</button>
             <button class="hd_pops_close hd_pops_40">닫기</button>
         </div>
     </div>
@@ -531,7 +628,7 @@ wcs_do();
 
 <script>
 
-<script>
+
 $(function() {
     $(".hd_pops_reject").click(function() {
         $('#hd_pop').css("display", "none");
@@ -557,6 +654,35 @@ $(document).ready(function(){
 
 </c:if>
 </c:if>
+    
+  <script>
+    var index = 0;   //이미지에 접근하는 인덱스
+    window.onload = function(){
+        slideShow();
+    }
+    
+    function slideShow() {
+    var i;
+    var x = document.getElementsByClassName("slide1");  //slide1에 대한 dom 참조
+    for (i = 0; i < x.length; i++) {
+       x[i].style.display = "none";   //처음에 전부 display를 none으로 한다.
+    }
+    index++;
+    if (index > x.length) {
+        index = 1;  //인덱스가 초과되면 1로 변경
+    }   
+    x[index-1].style.display = "block";  //해당 인덱스는 block으로
+    setTimeout(slideShow, 5000);   //함수를 4초마다 호출
+ 
+}
+      
+      
+      
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}      
+</script>  
+
 
 <div id="quick">
 	<div class="quick-input">
@@ -618,7 +744,50 @@ $(document).ready(function(){
 	</div>
 </div>
 
-<ul class='car_list thumbnail'>
+
+    <div class="sector2">
+
+  
+  <img class="slide1" src="${RPATH}/images/mainimg1.jpg" >
+  <img class="slide1" src="${RPATH}/images/mainimg2.jpg">
+  <img class="slide1" src="${RPATH}/images/mainimg3.jpg">
+
+</div>
+<br>
+
+<!-- 현재 이미지를 알려주는 하단의 점 -->
+<div style="text-align:center">
+  <span class="dot" onclick="currentSlide(1)"></span> 
+  <span class="dot" onclick="currentSlide(2)"></span> 
+  <span class="dot" onclick="currentSlide(3)"></span> 
+</div>
+
+
+    
+    
+<!--
+    <div class="sector2">
+
+				<img src="${RPATH}/images/total-top2.jpg"  name = "mainvisualimg" usemap="#Map" >
+
+<map name= "Map" id="Map">
+    <area shape="rect" coords="1162,315,1351,438" href="${RPATH}/bbs/usedcarRealNew" onmouseover="if(document.images) mainvisualimg.src='${RPATH}/images/main-new.png'" onmouseout="if(document.images) mainvisualimg.src='${RPATH}/images/total-top2.jpg'" onfocus="blur();"/>
+    <area shape="rect" coords="1418,326,1604,482" href="${RPATH}/bbs/usedcarReal" onmouseover="if(document.images) mainvisualimg.src='${RPATH}/images/main-used.png'" onmouseout="if(document.images) mainvisualimg.src='${RPATH}/images/total-top2.jpg'" onfocus="blur();"/>
+    <area shape="rect" coords="1110,444,1285,627" href="${RPATH}/bbs/usedcarDetail?car_id=368" onmouseover="if(document.images) mainvisualimg.src='${RPATH}/images/main-new2.png'" onmouseout="if(document.images) mainvisualimg.src='${RPATH}/images/total-top2.jpg'" onfocus="blur();"/>
+    <area shape="rect" coords="1349,477,1556,667" href="${RPATH}/bbs/usedcarReal" onmouseover="if(document.images) mainvisualimg.src='${RPATH}/images/main-used2.png'" onmouseout="if(document.images) mainvisualimg.src='${RPATH}/images/total-top2.jpg'" onfocus="blur();"/>
+    <area shape="rect" coords="750,425,1013,690" href="${RPATH}/totalrent" onmouseover="if(document.images) mainvisualimg.src='${RPATH}/images/main-total.png'" onmouseout="if(document.images) mainvisualimg.src='${RPATH}/images/total-top2.jpg'" onfocus="blur();"/>
+</map>
+
+	</div> -->
+    
+    
+   <div style="display: table; margin:auto;">
+        
+   <a href="${RPATH}/totalrent"><img src="${RPATH}/images/total_main.png" alt="">    
+ 
+<h1 style="padding-left:20px; margin-top:20px; font-size:28px; font-weight: 600; color:dodgerblue"> 즉시출고 신차장기렌트</h1> 
+<ul class='car_list thumbnail'>  
+   
 <c:forEach var="usedCarVO" items="${newUsedCarVO }">
 <li class="car_item">
 <a href="/bbs/usedcarDetail?car_id=${usedCarVO.id}"><img src="${usedCarVO.image}" alt="">
@@ -653,8 +822,11 @@ $(document).ready(function(){
 </div></a>
 </li>
 </c:forEach>
+        
 </ul>
-
+       <div><a href ="${RPATH}/bbs/usedcarRealNew"><h1 style="text-align:right; font-size:20px; font-weight: 600;padding-right:40px; color:black"> ->&nbsp;신차 더보기</h1></a></div>
+       
+<h1 style="padding-left:20px; margin-top:20px; font-size:28px; font-weight: 600; color:dodgerblue"> 검증완료 중고재렌트</h1> 
 <ul class='car_list thumbnail'>
 <c:forEach var="usedCarVO" items="${oldUsedCarVO }">
 <li class="car_item">
@@ -693,20 +865,19 @@ $(document).ready(function(){
 </li>
 </c:forEach>
 </ul>
-	
-		<div class="sector2">
+ <div><a href ="${RPATH}/bbs/usedcarReal"><h1 style="text-align:right; font-size:20px; font-weight: 600;padding-right:40px; color:black;margin-bottom:40px;"> ->&nbsp;중고 더보기</h1></a></div>
+      
+      
+<h1 style="margin-top:20px; font-size:28px; font-weight: 600; color:dimgrey"> 사회적기업 하모니렌트카</h1>        
+  <video autoplay muted controls width="1160"> 
 
-				<img src="${RPATH}/images/total-top2.jpg"  name = "mainvisualimg" usemap="#Map" >
 
-<map name= "Map" id="Map">
-    <area shape="rect" coords="1162,315,1351,438" href="${RPATH}/bbs/usedcarRealNew" onmouseover="if(document.images) mainvisualimg.src='${RPATH}/images/main-new.png'" onmouseout="if(document.images) mainvisualimg.src='${RPATH}/images/total-top2.jpg'" onfocus="blur();"/>
-    <area shape="rect" coords="1418,326,1604,482" href="${RPATH}/bbs/usedcarReal" onmouseover="if(document.images) mainvisualimg.src='${RPATH}/images/main-used.png'" onmouseout="if(document.images) mainvisualimg.src='${RPATH}/images/total-top2.jpg'" onfocus="blur();"/>
-    <area shape="rect" coords="1110,444,1285,627" href="${RPATH}/bbs/usedcarDetail?car_id=368" onmouseover="if(document.images) mainvisualimg.src='${RPATH}/images/main-new2.png'" onmouseout="if(document.images) mainvisualimg.src='${RPATH}/images/total-top2.jpg'" onfocus="blur();"/>
-    <area shape="rect" coords="1349,477,1556,667" href="${RPATH}/bbs/usedcarReal" onmouseover="if(document.images) mainvisualimg.src='${RPATH}/images/main-used2.png'" onmouseout="if(document.images) mainvisualimg.src='${RPATH}/images/total-top2.jpg'" onfocus="blur();"/>
-    <area shape="rect" coords="750,425,1013,690" href="${RPATH}/totalrent" onmouseover="if(document.images) mainvisualimg.src='${RPATH}/images/main-total.png'" onmouseout="if(document.images) mainvisualimg.src='${RPATH}/images/total-top2.jpg'" onfocus="blur();"/>
-</map>
-
-	</div>
+    <source src="${RPATH}/images/love.mp4"
+            type="video/mp4">
+</video>  
+       <br><br><br>
+    </div>
+		
 	<div class="sector3">
 		<div class="box">
 			<div class="col3">

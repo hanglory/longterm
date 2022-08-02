@@ -901,12 +901,14 @@ var estimateall = {
     </div>
 </c:if>
 	<div id="screen-box">		
-	<div class="submit_btn">
-      <button type="button" id="btn-save">견적서 저장</button> 
-      	 ${fn:length(phone) } - 0
-      <c:if test="${fn:length(phone) lt 8 }" >
+	<div class="submit_btn" style="float:right;display:flex;flex-direction: row;align-items: baseline;">
+      <button type="button" id="btn-save">견적서 저장</button>
+      <div style="width:100px"></div> 
+      <c:if test="${userLevel > 3 }" >
+      <input type="tel" id="phone" name="phone" placeholder="010-1234-5678" pattern="(010)-\d{3,4}-\d{4}" title="연락처" style="width:120px;outline: 1px solid #3F51B5;"/> &nbsp; &nbsp;
+      </c:if>
+      
       	<button type="button" id="btn-save2">견적서 문자로받기</button>
-   	  </c:if>
       <!--   p>판매수수료: 670,000원</p -->
 	</div>
 	</div>	
@@ -982,9 +984,51 @@ var setDeposit = function(event) {
 
 }
 
+function fn_mbtlnumChk(mbtlnum){
+	  var regExp = /^(?:(010-\d{4})|(01[1|6|7|8|9]-\d{3,4}))(-\d{4})$/;
+	  if(!regExp.test(mbtlnum)){
+	    alert(mbtlnum+"휴대폰번호가 올바르지 않습니다.");
+	    return false;
+	  }
+	  return true;
+	}
+function autoHypenPhone(str){
+    str = str.replace(/[^0-9]/g, '');
+    var tmp = '';
+    if( str.length < 4){
+        return str;
+    }else if(str.length < 7){
+        tmp += str.substr(0, 3);
+        tmp += '-';
+        tmp += str.substr(3);
+        return tmp;
+    }else if(str.length < 11){
+        tmp += str.substr(0, 3);
+        tmp += '-';
+        tmp += str.substr(3, 3);
+        tmp += '-';
+        tmp += str.substr(6);
+        return tmp;
+    }else{              
+        tmp += str.substr(0, 3);
+        tmp += '-';
+        tmp += str.substr(3, 4);
+        tmp += '-';
+        tmp += str.substr(7);
+        return tmp;
+    }
+    return str;
+}
 
 window.addEventListener("load", function() {
+
 	
+	$("#phone").on("propertychange change keyup paste input", function() {
+		var _val = $(this).val();
+		
+		var tel_val = autoHypenPhone(_val) ;
+		$(this).val(tel_val);
+	});		
 //	document.querySelector(".output").innerHTML = window.innerWidth + " " + screen.width;
 
 	// "이 견적으로 상담받기 버튼"
@@ -1179,6 +1223,11 @@ window.addEventListener("load", function() {
 <c:if test="${userLevel > 0 }"> 	
 			// 메모
 			estimateall.memo = document.getElementById("memo").value;
+			if(!fn_mbtlnumChk($('#phone').val()) ){
+				document.getElementsByName('phone')[0].focus();
+				return false;
+			}
+			estimateall.tel = $('#phone').val();
 </c:if>			
 			if("${rentname_hi}" != ""){
 				estimateall.estimatetype_hi = "${empty userId ? '' : 'A'}"+"H";

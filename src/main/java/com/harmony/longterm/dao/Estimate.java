@@ -107,12 +107,13 @@ import com.harmony.longterm.service.IBoardService;
 /*     */     
 /*  83 */     map.put("estimate_no", Long.toString(endValue.longValue() + 1));
 
-/*     */     int insSuccCnt = this.sqlSession.insert("estimate.insertestimateall", map);
-/*  85 */     if ( insSuccCnt == 0) {
+/*     */     int id = this.sqlSession.insert("estimate.insertestimateall", map);
+/*  85 */     if ( id == 0) {
 /*  86 */       returnMap.put("estimate_type", "?");
 /*  87 */       return returnMap;
 /*     */     }
-			String strMsg = "견적서 다운로드URL : https://www.harmonyrent.co.kr/total/pdfForm?id="+insSuccCnt +"";
+			String mapid = map.get("id").toString();
+			String strMsg = "견적서 다운로드URL : https://www.harmonyrent.co.kr/total/pdfForm?id="+mapid +"";
 			if(map.get("email").toString().equals("sendSms")) {
 				map.put("message", strMsg);
 				map.put("phoneNo", map.get("tel").toString());
@@ -122,6 +123,7 @@ import com.harmony.longterm.service.IBoardService;
 /*  59 */   //  endValue = (Long)this.sqlSession.selectOne("estimate.estimate_no", queryMap);
 /*     */     
 /*  90 */     returnMap.put("estimate_no", Long.toString(endValue.longValue() + 1 ));
+			returnMap.put("id", String.valueOf(id));
 /*     */     
 /*  97 */     returnMap.put("estimate_type", map.get("estimate_type").toString());
 /*  98 */     return returnMap;

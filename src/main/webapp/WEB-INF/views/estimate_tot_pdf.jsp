@@ -635,7 +635,7 @@ body {
             </div>
             <c:if test="${fn:indexOf(estimate.type,'O') >= 0 }">
             <div class="between">
-              <span><fmt:formatNumber type="number" maxFractionDigits="3" value="${estimate.deposit_ratio *100}" />%</span>
+              <span><fmt:formatNumber type="number" maxFractionDigits="3" value="${estimate.deposit_ratio *100}" />%(초기비용)</span>
               <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${estimate.deposit / 10000}" /> 만원</span>
             </div>
             <div class="right">
