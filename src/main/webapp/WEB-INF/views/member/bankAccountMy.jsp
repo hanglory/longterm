@@ -95,7 +95,7 @@ input[type=text], input[type=button], input[type=date], input[type=submit], inpu
 
 
 <div class="main">
-	<h1>나의 신청 계좌</h1>
+	<span class="title_history">나의 신청 계좌</span>
 	
 	<div>
 		<span>발급계좌 총 ${paging.totalCount} 개</span> &nbsp; <a href="bankAccountRecv"><input type="button" align="right" value="계좌신청하기"  style="float: right;"></a>

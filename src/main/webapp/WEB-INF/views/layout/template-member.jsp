@@ -32,6 +32,7 @@
 <title><tiles:getAsString name="title"></tiles:getAsString></title>
 <link rel="stylesheet" href="${RPATH}/css<tiles:getAsString name="IncludeCSS"/>.css" />
 <link rel="stylesheet" href="${RPATH}/css/baseMember.css" />
+
 <link rel="shortcut icon" href="${RPATH }/images/favicon.ico" type="image/x-icon">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <c:choose>

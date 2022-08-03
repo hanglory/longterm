@@ -58,3 +58,9 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+.classpath
+.project
+.gitignore
+.settings/
+.springBeans
+*.class

@@ -97,7 +97,7 @@ tr:hover td {
 %>
 
 <div class="main">
-	<h1>견적서 리스트</h1>
+	<span class="title_history">견적서 리스트</span>
 	<form class="search-form" action="${CPATH}/admin/estimatelist">
 		<select name="type1" id="type1">
 			<option value="type" <%=request.getParameter("type1") == null ? "" : request.getParameter("type1").equals("type") ? "selected" : "" %> >종류</option>

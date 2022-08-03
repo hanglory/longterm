@@ -39,15 +39,14 @@
         <put-attribute name="footer" value="/WEB-INF/views/layout/footer.jsp" />
     </definition>    
 
-     <definition name="m-member.*" template="/WEB-INF/views/layout/template-member-m.jsp">
+     <definition name="m-member.*" template="/WEB-INF/views/layout/template-member.jsp">
     	<put-attribute name="title" value="하모니렌트카" />
     	<put-attribute name="IncludeCSS" value="/member-{1}-m" />
         <put-attribute name="nav"   value="/WEB-INF/views/layout/nav-m.jsp" />
         <put-attribute name="body"   value="/WEB-INF/views/member/{1}.jsp" />
-        <put-attribute name="header" value="/WEB-INF/views/layout/header-mem-m.jsp" />
+        <put-attribute name="header" value="/WEB-INF/views/layout/header-mem.jsp" />
         <put-attribute name="footer" value="/WEB-INF/views/layout/footer-m.jsp" />
     </definition>    
-
  
     <definition name="rent.*" template="/WEB-INF/views/layout/template-rent.jsp">
     	<put-attribute name="title" value="하모니렌트카" />
