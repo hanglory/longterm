@@ -194,7 +194,7 @@ function showPer(per) {
 		<select name="type1" id="type1">
 			<option value="account">계좌번호</option>
 			<option value="user_name">입금자명</option>
-			<option value="reg_id">관리자ID</option>
+			<option value="reg_id">관리자명</option>
 		</select>
 		<input type="search" name="search1" id="search1" value="${search1 }"/>
 		<input type="submit"  value="검색" style='cursor:pointer;'/>

@@ -392,7 +392,7 @@ function div_html(data){
      	htmlStr += '  </div>';
      	htmlStr += '  <div class="bottom_area">';
      	htmlStr += '    <p class="rent">';
-     	htmlStr += '      <span class="title">월렌트료</span>';
+     	htmlStr += '      <span class="title">월렌트료(vat포함)</span>';
      	htmlStr += '      <span class="price">'+data[i].rentfee_1.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+'원</span>';
      	htmlStr += '    </p>';
      	htmlStr += '  </div>';

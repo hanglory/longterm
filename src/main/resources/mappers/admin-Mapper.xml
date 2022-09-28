@@ -103,7 +103,7 @@
 		ON ba.reg_id=us.nickname
 		<where> 
 		<if test=" reg_id != null and !reg_id.equals('') " >
-			reg_id = #{reg_id}
+			name = #{reg_id}
 		</if>
 		<if test="user_name !=null and !user_name.equals('')" >
 			user_name= #{user_name}

@@ -120,6 +120,21 @@
   color: #d52323;
   font-weight: inherit;
 }
+    
+    
+    #btn-promotion{
+        
+    width: 20%;
+    margin: 40px auto;
+    text-align: center;
+    line-height: 2em;
+    font-size: 1.2em;
+    height: 2em;
+    background: rgb(42, 144, 168);
+    color: white;
+    cursor: pointer;
+        
+    }    
 
 </style>
 <script>
@@ -240,7 +255,7 @@ $(function(){
 
           </ul>
           <div class="term">
-            <h3>상품별 렌트료</h3>
+            <h3>상품별 렌트료(vat포함)</h3>
             <ul>
             
             
@@ -298,6 +313,8 @@ $(function(){
       </div>
     </div>
 
+       
+       
     <div class="option_wrap">
       <div class="option">
         <h2>옵션 정보</h2>

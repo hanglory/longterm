@@ -1513,8 +1513,8 @@ function initValue(){
 	car.agent_fee= 0;
 	car.tagsong = "";
 	car.tagsong_price = 0;
-	car.blackbox = ""
-	car.blackbox_price= 0;
+//	car.blackbox = ""
+//	car.blackbox_price= 0;
 	car.optionlist="";
 	car.cal_price=0;
 	car.phone="";

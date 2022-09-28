@@ -21,7 +21,7 @@ body, body * {
     vh단위는 브라우저 안쪽 높이(window.innerHeight)을 기준으로
     설정된다. 하지만 태블릿이나, 모바일의 경우에는 뷰 포트에 따라
     맞춰짐*/
-  min-height: 2vh;
+  min-height: 5vh;
   background-color: #ffffff;
   font-family: "Poppins", sans-serif;
 }

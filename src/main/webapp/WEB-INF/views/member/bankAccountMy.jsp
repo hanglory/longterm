@@ -69,12 +69,21 @@ button {
     cursor: pointer;
 }
 input[type=text], input[type=button], input[type=date], input[type=submit], input[type=number] {
-    width: 150px;
+    width: 20%;
     height: 30px;
     margin: 4px 0;
     padding: 0;
     border: 1px solid #999;
 }
+.input_box {
+    float: left;
+    width: calc(100%);
+    height: 100%;
+    margin-right: 0px;
+    border: 1px solid #e8e8e8;
+}
+
+
 </style>
 
     <% 
@@ -117,11 +126,11 @@ input[type=text], input[type=button], input[type=date], input[type=submit], inpu
 				<tr>
 				    <td>${bankAccount.bank_name}</td>
 					<td>${bankAccount.account }</td>
-					<td><input name="user_name" value="${bankAccount.user_name }" maxlength="10"></td>
-					<td><input name="carno" value="${bankAccount.carno }" maxlength="10"></td>
-					<td><input name="memo" style="width:100%;"  value="${bankAccount.memo }" maxlength='20'></td>
+					<td><input name="user_name" value="${bankAccount.user_name }" maxlength="10" class="input_box"></td>
+					<td><input name="carno" value="${bankAccount.carno }" maxlength="10"  class="input_box"></td>
+					<td><input name="memo" value="${bankAccount.memo }" maxlength='20'  class="input_box"></td>
                     <td>${bankAccount.recv_date }</td>
-                    <td><input type="submit" value="수정"></td>
+                    <td><input type="submit" value="수정" class="input_box" style="width:100%"></td>
 				</tr>
 				</form>
 			</c:forEach>

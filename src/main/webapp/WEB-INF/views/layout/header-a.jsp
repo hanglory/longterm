@@ -13,7 +13,7 @@
         <button onclick="javascript:logout();">로그아웃</button>
       </div>
     </div>
-    <nav>
+    <nav class="main_nav">
       <ul class="main_nav content_box">
         <li class="main_item"><a href="${CPATH}/totalrent">견적페이지</a></li>
         <li class="main_item"><a href="/admin/estimatelist">견적리스트</a></li>

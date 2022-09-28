@@ -94,6 +94,8 @@ function sendSmsMsg(formVal) {
 					alert("현재 문자 전송이 원활하지 않습니다. 잠시후 다시 이용해 주세요.");
 					return false;
 				}
+            
+            
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
             alert("문자 전송 실패.")
@@ -183,17 +185,29 @@ jQuery(document).ready(function(){
 });
 
 </script>
-
-	
-<script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
+    
+ <!-- 전환페이지 설정 -->
+<script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script> 
 <script type="text/javascript">
-if(!wcs_add) var wcs_add = {};
-wcs_add["wa"] = "14e79358f12c520";
-if(window.wcs) {
-wcs_do();
-}
-</script>
 
+function change(){
+
+var _nasa={};
+if(window.wcs) _nasa["cnv"] = wcs.cnv("1","10"); // 전환유형, 전환가치 설정해야함. 설치매뉴얼 참고
+
+}
+</script>    
+
+<!-- 다음 전환스크립트 -->
+<script type="text/javascript" charset="UTF-8" src="//t1.daumcdn.net/kas/static/kp.js"></script>
+<script type="text/javascript">
+
+	function changedaum(){
+      kakaoPixel('3481025403756984027').pageView();
+      kakaoPixel('3481025403756984027').signUp('Subscription');
+}
+</script>    
+	
 
 
 <style>
@@ -208,7 +222,7 @@ wcs_do();
 		min-width: 1200px;
 	}	
 	.sector2 img {
-		width: 1903px;
+		width: 100%;
 	}	
 	.sector3 {
 		min-width: 1200px;
@@ -267,19 +281,20 @@ wcs_do();
 
 
 #quick{width:127px; top:102px; right:137px; position:absolute;}
-#quick .quick-input{width:200px; border:1px solid #478ed1; background:#f1f6f6; float:left;}
+#quick .quick-input{width:200px; border:1px solid #06872b; background:linear-gradient(95deg, #00ff08, #8fff61); border-radius:20px;float:left;} /*background:#f1f6f6;*/
 #quick .quick-btn{width:195px; margin-top:5px; float:left;}
 
-#quick .quick-input h1{padding-top:20px; font-weight:600; font-size:16px; text-align:center; color:#478ed1; display:block;}
+#quick .quick-input h1{padding-top:20px; font-weight:600; font-size:16px; text-align:center; color:#1f6800; display:block;}
 #quick .quick-input ul{padding:5px 25px 15px; float:left;}
 #quick .quick-input ul li{margin-top:3px; float:left;}
-#quick .quick-input ul li input{width:150px; height:24px; border:1px solid #242424; background:#fbfbfb;}
+#quick .quick-input ul li input{width:150px; height:26px; border-radius:3px; margin-bottom:3px;  background:#fbfbfb;} /*border:1px solid #242424;*/
 #quick .quick-input span{margin-right:1px; position:relative; _display:inline; float:left;}
 #quick .quick-input span label{top:5px; left:6px; position:absolute; letter-spacing:-1px; color:#999;}
 #quick .quick-input div.agree{width:140px; margin-top:2px; margin-left:30px; font-size:11px; color:#999; float:left;}
 #quick .quick-input div.agree a{margin:3px 5px; text-align:center; display:block;}
 #quick .quick-input div.submit{width:127px; float:left;}
-#quick .quick-input div.submit input{width: 200px; height:29px; font-weight:600; color:#fff; border:0; background:#478ed1;}
+#quick .quick-input div.submit input{width: 198px; height:29px; font-weight:600; color:#fff; border:0; background:linear-gradient(45deg, #0ddb00, #26a92a);border-radius:0 0 20px 20px;}
+    
 #vagree2{width:254px; height:236px; padding:10px; top:0; left:-254px; z-index:10000; border:2px solid #222; background:#fff; position:absolute;}
 #vagree2 h2{font-weight:bold; font-family:"NanumGothic"; color:#444; font-size:100%}
 #vagree2 div{width:232px; border:1px solid #d7d7d7; height:190px; margin-top:5px; padding:10px; background:#fbfbfb; overflow-y:scroll; scrollbar-face-color:#fff; scrollbar-shadow-color:#eaeaea; scrollbar-highlight-color:#eaeaea; scrollbar-3dlight-color:#fff; scrollbar-darkshadow-color:#fff; scrollbar-track-color:#fff; scrollbar-arrow-color:#eaeaea; float:left;}
@@ -288,6 +303,25 @@ wcs_do();
 #vagree2 div ul li{font-size:11px; line-height:20px; color:#909090;}
 .dn{display:none;}
 
+    
+  .btn1 {
+        
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 7px 11px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  margin-right:40px;
+  cursor: pointer;
+  float:right;
+
+    }    
+    
+    
 /* style_new.css */
 .car_list {
   display: flex;
@@ -420,12 +454,12 @@ wcs_do();
 
 .car_list.thumbnail .car_item{
   width: 370px;
-  height: 420px;
+  height: 440px;
   margin-right: 16px;
 }
 
 .car_list.thumbnail .car_item img {
-  height: 240px;
+  height: 270px;
 }
 .car_list.thumbnail .car_content .rent {
   text-align: center;
@@ -672,7 +706,7 @@ $(document).ready(function(){
         index = 1;  //인덱스가 초과되면 1로 변경
     }   
     x[index-1].style.display = "block";  //해당 인덱스는 block으로
-    setTimeout(slideShow, 5000);   //함수를 4초마다 호출
+    setTimeout(slideShow, 10000);   //함수를 4초마다 호출
  
 }
       
@@ -690,9 +724,9 @@ function currentSlide(n) {
 		<input type="hidden" id="re_divi" name="re_divi" value="quick" />
 		<h1>상담 문의합니다</h1>
 		<ul>
-			<li><span><input type="text" id="re_name" name="re_name" required class="focusInput" placeholder="이름"/></span></li>
-			<li><span><input type="text" id="re_phone" name="re_phone" required class="focusInput" pattern="(010)-\d{3,4}-\d{4}" placeholder="010-1234-5678"/></span></li>
-			<li><span><input type="text" id="re_auth" name="re_auth" class="focusInput" placeholder="인증번호" /></li>
+			<li><span><input type="text" id="re_name" name="re_name" required class="focusInput" placeholder="&nbsp;&nbsp;이름"/></span></li>
+			<li><span><input type="text" id="re_phone" name="re_phone" required class="focusInput" pattern="(010)-\d{3,4}-\d{4}" placeholder="&nbsp;&nbsp;010-1234-5678"/></span></li>
+			<li><span><input type="text" id="re_auth" name="re_auth" class="focusInput" placeholder="&nbsp;&nbsp;인증번호" /></li>
             <li>
 			<span>
 				<select id="re_credit" name="re_credit" required class="required">
@@ -704,7 +738,8 @@ function currentSlide(n) {
 			</li>
 		</ul>
 		<div class="agree"><input type="checkbox" id="agree" name="agree" required value="1" /> <label for="agree">개인정보취급방침</label> <a href="javascript:;" class="btn-vagree2"><img src="${RPATH}/images/btn_vagree.png"></a></div>
-		<div class="submit"><input type="submit" value="인증번호받기" id="submitbtn" /></div>
+		<div class="submit"><input type="submit" value="인증번호받기" id="submitbtn" onclick= "change();
+            changedaum();" /></div>
 		</form>
 
 		<script type="text/javascript">
@@ -748,19 +783,22 @@ function currentSlide(n) {
     <div class="sector2">
 
   
-  <img class="slide1" src="${RPATH}/images/mainimg1.jpg" >
-  <img class="slide1" src="${RPATH}/images/mainimg2.jpg">
+ <!-- <img class="slide1" src="${RPATH}/images/mainimg1.jpg" >
+  <img class="slide1" src="${RPATH}/images/mainimg2.jpg">-->
   <img class="slide1" src="${RPATH}/images/mainimg3.jpg">
-
+                                   
 </div>
-<br>
-
-<!-- 현재 이미지를 알려주는 하단의 점 -->
-<div style="text-align:center">
+                                                                                                                                                              
+              
+<!-- 현재 이미지를 알려주는 하단의 점
+<div style="text-align:center">               
   <span class="dot" onclick="currentSlide(1)"></span> 
   <span class="dot" onclick="currentSlide(2)"></span> 
-  <span class="dot" onclick="currentSlide(3)"></span> 
-</div>
+<span class="dot" onclick="currentSlide(3)"></span>
+</div>--> 
+  <br>
+<br>
+<br>
 
 
     
@@ -783,9 +821,9 @@ function currentSlide(n) {
     
    <div style="display: table; margin:auto;">
         
-   <a href="${RPATH}/totalrent"><img src="${RPATH}/images/total_main.png" alt="">    
+   <a href="${RPATH}/totalrent"><img src="${RPATH}/images/total_main.png" style="padding-left:20px;" alt="">    
  
-<h1 style="padding-left:20px; margin-top:20px; font-size:28px; font-weight: 600; color:dodgerblue"> 즉시출고 신차장기렌트</h1> 
+<h1 style="padding-left:20px; margin-top:20px; font-size:28px; font-weight: 600; color:##292a2a"> 즉시출고 신차장기렌트</h1> 
 <ul class='car_list thumbnail'>  
    
 <c:forEach var="usedCarVO" items="${newUsedCarVO }">
@@ -815,7 +853,7 @@ function currentSlide(n) {
   </div>
   <div class="bottom_area">
     <p class="rent">
-      <span class="title">월렌트료</span>
+      <span class="title">월렌트료(vat포함)</span>
       <span class="price"><fmt:formatNumber type="number" maxFractionDigits="3" value="${usedCarVO.rentfee_1}" /> 원</span>
     </p>
   </div>
@@ -824,9 +862,12 @@ function currentSlide(n) {
 </c:forEach>
         
 </ul>
-       <div><a href ="${RPATH}/bbs/usedcarRealNew"><h1 style="text-align:right; font-size:20px; font-weight: 600;padding-right:40px; color:black"> ->&nbsp;신차 더보기</h1></a></div>
        
-<h1 style="padding-left:20px; margin-top:20px; font-size:28px; font-weight: 600; color:dodgerblue"> 검증완료 중고재렌트</h1> 
+        <button class="btn1" onclick="location.href='${RPATH}/bbs/usedcarRealNew';">신차더보기</button>
+       
+       <!--<div><a href ="${RPATH}/bbs/usedcarRealNew"><h1 style="text-align:right; font-size:20px; font-weight: 600;padding-right:40px; color:black"> ->&nbsp;신차 더보기</h1></a></div>-->
+       
+<h1 style="padding-left:20px; margin-top:60px; font-size:28px; font-weight: 600; color:#292a2a;"> 검증완료 중고재렌트</h1> 
 <ul class='car_list thumbnail'>
 <c:forEach var="usedCarVO" items="${oldUsedCarVO }">
 <li class="car_item">
@@ -857,7 +898,7 @@ function currentSlide(n) {
         </li>
       </ul>        
     <p class="rent">
-      <span class="title">월렌트</span>
+      <span class="title">월렌트료(vat포함)</span>
       <span class="price"><fmt:formatNumber type="number" maxFractionDigits="3" value="${usedCarVO.rentfee}" />원</span>
     </p>
    </div>
@@ -865,10 +906,12 @@ function currentSlide(n) {
 </li>
 </c:forEach>
 </ul>
- <div><a href ="${RPATH}/bbs/usedcarReal"><h1 style="text-align:right; font-size:20px; font-weight: 600;padding-right:40px; color:black;margin-bottom:40px;"> ->&nbsp;중고 더보기</h1></a></div>
+     <button class="btn1" onclick="location.href='${RPATH}/bbs/usedcarReal';">재렌트더보기</button>
+       
+       <!--<div><a href ="${RPATH}/bbs/usedcarReal"><h1 style="text-align:right; font-size:20px; font-weight: 600;padding-right:40px; color:black;margin-bottom:40px;"> ->&nbsp;중고 더보기</h1></a></div>-->
       
       
-<h1 style="margin-top:20px; font-size:28px; font-weight: 600; color:dimgrey"> 사회적기업 하모니렌트카</h1>        
+<h1 style="margin-top:50px; font-size:28px; font-weight: 600; color:dimgrey"> 사회적기업 하모니렌트카</h1>        
   <video autoplay muted controls width="1160"> 
 
 

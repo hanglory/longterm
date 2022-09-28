@@ -1,5 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+<% 
+	int isMobile = 0;
+	String agent = request.getHeader("USER-AGENT");
+	String[] mobileos = {"iPhone","iPod","Android","BlackBerry","Windows CE","Nokia","Webos","Opera Mini","SonyEricsson","Opera Mobi","IEMobile"};
+	int j = -1;
+	for(int i=0 ; i<mobileos.length ; i++) {
+		j=agent.indexOf(mobileos[i]);
+		if(j > -1 )
+		{
+			// 모바일로 접근했을 때
+			isMobile = 1;
+			break;
+		}
+	}
+%>
+
 <style>
 #fullscreen_layer { position:absolute; top:0; left:0; bottom:0; right:0; background:#000; z-index:100; display:none;
 /* IE 8 */  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";  
@@ -17,6 +33,19 @@
 .popup .relative { position:relative; }
 .popup .close { position: absolute; top:-11%; right: -2%; width: 11%; }
 </style>
+    
+ <!-- 공통 적용 스크립트 , 모든 페이지에 노출되도록 설치. 단 전환페이지 설정값보다 항상 하단에 위치해야함 --> 
+<script type="text/javascript" src="//wcs.naver.net/wcslog.js"> </script> 
+<script type="text/javascript"> 
+if (!wcs_add) var wcs_add={};
+wcs_add["wa"] = "s_585d84eea409";
+if (!_nasa) var _nasa={};
+if(window.wcs){
+wcs.inflow();
+wcs_do(_nasa);
+}
+</script>   
+    
 <script>
 function fnShowPop(sGetName){
 	var layer = $("#"+ sGetName);
@@ -66,6 +95,10 @@ function fnHidePop(sGetName){
 </div>
 	<footer>
 		<div class="footer">
-			<a href="javascript:fnShowPop('popup_event');"><img src="${RPATH}/images/footer.png" alt=""  /></a>
+		<% if( isMobile ==1 ){ %>
+			<img src="${RPATH}/images/footer.png" alt="" style="max-width: 100%;height:auth;"  />
+		<%} else{ %>
+			<a href="javascript:fnShowPop('popup_event');"><img src="${RPATH}/images/footer.png" alt="" style="max-width: 100%;height:auth;"  /></a>
+		<%} %>
 		</div>
  	</footer>

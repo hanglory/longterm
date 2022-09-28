@@ -22,7 +22,6 @@
     </definition>    
 
     <definition name="admin.*" template="/WEB-INF/views/layout/template-admin.jsp">
-    
     	<put-attribute name="title" value="하모니렌트카" />
     	<put-attribute name="IncludeCSS" value="/admin-{1}" />
         <put-attribute name="nav"   value="/WEB-INF/views/layout/nav-a.jsp" />

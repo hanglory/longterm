@@ -287,10 +287,11 @@ int etcprice = Integer.parseInt(map.get("tagsong_price").toString()) + Integer.p
 	    } else {
 	      cal_price = (int)((reg_car_price * (1.0F + cal_tax_rate)) * 1.1D);
 	    } 
-	    if (fuel.equals("전기")) {
-	      acquisition = (int)(cal_price * janga);
-	    }
-	    else if (deposit_ratio == 0.1F) {
+//	    if (fuel.equals("전기")) {
+//	      acquisition = (int)(cal_price * janga);
+//	    }
+//	    else 
+	    	if (deposit_ratio == 0.1F) {
 	      acquisition = (int)(cal_price * (janga + 0.1D));
 	    }
 	    else if (deposit_ratio == 0.5F) {
@@ -382,7 +383,7 @@ int etcprice = Integer.parseInt(map.get("tagsong_price").toString()) + Integer.p
     
     return rent_fee;
   }
-
+/*
   private int getAcquisitionPrice(int trim_id, int option_price, int period, int distance, float deposit_ratio) {
     int acquisition = 0;
     
@@ -425,7 +426,6 @@ int etcprice = Integer.parseInt(map.get("tagsong_price").toString()) + Integer.p
     } else {
       cal_price = (int)((reg_car_price * (1.0F + cal_tax_rate)) * 1.1D);
     } 
-
     if (fuel.equals("전기")) {
       acquisition = (int)(cal_price * janga);
     }
@@ -441,7 +441,7 @@ int etcprice = Integer.parseInt(map.get("tagsong_price").toString()) + Integer.p
     this.logger.debug("만기인수가 : " + Integer.toString(acquisition));
     return acquisition;
   }
-
+*/
   private int getAgentFee(int trim_id, int option_price, int period, float agency_fee_rate, float deposit_ratio) {
     int agent_fee = 0;
     

@@ -388,7 +388,7 @@ function div_html(data){
         htmlStr += '        </li>';
         htmlStr += '      </ul>';	        
      	htmlStr += '    <p class="rent">';
-     	htmlStr += '      <span class="title">월렌트</span>';
+     	htmlStr += '      <span class="title">월렌트료(vat포함)</span>';
      	htmlStr += '      <span class="price">'+data[i].rentfee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+'원</span>';
      	htmlStr += '    </p>';
      	htmlStr += '</div></a>';
@@ -615,8 +615,9 @@ function Right(Str, Num){
       </div>
     </div>
 
-	<ul class='car_list' id="carList">
+<ul class='car_list' id="carList">
 	</ul>
+
 	<div id="page_box" class="page_box">
 	</div>
 

@@ -29,16 +29,30 @@ function check() {
 		return;
 	}
 }
-</script>    
- 	
-<script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
-<script type="text/javascript">
-if(!wcs_add) var wcs_add = {};
-wcs_add["wa"] = "14e79358f12c520";
-if(window.wcs) {
-wcs_do();
-}
 </script>  
+    
+<!-- 전환페이지 설정 -->
+<script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script> 
+<script type="text/javascript">
+
+function change(){
+
+var _nasa={};
+if(window.wcs) _nasa["cnv"] = wcs.cnv("1","10"); // 전환유형, 전환가치 설정해야함. 설치매뉴얼 참고
+
+}
+</script> 
+    
+    <!-- 카카오 전환페이지 설정 -->
+    <script type="text/javascript" charset="UTF-8" src="//t1.daumcdn.net/kas/static/kp.js"></script>
+<script type="text/javascript">
+
+	function changedaum(){
+      kakaoPixel('3481025403756984027').pageView();
+      kakaoPixel('3481025403756984027').signUp('Subscription');
+}
+</script>
+ 	
 <style>
 .folder:after {
 	position: absolute;
@@ -329,9 +343,8 @@ textarea {
 								<div class="cmb-item">
 									<span>블랙박스</span>
 									<select name="" id="blackbox">
-										<option value="없음" data-price="0">없음</option>
-										<option value="모비스" data-price="200000">모비스</option>
-									</select>									
+                            							 <option value="모비스" data-price="250000">모비스</option>
+                           							</select>      								
 								</div>
 								<div class="cmb-item">
 									<span>추가수수료(0.0 ~ 3.0%)</span>
@@ -552,7 +565,7 @@ textarea {
 					</div>
 </c:if>
 
-<div id="btn-estimate2">고객용 상세견적서 보기</div>		
+<div id="btn-estimate2" onclick="change();changedaum();">고객용 상세견적서 보기</div>		
 		
 <!-- 광고 -->
 	<!--	<div id="lower-section"></div>
@@ -567,7 +580,13 @@ textarea {
 
 		<form action=""></form> -->
 	</main>
-	
+
+
+<script>
+car.blackbox = "모비스";
+car.blackbox_price = "250000";
+</script> 
+		
 <script>
 window.addEventListener("load", function() {
 	car.deposit_ratio = 0.1;
