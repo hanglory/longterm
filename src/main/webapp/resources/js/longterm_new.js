@@ -237,7 +237,7 @@ var UpdateSummary = function(kind=5) {
 			var no_price = Math.floor((car.preprice_no*10000/car.period_no)/1000)*1000;
 			
 //			$('#rentfee_no').html(Number( car.rentfee_no - no_price).toLocaleString('en') + "원/월");
-			car.rentfee_no = Number( car.rentfee_no - no_price);
+			//car.rentfee_no = Number( car.rentfee_no - no_price);
 			$('#deposit_no').html(Number(Math.round( data.deposit / 10000)).toLocaleString('en') + "만원");
 			$('#depositrate_no').html(Number(car.deposit_ratio_no * 100 ).toLocaleString('en') + "%");
 			$('#rentfee_no').html(Number(car.rentfee_no).toLocaleString('en') + "원/월");

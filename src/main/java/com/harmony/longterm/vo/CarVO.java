@@ -11,6 +11,7 @@
 /*     */   private int trim_id;
 /*     */   private String trim_name;
 /*     */   private int price;
+			private int elec_sub;
 /*     */   private String fuel;
 /*     */   private int displacement;
 /*     */   private String car_type;
@@ -39,7 +40,7 @@
 /*     */   
 /*     */   public CarVO() {}
 /*     */   
-/*     */   public CarVO(int model_id, String maker, String model_name, String lineup, String image, int model_ranking, int trim_id, String trim_name, int price, String fuel, int displacement, String car_type, float janga24, float janga36, float janga48, String tax_type, float tax_rate, int tagsong, float fees_rate, float maker_rate, float cal_rate, float cal_rate_10_24, float cal_rate_10_36, float cal_rate_10_48, float cal_rate_50_24, float cal_rate_50_36, float cal_rate_50_48, int maintain_fee, float maintain_fee_10_24, float maintain_fee_10_36, float maintain_fee_10_48, float maintain_fee_50_24, float maintain_fee_50_36, float maintain_fee_50_48) {
+/*     */   public CarVO(int model_id, String maker, String model_name, String lineup, String image, int model_ranking, int trim_id, String trim_name, int price, int elec_sub, String fuel, int displacement, String car_type, float janga24, float janga36, float janga48, String tax_type, float tax_rate, int tagsong, float fees_rate, float maker_rate, float cal_rate, float cal_rate_10_24, float cal_rate_10_36, float cal_rate_10_48, float cal_rate_50_24, float cal_rate_50_36, float cal_rate_50_48, int maintain_fee, float maintain_fee_10_24, float maintain_fee_10_36, float maintain_fee_10_48, float maintain_fee_50_24, float maintain_fee_50_36, float maintain_fee_50_48) {
 /*  52 */     this.model_id = model_id;
 /*  53 */     this.maker = maker;
 /*  54 */     this.model_name = model_name;
@@ -49,6 +50,7 @@
 /*  58 */     this.trim_id = trim_id;
 /*  59 */     this.trim_name = trim_name;
 /*  60 */     this.price = price;
+			  this.elec_sub = elec_sub;
 /*  61 */     this.fuel = fuel;
 /*  62 */     this.displacement = displacement;
 /*  63 */     this.car_type = car_type;
@@ -166,6 +168,12 @@
 /* 175 */     this.price = price;
 /*     */   }
 /*     */ 
+/*     */   public int getElecSub() {
+/* 170 */     return this.elec_sub;
+/*     */   }
+/*     */   public void setElecSub(int elec_sub) {
+/* 175 */     this.elec_sub = elec_sub;
+/*     */   }
 /*     */   
 /*     */   public String getFuel() {
 /* 180 */     return this.fuel;

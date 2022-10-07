@@ -92,7 +92,7 @@ public class CarDao
 	  String car_type = car.getCar_type();
 	  float deposit_ratio = Float.parseFloat(map.get("deposit_ratio").toString());	//보증금 비율
 	  
-	  int price = car.getPrice() + option_price;
+	  int price = car.getPrice() + option_price - car.getElecSub();
 	  int tax_price = price;
 	  
 //오너형 계산

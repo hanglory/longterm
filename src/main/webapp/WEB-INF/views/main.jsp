@@ -95,6 +95,8 @@ function sendSmsMsg(formVal) {
 					return false;
 				}
             
+            this.change();
+            this.changedaum();
             
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
@@ -208,7 +210,7 @@ if(window.wcs) _nasa["cnv"] = wcs.cnv("1","10"); // 전환유형, 전환가치 �
 }
 </script>    
 	
-
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
 
 <style>
 	.sector1 {
@@ -226,8 +228,9 @@ if(window.wcs) _nasa["cnv"] = wcs.cnv("1","10"); // 전환유형, 전환가치 �
 	}	
 	.sector3 {
 		min-width: 1200px;
-		height: 330px;
-		background-color: #f7f3f0;
+		height: 430px;
+		--background-color: #f7f3f0;
+		margin-bottom:70px;
 	}
 	
 	.box {
@@ -281,10 +284,10 @@ if(window.wcs) _nasa["cnv"] = wcs.cnv("1","10"); // 전환유형, 전환가치 �
 
 
 #quick{width:127px; top:102px; right:137px; position:absolute;}
-#quick .quick-input{width:200px; border:1px solid #06872b; background:linear-gradient(95deg, #00ff08, #8fff61); border-radius:20px;float:left;} /*background:#f1f6f6;*/
+#quick .quick-input{width:200px; border:1px solid #afafaf; /* background:linear-gradient(95deg, #00ff08, #8fff61);*/ border-radius:20px;float:left;} /*background:#f1f6f6;*/
 #quick .quick-btn{width:195px; margin-top:5px; float:left;}
 
-#quick .quick-input h1{padding-top:20px; font-weight:600; font-size:16px; text-align:center; color:#1f6800; display:block;}
+#quick .quick-input h1{padding-top:20px; font-weight:600; font-size:16px; text-align:center; color:#2773d8; display:block;}
 #quick .quick-input ul{padding:5px 25px 15px; float:left;}
 #quick .quick-input ul li{margin-top:3px; float:left;}
 #quick .quick-input ul li input{width:150px; height:26px; border-radius:3px; margin-bottom:3px;  background:#fbfbfb;} /*border:1px solid #242424;*/
@@ -293,7 +296,7 @@ if(window.wcs) _nasa["cnv"] = wcs.cnv("1","10"); // 전환유형, 전환가치 �
 #quick .quick-input div.agree{width:140px; margin-top:2px; margin-left:30px; font-size:11px; color:#999; float:left;}
 #quick .quick-input div.agree a{margin:3px 5px; text-align:center; display:block;}
 #quick .quick-input div.submit{width:127px; float:left;}
-#quick .quick-input div.submit input{width: 198px; height:29px; font-weight:600; color:#fff; border:0; background:linear-gradient(45deg, #0ddb00, #26a92a);border-radius:0 0 20px 20px;}
+#quick .quick-input div.submit input{width: 198px; height:29px; font-weight:600; color:#595252; border:0; background:linear-gradient(45deg, #e0dfdf, #e4dfdf);border-radius:0 0 20px 20px;}
     
 #vagree2{width:254px; height:236px; padding:10px; top:0; left:-254px; z-index:10000; border:2px solid #222; background:#fff; position:absolute;}
 #vagree2 h2{font-weight:bold; font-family:"NanumGothic"; color:#444; font-size:100%}
@@ -454,12 +457,12 @@ if(window.wcs) _nasa["cnv"] = wcs.cnv("1","10"); // 전환유형, 전환가치 �
 
 .car_list.thumbnail .car_item{
   width: 370px;
-  height: 440px;
+  height: 420px;
   margin-right: 16px;
 }
 
 .car_list.thumbnail .car_item img {
-  height: 270px;
+  height: 250px;
 }
 .car_list.thumbnail .car_content .rent {
   text-align: center;
@@ -637,11 +640,64 @@ slideshow-container {
   from {opacity: .4} 
   to {opacity: 1}
 }    
+  
     
+/* 자동슬라이드 + 화살표 */
+
+    .con_mini {
+        width:100%;
+        height:622px;
+        background:url("../images/redger_mini05.jpg") no-repeat center;
+    }
+    .con_bb{
+        
+        width:1200px; 
+        height:360px;
+        margin:0 auto;
+        padding-top:180px;
+        overflow:hidden;
+        position:relative;
+    }
+    .left {
+       float:left;
+        width:50px;
+        margin-top:110px;
+    }
+    .right{
+        float:right;
+        width:50px;
+        margin-top:110px;
+    }
+    .rolling_panel { 
     
+        float:left;
+        position:relative;
+        width:1100px;
+        height:320px;
+        margin:0;
+        padding:0;
+        overflow:hidden;
     
+    }
+    
+    .rolling_panel ul {
+        
+        position: absolute;
+        margin:5px;
+        padding:0;
+        list-style:none;
+        
+    }   
+    .rolling_panel ul li {
+        
+        float:left;
+        width:360px;
+        height:320px;
+    } 
+  /* 자동슬라이드 + 화살표 */  
     
 </style>
+    
   <link rel="stylesheet" href="/css/static.css">
 
 <c:if test="${siteinfoVO.id > 0 }">
@@ -689,7 +745,7 @@ $(document).ready(function(){
 </c:if>
 </c:if>
     
-  <script>
+<script>
     var index = 0;   //이미지에 접근하는 인덱스
     window.onload = function(){
         slideShow();
@@ -706,7 +762,7 @@ $(document).ready(function(){
         index = 1;  //인덱스가 초과되면 1로 변경
     }   
     x[index-1].style.display = "block";  //해당 인덱스는 block으로
-    setTimeout(slideShow, 10000);   //함수를 4초마다 호출
+    setTimeout(slideShow, 5000);   //함수를 4초마다 호출
  
 }
       
@@ -738,8 +794,7 @@ function currentSlide(n) {
 			</li>
 		</ul>
 		<div class="agree"><input type="checkbox" id="agree" name="agree" required value="1" /> <label for="agree">개인정보취급방침</label> <a href="javascript:;" class="btn-vagree2"><img src="${RPATH}/images/btn_vagree.png"></a></div>
-		<div class="submit"><input type="submit" value="인증번호받기" id="submitbtn" onclick= "change();
-            changedaum();" /></div>
+		<div class="submit"><input type="submit" value="인증번호받기" id="submitbtn" /></div>
 		</form>
 
 		<script type="text/javascript">
@@ -781,21 +836,21 @@ function currentSlide(n) {
 
 
     <div class="sector2">
-
-  
- <!-- <img class="slide1" src="${RPATH}/images/mainimg1.jpg" >
-  <img class="slide1" src="${RPATH}/images/mainimg2.jpg">-->
-  <img class="slide1" src="${RPATH}/images/mainimg3.jpg">
+        
+        
+  <img class="slide1" src="${RPATH}/images/mainimg33.jpg">
+  <img class="slide1" src="${RPATH}/images/mainimg44.jpg">
+  <img class="slide1" src="${RPATH}/images/mainimg55.jpg">
                                    
 </div>
                                                                                                                                                               
               
-<!-- 현재 이미지를 알려주는 하단의 점
+ <!--현재 이미지를 알려주는 하단의 점
 <div style="text-align:center">               
   <span class="dot" onclick="currentSlide(1)"></span> 
   <span class="dot" onclick="currentSlide(2)"></span> 
 <span class="dot" onclick="currentSlide(3)"></span>
-</div>--> 
+</div> -->
   <br>
 <br>
 <br>
@@ -818,12 +873,15 @@ function currentSlide(n) {
 
 	</div> -->
     
-    
+  
    <div style="display: table; margin:auto;">
         
-   <a href="${RPATH}/totalrent"><img src="${RPATH}/images/total_main.png" style="padding-left:20px;" alt="">    
+ <!--<a href="${RPATH}/totalrent"><img src="${RPATH}/images/harmonyrent.jpg" style="padding-left:20px;" alt=""></a>-->
  
-<h1 style="padding-left:20px; margin-top:20px; font-size:28px; font-weight: 600; color:##292a2a"> 즉시출고 신차장기렌트</h1> 
+<!--<h1 style="padding-left:20px; margin-top:20px; font-size:28px; font-weight: 600; color:##292a2a"> 즉시출고 신차장기렌트</h1>-->
+
+<div style="display:block;"><a href="${RPATH}/bbs/usedcarRealNew"><img src="${RPATH}/images/newrent.jpg" style="padding-left:20px;margin-top:20px;margin-bottom:20px;" alt=""></a><div>
+
 <ul class='car_list thumbnail'>  
    
 <c:forEach var="usedCarVO" items="${newUsedCarVO }">
@@ -863,11 +921,13 @@ function currentSlide(n) {
         
 </ul>
        
-        <button class="btn1" onclick="location.href='${RPATH}/bbs/usedcarRealNew';">신차더보기</button>
+       <!-- <button class="btn1" onclick="location.href='${RPATH}/bbs/usedcarRealNew';">신차더보기</button>-->
        
        <!--<div><a href ="${RPATH}/bbs/usedcarRealNew"><h1 style="text-align:right; font-size:20px; font-weight: 600;padding-right:40px; color:black"> ->&nbsp;신차 더보기</h1></a></div>-->
        
-<h1 style="padding-left:20px; margin-top:60px; font-size:28px; font-weight: 600; color:#292a2a;"> 검증완료 중고재렌트</h1> 
+<!--<h1 style="padding-left:20px; margin-top:60px; font-size:28px; font-weight: 600; color:#292a2a;"> 검증완료 중고재렌트</h1>-->
+
+<a href="${RPATH}/bbs/usedcarRealNew"><img src="${RPATH}/images/usedrent.jpg" style="padding-left:20px;margin-top:70px;margin-bottom:20px;" alt=""></a>
 <ul class='car_list thumbnail'>
 <c:forEach var="usedCarVO" items="${oldUsedCarVO }">
 <li class="car_item">
@@ -906,22 +966,28 @@ function currentSlide(n) {
 </li>
 </c:forEach>
 </ul>
-     <button class="btn1" onclick="location.href='${RPATH}/bbs/usedcarReal';">재렌트더보기</button>
+     <!--<button class="btn1" onclick="location.href='${RPATH}/bbs/usedcarReal';">재렌트더보기</button>-->
        
        <!--<div><a href ="${RPATH}/bbs/usedcarReal"><h1 style="text-align:right; font-size:20px; font-weight: 600;padding-right:40px; color:black;margin-bottom:40px;"> ->&nbsp;중고 더보기</h1></a></div>-->
       
+ 
       
-<h1 style="margin-top:50px; font-size:28px; font-weight: 600; color:dimgrey"> 사회적기업 하모니렌트카</h1>        
+ <div style="display:block;"><img src="${RPATH}/images/harmonyrent.jpg" style="padding-left:20px;margin-top:70px;" alt=""></div>
+    
+<!--<h1 style="margin-top:50px; font-size:28px; font-weight: 600; color:dimgrey"> 사회적기업 하모니렌트카</h1>        
   <video autoplay muted controls width="1160"> 
 
 
     <source src="${RPATH}/images/love.mp4"
             type="video/mp4">
-</video>  
+</video> --> 
        <br><br><br>
     </div>
 		
 	<div class="sector3">
+        
+        <img src="${RPATH}/images/brother.jpg" style="padding-left:20px;" alt="">
+        
 		<div class="box">
 			<div class="col3">
 				<a href="https://harmonyrentcar2.imweb.me/Crew" target='_blank'><img src="/images/Link4.png" alt=""></a>
@@ -936,5 +1002,5 @@ function currentSlide(n) {
 				<a href="http://aprentcar.com/" target='_blank' ><img src="${RPATH}/images/Link1.png" alt="" /></a>
 			</div>
 		</div>
-	</div> 
-	
+	</div>
+       </div>	
