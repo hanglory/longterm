@@ -90,23 +90,31 @@ public class CarDao
 	  int option_price = Integer.parseInt(map.get("total_option_price").toString()) + Integer.parseInt(map.get("color_price").toString());
 	  int period = Integer.parseInt(map.get("period").toString());
 	  String car_type = car.getCar_type();
+	  String fuel = car.getFuel();
 	  float deposit_ratio = Float.parseFloat(map.get("deposit_ratio").toString());	//보증금 비율
 	  
-	  int price = car.getPrice() + option_price - car.getElecSub();
+	  int price = car.getPrice() + option_price ;
 	  int tax_price = price;
 	  
 //오너형 계산
 	  if(tax_rate == 0.065F) {
-	   	tax_price = (int)(price / 1.1715F * 1.15005F);
-	   	 if((price-tax_price) >1430000) {
-	   		 tax_price = price - 1430000;
-	   	 }
+		  if (fuel.equals("전기")) {
+			  tax_price = (int)(price / 1.1715F * 1.1F);
+		  }else {
+			 tax_price = (int)(price / 1.1715F * 1.15005F);
+		   	 if((price-tax_price) >1430000) {
+		   		 tax_price = price - 1430000;
+		   	 }
+		  }
+	   	 
+	   	 tax_price = tax_price - car.getElecSub();
 	  }else if(tax_rate == 0F) {
 	   	tax_price = (int)(price / 1.1D * 1.15005F);
 	  }else if(tax_rate == 0.0455F) {
 	   	tax_price = price;
 	  }
 
+	  
 	  if (car_type.equals("승합차") || car_type.equals("경차") ) {
 		  tax_price=price;
 	  }

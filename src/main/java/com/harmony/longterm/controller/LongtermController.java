@@ -116,12 +116,17 @@ public String main_view(HttpServletRequest request, @RequestParam HashMap<String
 	Calendar cal = Calendar.getInstance();
 	String to_day = ft.format(cal.getTime());
 	String prefix = "rent.";
+	SiteinfoVO siteinfoVO = new SiteinfoVO();
     Device device = DeviceUtils.getCurrentDevice(request);
     if (device.isMobile()) {
+    	siteinfoVO.setPc_type("2");    	
        prefix = "m-rent.";
     } else if (device.isTablet()) {
+    	siteinfoVO.setPc_type("2");    	
     	prefix = "m-rent.";
-    } 
+    }else {
+    	siteinfoVO.setPc_type("1");    	
+    }
     HashMap<String, Object> queryMap = new HashMap<>();
     queryMap.put("sell_state", "판매중");
 	queryMap.put("car_type", "신차");
@@ -131,8 +136,6 @@ public String main_view(HttpServletRequest request, @RequestParam HashMap<String
 	queryMap.put("car_type", "중고차");
 	List<UsedCarVO> oldUsedCarVO = usedCarService.selectUsedCarList(queryMap);
 
-	SiteinfoVO siteinfoVO = new SiteinfoVO();
-	siteinfoVO.setPc_type("1");
 	siteinfoVO.setStart_date(to_day);
 	siteinfoVO.setEnd_date(to_day);
 	siteinfoVO = siteinfoService.selectSiteinfo(siteinfoVO);

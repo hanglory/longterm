@@ -1136,7 +1136,7 @@ $(function(){
 		
 		input = document.getElementById("sel-etcprice");
 		input.focus();
-		input.value = car.tagsong_price + car.blackbox_price;
+		input.value = parseInt(car.tagsong_price) + parseInt(car.blackbox_price);
 		
 		input = document.getElementById("sel-tagsong");
 		input.focus();
