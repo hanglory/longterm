@@ -265,8 +265,9 @@ int etcprice = Integer.parseInt(map.get("tagsong_price").toString()) + Integer.p
 	    
 	    float cal_rate = car.getCal_rate();
 	    int maintain_fee = car.getMaintain_fee();
-//	    float cal_rent = (float)((price.intValue() * cal_rate + maintain_fee) * 1.1D);
-	    float cal_rent = (float)((price * cal_rate + maintain_fee) * 1.1D);
+//	    float cal_rent = (float)((price * cal_rate + maintain_fee) * 1.1D);
+	    float cal_rent = (float)(((price/1.1715D) * cal_rate + maintain_fee) * 1.1D);
+	    
 	    this.logger.debug("수수료 : " + Integer.toString((int)cal_rent));
 	    retVal.put("rentfee",(int)cal_rent);
 
@@ -365,7 +366,7 @@ int etcprice = Integer.parseInt(map.get("tagsong_price").toString()) + Integer.p
     return deposit;
   }
 
-  
+ /* 
   public int getRentFee_with_CalRate(int trim_id, int option_price, int period, int distance, int prepayment, float deposit_ratio) {
     int rent_fee = 0;
 
@@ -391,6 +392,7 @@ int etcprice = Integer.parseInt(map.get("tagsong_price").toString()) + Integer.p
     
     return rent_fee;
   }
+*/  
 /*
   private int getAcquisitionPrice(int trim_id, int option_price, int period, int distance, float deposit_ratio) {
     int acquisition = 0;
@@ -450,6 +452,7 @@ int etcprice = Integer.parseInt(map.get("tagsong_price").toString()) + Integer.p
     return acquisition;
   }
 */
+ /* 
   private int getAgentFee(int trim_id, int option_price, int period, float agency_fee_rate, float deposit_ratio) {
     int agent_fee = 0;
     
@@ -482,7 +485,8 @@ int etcprice = Integer.parseInt(map.get("tagsong_price").toString()) + Integer.p
     this.logger.debug("수수료 : " + Integer.toString(agent_fee));
     return agent_fee;
   }
-  
+ */
+ /* 
   public int getRentFee_Hi24(int trim_id, int option_price, int period, int distance) {
     int monthlyfee, rent_fee = 0;
     
@@ -567,7 +571,8 @@ int etcprice = Integer.parseInt(map.get("tagsong_price").toString()) + Integer.p
 
     return rent_fee;
   }
-
+*/
+/*
   public int getRentFee_Midas(int trim_id, int option_price, int period, int distance) {
     int monthlyfee;
     Integer janga;
@@ -704,7 +709,7 @@ int etcprice = Integer.parseInt(map.get("tagsong_price").toString()) + Integer.p
             bozeung.intValue()) });
     return rent_fee;
   }
-
+*/
   @RequestMapping({"/updatemodelranking"})
   public String updateModelRanking(@RequestBody HashMap<String, Object> map) {
     System.out.println(map.toString());
