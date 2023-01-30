@@ -147,7 +147,7 @@ public String main_view(HttpServletRequest request, @RequestParam HashMap<String
 
 	return prefix+"main";
 }
-
+// 150줄 입력 잘 되나요?
 
 /*
    @RequestMapping({"/usedcarReal"})
