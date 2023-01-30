@@ -20,6 +20,8 @@
 <link rel="icon" href="/images/favicon.ico">
 <!-- ios홈화면추가시 상단 주소창 제거 -->
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="naver-site-verification" content="2f6c71088cc6a9b941612c4591a23a0d11b5644f" />
+<meta name="google-site-verification" content="ZygN6jHeo4iTbJ_wbhJr4qYAbrGwssMe-JwCXFSdDWA" />
 
 <title><tiles:getAsString name="title"></tiles:getAsString></title>
 <!-- link rel="stylesheet" href="${RPATH}/css<tiles:getAsString name="IncludeCSS"/>.css" / -->
@@ -62,6 +64,17 @@ body {
 </script>
 
 
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-10978682224">
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-10978682224');
+
+
+
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-239736615-1"></script>
 <script>
@@ -90,6 +103,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-W7CQQ8B');</script>
 <!-- End Google Tag Manager -->
 
+<!-- Smartlog -->
+<script type="text/javascript"> 
+    var hpt_info={'_account':'UHPT-19533', '_server': 'a23'};
+</script>
+<script language="javascript" src="//cdn.smlog.co.kr/core/smart.js" charset="utf-8"></script>
+<noscript><img src="//a23.smlog.co.kr/smart_bda.php?_account=19533" style="display:none;width:0;height:0;" border="0"/></noscript> 
     
 <script type="text/javascript" charset="UTF-8" src="//t1.daumcdn.net/kas/static/kp.js"></script>
 <script type="text/javascript">

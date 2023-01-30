@@ -159,7 +159,7 @@
       </div>
  -->       
       <ul class="nav-links">
-            <li><a href="${CPATH}/member/${userId}/estimatelist">홈</a></li>
+            <li><a href="${CPATH}/">홈</a></li>
             <li><a href="${CPATH}/totalrent">전체견적</a></li>
             <li><a href="${CPATH}/download">계약/설명서</a></li>
  <c:if test="${userLevel >= 5 }">           
@@ -167,11 +167,7 @@
  </c:if>
 
       </ul>
-      <div class="burger">
-        <div class="line1"></div>
-        <div class="line2"></div>
-        <div class="line3"></div>
-      </div>
+    
     </nav>      
  <script>
 // 메뉴 768 이하일때 햄버거 메뉴로 변경하고 클릭시 메뉴리스트 보여줌.

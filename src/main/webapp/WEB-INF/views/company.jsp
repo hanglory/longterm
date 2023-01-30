@@ -34,12 +34,11 @@ wcs_do();
 <div style= "text-align: center; margin-top:0px;">
 <img src="/images/company01.jpg" alt="" style="max-width:100%; height:auto;" /></div>
 
-<h1 style="text-align:center; margin-top: 20px; margin-bottom:10px;">10주년 소개 영상</h1>
-<p align ="middle">
-<iframe width="600" height="370" src="https://www.youtube.com/embed/dr6fGoTLX1o" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-</p>
-
 
 <div style= "text-align: center; margin-top:0px;">
 <img src="/images/company02.jpg" alt="" style="max-width:100%; height:auto;" /></div>
 
+<h1 style="text-align:center; margin-top: 20px; margin-bottom:10px;">10주년 소개 영상</h1>
+<p align ="middle">
+<iframe width="600" height="370" src="https://www.youtube.com/embed/dr6fGoTLX1o" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+</p>

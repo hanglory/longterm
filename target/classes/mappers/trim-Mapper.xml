@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="rent.car">
 	<select id="modellist" resultType="com.harmony.longterm.vo.CarVO">
-		SELECT maker, name as model_name, image, MIN(ranking) AS ranking 
+		SELECT maker, name as model_name, image, image as image2, MIN(ranking) AS ranking 
 		FROM model 
 		WHERE active = 1 
 		AND maker = #{maker}

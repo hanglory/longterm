@@ -42,6 +42,12 @@
 
 
     <nav class="nav_head_menu">
+          <div class="burger">
+        <div class="line1"></div>
+        <div class="line2"></div>
+        <div class="line3"></div>
+      </div>
+    
       <div class="logo__nav">
         <a href="/"><img src="${RPATH}/images/logo.png" alt="" /></a>
       </div>
@@ -62,11 +68,7 @@
 </c:if>
 
       </ul>
-      <div class="burger">
-        <div class="line1"></div>
-        <div class="line2"></div>
-        <div class="line3"></div>
-      </div>
+
 <% if( isMobile ==1 ){ %>
 	<c:if test="${fn:indexOf(URI,'main') >= 0 }">
 <div id="tbtn2" style="width: 80px;"> 

@@ -9,7 +9,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-
+<meta name="naver-site-verification" content="2f6c71088cc6a9b941612c4591a23a0d11b5644f" />
+<meta name="google-site-verification" content="ZygN6jHeo4iTbJ_wbhJr4qYAbrGwssMe-JwCXFSdDWA" />
 <title><tiles:getAsString name="title"></tiles:getAsString></title>
 <link rel="stylesheet" href="resources/css<tiles:getAsString name="IncludeCSS"/>.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -20,6 +21,16 @@ body {
 	padding: 0;
 }
 </style>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-10978682224">
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-10978682224');
+
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -47,6 +58,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script type="text/javascript">
       kakaoPixel('3481025403756984027').pageView('1');
 </script>   
+
+<!-- Smartlog -->
+<script type="text/javascript"> 
+    var hpt_info={'_account':'UHPT-19533', '_server': 'a23'};
+</script>
+<script language="javascript" src="//cdn.smlog.co.kr/core/smart.js" charset="utf-8"></script>
+<noscript><img src="//a23.smlog.co.kr/smart_bda.php?_account=19533" style="display:none;width:0;height:0;" border="0"/></noscript> 
     
 
 </head>

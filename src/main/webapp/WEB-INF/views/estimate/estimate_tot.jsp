@@ -714,11 +714,11 @@ var estimateall = {
           </div>
           <div class="between">
             <span><fmt:formatNumber type="number" maxFractionDigits="3" value="${depositratio_hi *100}" />%</span>
-            <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${deposit_hi / 10000}" /> 만원<br>
+            <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${(trimprice + optionprice + colorprice) * depositratio_hi}" /> 원<br>
           </div>
           <div class="between">
-            <span><fmt:formatNumber type="number" maxFractionDigits="0" value="${acquisition_hi/cal_price*100 }" />%</span>
-            <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${acquisition_hi/10000 }" /> 만원</span>
+            <span><fmt:formatNumber type="number" maxFractionDigits="0" value="${acquisition_hi/(trimprice + optionprice + colorprice)*100 }" />%</span>
+            <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${(acquisition_hi) }" /> 원</span>
           </div>
           <div class="color between">
             <span>vat 포함</span>
@@ -763,11 +763,11 @@ var estimateall = {
           </div>
           <div class="between">
             <span><fmt:formatNumber type="number" maxFractionDigits="3" value="${depositratio_my *100}" />%</span>
-            <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${deposit_my / 10000}" /> 만원<br>
+            <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${(trimprice + optionprice + colorprice) * depositratio_my }" /> 원<br>
           </div>
           <div class="between">
-            <span><fmt:formatNumber type="number" maxFractionDigits="0" value="${acquisition_my/cal_price*100 }" />%</span>
-            <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${acquisition_my/10000 }" /> 만원</span>
+            <span><fmt:formatNumber type="number" maxFractionDigits="0" value="${acquisition_my/(trimprice + optionprice + colorprice)*100 }" />%</span>
+            <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${(acquisition_my) }" /> 원</span>
           </div>
           <div class="color between">
             <span>vat 포함</span>
@@ -860,11 +860,11 @@ var estimateall = {
           </div>
           <div class="between">
             <span><fmt:formatNumber type="number" maxFractionDigits="3" value="${depositratio_no *100}" />%</span>
-            <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${deposit_no / 10000}" /> 만원<br>
+            <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${(trimprice + optionprice + colorprice) * depositratio_no }" /> 원<br>
           </div>
           <div class="between">
-            <span><fmt:formatNumber type="number" maxFractionDigits="0" value="${acquisition_no/cal_price*100 }" />%</span>
-            <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${acquisition_no/10000 }" /> 만원</span>
+            <span><fmt:formatNumber type="number" maxFractionDigits="0" value="${acquisition_no/(trimprice + optionprice + colorprice)*100 }" />%</span>
+            <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${(acquisition_no) }" /> 원</span>
           </div>
           <div class="color between">
             <span>vat 포함</span>

@@ -1,4 +1,5 @@
 package com.harmony.longterm.controller;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -6,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 /*    */ import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -231,7 +233,18 @@ public String usedcarReal(Model model,@RequestParam(value = "page", defaultValue
 		return usedCarVO;     
    }
 
-   
+   /**
+    * 봇 크롤링 
+    */
+   @RequestMapping(value = "/robots.txt")
+   @ResponseBody
+   public void robotsBlock(HttpServletRequest request, HttpServletResponse response) {
+   	try {
+   		response.getWriter().write("User-agent: *\nAllow: /\n \n #DaumWebMasterTool:3b027cea3769a1793e235832277edc7c711f324e8d3d06c9e348bbb0dd731555:kcSTJreB+fP+plExwbhoPg==");
+   	} catch (IOException e) {
+   		logger.debug( "error" + e);
+   	}
+   }   
 
 /*    */ }
 

@@ -27,6 +27,214 @@ wcs_do();
 }
 </script>
 
+
+
+
+
+
+<script language="JavaScript"> function setCookie( name, value, expiredays )
+ { var todayDate = new Date(); todayDate.setDate( todayDate.getDate() + expiredays ); 
+document.cookie = name + "=" + escape( value ) + "; path=/; expires=" + todayDate.toGMTString() + ";" }
+ function closeWin() { if ( document.notice_form.chkbox.checked ){ setCookie( "maindiv", "done" , 1 ); }
+ document.all['divpop'].style.visibility = "hidden"; } 
+</script>
+
+    
+<script language="JavaScript"> 
+var isPhoneAuth = false;
+var isAuthBtn = false;
+var getAuthNum = "0";
+function setCookie( name, value, expiredays ){ 
+	var todayDate = new Date(); todayDate.setDate( todayDate.getDate() + expiredays ); 
+	document.cookie = name + "=" + escape( value ) + "; path=/; expires=" + todayDate.toGMTString() + ";" 
+}
+
+function sendSmsMsg(formVal) {
+//	var telval= formVal.re_phone.value();
+	var phoneval="";
+	var customerval = "";
+		phoneval = document.getElementById("re_phone").value;
+		customerval = document.getElementById("re_name").value;
+		//authNumber = document.getElementById("re_auth").value; 인증번호
+		carKindSel = formVal.re_credit.value;
+		if(!fn_mbtlnumChk(phoneval) ){
+			document.getElementById("re_phone").focus();
+			return false;
+		}
+
+		var smsSendAuth = {phoneNo: phoneval,
+				customerNm: customerval,
+				carKindSel: carKindSel,
+			 	keyType:"MAIN_STATIC"
+			 };
+	
+		if($('#submitbtn').val() == "인증번호받기"){
+			$('#submitbtn').val("신청하기");
+			smsSendAuth.keyType = "STATIC";
+			$.ajax({
+				type: "POST",
+				url: baseUrl+"bbs/smsSendAjax",
+				data    :JSON.stringify(smsSendAuth),
+				async: false,
+				//dataType: "json",          // ajax 통신으로 받는 타입
+				contentType: "application/json",  // ajax 통신으로 보내는 타입
+				success: function(data) {
+					data.smsCode;
+					data.keyValue;
+					getAuthNum = data.authKey;
+					if(data.smsCode != "0000"){
+						alert("인증문자 전송 실패");
+						isAuthBtn = false;
+						return false;
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+					alert("실패.")
+					return false;
+				}
+			});			
+			return false;
+		}
+	
+    /*
+    if(authNumber.length != 4) {
+			alert('인증문자를 입력해 주세요');
+			return false;
+		}
+		if(authNumber != getAuthNum){
+			alert('인증번호가 맞지 않습니다.');
+			return false;
+		}
+		if(isPhoneAuth){
+			alert('문자전송중 입니다. 잠시 기다려 주세요. 문자를 받지 못하셨으면 스팸함을 확인해 주세요.');
+			return false;
+		}
+    
+    */
+		isPhoneAuth = true;
+//		$('#submitbtn').val("신청하기");
+		
+//	$(this).val('인증번호확인');
+//	addClass('selected');
+	
+	$.ajax({
+		type: "POST",
+		url: baseUrl+"bbs/smsSendHelpAjax",
+		data    :JSON.stringify(smsSendAuth),
+		async: false,
+		//dataType: "json",          // ajax 통신으로 받는 타입
+        contentType: "application/json",  // ajax 통신으로 보내는 타입
+		success: function(data) {
+				data.smsCode;
+				data.keyValue;
+				car.authNumber = data.authKey;
+				if(data.smsCode == "0000"){
+					alert("상담요청이 완료 되었습니다. 곧 상담원이 전화 연락 드리겠습니다.");
+					isPhoneAuth = false;
+					return false;
+				}else{
+					alert("현재 문자 전송이 원활하지 않습니다. 잠시후 다시 이용해 주세요.");
+					return false;
+				}
+            
+            this.change();
+            this.changedaum();
+            
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+            alert("문자 전송 실패.")
+            return false;
+		}
+	});
+} // <------ 현드폰번호 인증	
+
+function authSms(){
+	var smsSendAuth = {phoneNo: phoneval,
+		 	keyType:"STATIC"
+		 };
+	$.ajax({
+		type: "POST",
+		url: baseUrl+"bbs/smsSendAjax",
+		data    :JSON.stringify(smsSendAuth),
+		async: false,
+		//dataType: "json",          // ajax 통신으로 받는 타입
+		contentType: "application/json",  // ajax 통신으로 보내는 타입
+		success: function(data) {
+			data.smsCode;
+			data.keyValue;
+			car.authNumber = data.authKey;
+			if(data.smsCode != "0000"){
+				alert("인증문자 전송 실패");
+				isPhoneAuth = false;
+				return false;
+			}
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+			alert("실패.")
+			return false;
+		}
+	});
+}
+
+
+function fn_mbtlnumChk(mbtlnum){
+	  var regExp = /^(?:(010-\d{4})|(01[1|6|7|8|9]-\d{3,4}))(-\d{4})$/;
+	  if(!regExp.test(mbtlnum)){
+	    alert(mbtlnum+"휴대폰번호가 올바르지 않습니다.");
+	    return false;
+	  }
+	  return true;
+}
+function autoHypenPhone(str){
+    str = str.replace(/[^0-9]/g, '');
+    var tmp = '';
+    if( str.length < 4){
+        return str;
+    }else if(str.length < 7){
+        tmp += str.substr(0, 3);
+        tmp += '-';
+        tmp += str.substr(3);
+        return tmp;
+    }else if(str.length < 11){
+        tmp += str.substr(0, 3);
+        tmp += '-';
+        tmp += str.substr(3, 3);
+        tmp += '-';
+        tmp += str.substr(6);
+        return tmp;
+    }else{              
+        tmp += str.substr(0, 3);
+        tmp += '-';
+        tmp += str.substr(3, 4);
+        tmp += '-';
+        tmp += str.substr(7);
+        return tmp;
+    }
+    return str;
+}
+jQuery(document).ready(function(){
+
+	$("#re_phone").on("propertychange change keyup paste input", function() {
+		var _val = $(this).val();
+		
+		var tel_val = autoHypenPhone(_val) ;
+		$(this).val(tel_val);
+	});	
+});
+
+</script>    
+    
+    
+	
+<script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
+<script type="text/javascript">
+if(!wcs_add) var wcs_add = {};
+wcs_add["wa"] = "14e79358f12c520";
+if(window.wcs) {
+wcs_do();
+}
+</script>
+
 <style>
 
 #customer{
@@ -84,20 +292,21 @@ wcs_do();
 	}
 	
 	.sector2 {
-		--overflow: hidden;
+		
 		position: relative;
-		--padding-bottom:56.25%;
+		
 		margin: auto;
-		--background-color: #0074e3;
-		 --border-bottom: 1px solid #d7d7d7;
+		
+	/* border-bottom: 3px solid #015ec6;*/
+      
 		text-align:center;
 	}	
 	.sector2 img {
 		
-		width: 370px;
+		width: 100%;
 		margin: auto;
 		vertical-align: middle;
-		
+		border-bottom: 2px solid #c2c1c1;
 		
 	}
 
@@ -170,26 +379,6 @@ wcs_do();
 .hd_pops_footer button {margin-right:5px;padding:5px 10px;border:0;background:#393939;color:#fff}
 
 
-#quick{width:127px; top:102px; right:137px; position:absolute;}
-#quick .quick-input{width:200px; border:1px solid #478ed1; background:#f1f6f6; float:left;}
-#quick .quick-btn{width:195px; margin-top:5px; float:left;}
-
-#quick .quick-input h1{padding-top:20px; font-weight:600; font-size:16px; text-align:center; color:#478ed1; display:block;}
-#quick .quick-input ul{padding:5px 25px 15px; float:left;}
-#quick .quick-input ul li{margin-top:3px; float:left;}
-#quick .quick-input ul li input{width:150px; height:24px; border:1px solid #242424; background:#fbfbfb;}
-#quick .quick-input span{margin-right:1px; position:relative; _display:inline; float:left;}
-#quick .quick-input span label{top:5px; left:6px; position:absolute; letter-spacing:-1px; color:#999;}
-#quick .quick-input div.agree{width:140px; margin-top:2px; margin-left:30px; font-size:11px; color:#999; float:left;}
-#quick .quick-input div.agree a{margin:3px 5px; text-align:center; display:block;}
-#quick .quick-input div.submit{width:127px; float:left;}
-#quick .quick-input div.submit input{width: 200px; height:29px; font-weight:600; color:#fff; border:0; background:#478ed1;}
-#vagree2{width:254px; height:236px; padding:10px; top:0; left:-254px; z-index:10000; border:2px solid #222; background:#fff; position:absolute;}
-#vagree2 h2{font-weight:bold; font-family:"NanumGothic"; color:#444; font-size:100%}
-#vagree2 div{width:232px; border:1px solid #d7d7d7; height:190px; margin-top:5px; padding:10px; background:#fbfbfb; overflow-y:scroll; scrollbar-face-color:#fff; scrollbar-shadow-color:#eaeaea; scrollbar-highlight-color:#eaeaea; scrollbar-3dlight-color:#fff; scrollbar-darkshadow-color:#fff; scrollbar-track-color:#fff; scrollbar-arrow-color:#eaeaea; float:left;}
-#vagree2 div h3{font-weight:bold; font-family:"NanumGothic"; color:#707070; font-size:100%}
-#vagree2 div ul{margin:5px 0 10px;}
-#vagree2 div ul li{font-size:11px; line-height:20px; color:#909090;}
 .dn{display:none;}
 
     
@@ -286,10 +475,10 @@ wcs_do();
 }
 
 .car_content .right_area strong.red {
- background-color: #ed145b;
+ background-color: #005ec6;
 }
 .car_content .right_area strong.orange {
- background-color: #f26522;
+ background-color: #2db2c8;
 }
 
 .car_content .bottom_area {
@@ -374,6 +563,127 @@ wcs_do();
 
 /*슬라이드버튼 */  
     
+    
+    
+ /*모바일문자상담창 스타일*/
+    
+    
+.quick {
+  width: 100%;
+  height: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /*background: rgba(0, 0, 0, 0.1);*/
+}
+
+.quick-input {
+  width: 80%;
+  height: 400px;
+  background: white;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 6px solid #015ec6;
+  flex-direction: column;
+  margin-top: 15px;
+  margin-bottom: 15px;
+    padding-left:20px;
+    padding-right:20px;
+}
+
+h2 {
+  color: tomato;
+  font-size: 2em;
+}
+
+.quick-input_id {
+   /*margin-top: 20px;*/
+  width: 100%;
+}
+
+.quick-input_id input {
+  width: 100%;
+  height: 50px;
+  /*border-radius: 30px;*/
+  margin-top: 10px;
+  padding: 0px 20px;
+  border: 1px solid #bebebe;
+  outline: none;
+}
+
+.quick-input_pw {
+  /*margin-top: 20px;*/
+  width: 100%;
+}
+
+.quick-input_pw input {
+  width: 100%;
+  height: 50px;
+  /*border-radius: 30px;*/
+  margin-top: 10px;
+  padding: 0px 20px;
+  border: 1px solid #c2c3c3;
+  outline: none;
+}
+
+.quick-input_etc {
+  padding: 10px;
+  width: 100%;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+.submit {
+  /*margin-top: 50px;*/
+  width: 100%;
+}
+.submit input {
+  width: 100%;
+  height: 50px;
+  border: 0;
+  outline: none;
+  border-radius: 40px;
+  background: linear-gradient(to left, rgb(47, 147, 255), rgb(46, 101, 255));
+  color: white;
+  font-size: 1.2em;
+  letter-spacing: 2px;
+}
+    
+    /*모바일 문자상담창 끝*/
+    
+    
+    
+ .call_btn {
+  width: 80%;
+  height: 50px;
+  border: 0;
+  outline: none;
+  /*border-radius: 40px;*/
+  background: linear-gradient(to left, rgb(47, 147, 255), rgb(46, 101, 255));
+  color: white;
+  font-size: 1.2em;
+  letter-spacing: 2px;
+    margin-top:5px;
+}   
+    
+     .call_btn2 {
+  width: 80%;
+  height: 50px;
+  border: 0;
+  outline: none;
+  /*border-radius: 40px;*/
+  background: linear-gradient(to left, rgb(46, 101, 255), rgb(47, 147, 255));
+  color: white;
+  font-size: 1.2em;
+  letter-spacing: 2px;
+    margin-top:15px;
+}   
+  
     
     
 @media screen and (max-width: 790px) {
@@ -473,7 +783,7 @@ wcs_do();
     
     .btn1 {
         
-  background-color: #4CAF50;
+  background-color: #005ec6;
   border: none;
   color: white;
   padding: 7px 11px;
@@ -487,15 +797,25 @@ wcs_do();
   float:right;
 
     }
-    
    
 }    
       
-    
+     slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+}
+
+/* 이미지를 숨기는데 사용 */
+.mySlides {
+    display: none;
+}
+   
     
 </style>
     
 <link rel="stylesheet" href="/css/static.css">
+ <link rel="stylesheet" href="/css/style.css">
     
 <c:if test="${siteinfoVO.id > 0 }">
 	<c:if test="${cookie.maindiv.value ne 'done' }">
@@ -539,8 +859,112 @@ $(document).ready(function(){
 
 </c:if>
 </c:if>
-	
-	<div class="sector2">
+
+<script>
+    var index = 0;   //이미지에 접근하는 인덱스
+    window.onload = function(){
+        slideShow();
+    }
+    
+    function slideShow() {
+    var i;
+    var x = document.getElementsByClassName("slide1");  //slide1에 대한 dom 참조
+    for (i = 0; i < x.length; i++) {
+       x[i].style.display = "none";   //처음에 전부 display를 none으로 한다.
+    }
+    index++;
+    if (index > x.length) {
+        index = 1;  //인덱스가 초과되면 1로 변경
+    }   
+    x[index-1].style.display = "block";  //해당 인덱스는 block으로
+    setTimeout(slideShow, 5000);   //함수를 4초마다 호출
+ 
+}
+      
+      
+      
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}      
+</script>    
+    
+    
+    
+    <div class = "sector2">
+    
+  <a href ="tel:1661-9763"><img class="slide1" src="${RPATH}/images/m_main11.jpg"></a>
+  <a href ="tel:1661-9763"><img class="slide1" src="${RPATH}/images/m_main22.jpg"></a>
+  <a href ="tel:1661-9763"><img class="slide1" src="${RPATH}/images/m_main33.jpg"></a>
+    
+    
+    </div>
+    
+      <!--<div style="text-align:center;">
+      <a href ="tel:1661-9763"><img style="width:80%;height:50px;margin-top:15px;" src="${RPATH}/images/kakaochat.jpg"></a></div>--> 
+       
+    <div style="text-align:center;">
+    <a href ="https://open.kakao.com/o/swhk8rFe"><button type="button" class = "call_btn2" id="call_btn2">카카오톡 상담연결</button></a></div> 
+    
+     <div style="text-align:center;">
+    <a href ="tel:1661-9763"><button type="button" class = "call_btn" id="call_btn">1661 - 9763 상담연결</button></a></div> 
+    
+    
+    <!-- 문자상담창 -->
+    
+    <div id="quick" class ="quick">
+        <div class="quick-input">
+            <div style="display: inline-block;text-align: center;align-items: center;">
+            <form method="post" id="frequestform" name="frequestform" onSubmit="return sendSmsMsg(this)" action="#">
+            <input type="hidden" id="re_divi" name="re_divi" value="quick" />
+            <h4 style="font-size: 22px; color: #005fbd; font-weight: 600; background-color: white;">상담문의</h4>
+            <div class="quick-input_id">
+                <!--<h4>이름</h4>-->
+                <input type="text" id="re_name" name="re_name" required class="focusInput" placeholder="&nbsp;&nbsp;이름"/>
+            </div>
+            <div class="quick-input_pw">
+                <!--<h4>전화번호</h4>-->
+                <input type="text" id="re_phone" name="re_phone" required class="focusInput" pattern="(010)-\d{3,4}-\d{4}" placeholder="&nbsp;&nbsp;010-1234-5678"/>
+            </div>
+            <!--<div class="quick-input_pw">
+                <!--<h4>인증번호</h4>--
+                <input type="text" id="re_auth" name="re_auth" class="focusInput" placeholder="&nbsp;&nbsp;인증번호" />
+            </div>-->
+            <div class="quick-input_pw">
+                <!--<h4>희망차종</h4>-->
+                <input type="text" id="re_credit" name="re_credit" required class="required" placeholder="희망차종"/>
+            </div>
+            <div class="quick-input_etc">
+                <div class="checkbox">
+                <input type="checkbox" id="agree" name="agree" required value="1" />&nbsp;&nbsp;개인정보동의 
+                </div>
+        
+            </div>
+            <div class="submit">
+                <input type="submit" value="신청하기" id="submitbtn">
+            </div>
+                
+            </form>
+        </div>
+        </div>
+    </div>
+    
+    <!-- 문자상담창 끝 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	<!--<div class="sector2">
 
 						<img src="${RPATH}/images/mb_main2.png"  name = "mainvisualimg" usemap="#Map" >
 
@@ -549,17 +973,11 @@ $(document).ready(function(){
     		<area shape="rect" coords="229,300,335,377" href="${RPATH}/bbs/usedcarRealNew" onfocus="blur();"/>
     		<area shape="rect" coords="49,370,145,479" href="${RPATH}/bbs/usedcarReal" onfocus="blur();"/>
     		<area shape="rect" coords="184,393,318,507" href="${RPATH}/bbs/usedcarRealNew?isList=1" onfocus="blur();"/>
-	</map>		<!--<video autoplay muted loop>
-			<source src="${RPATH}/images/harmony.mp4" type="video/mp4">-->
-	
-		<!--<video width="427" height="240" controls>
-  		<source src="${RPATH}/images/harmony.mp4" type="video/mp4">
-  			<source src="${RPATH}/images/harmony.ogg" type="video/ogg">
-			Your browser does not support the video tag.
-			</video>-->
-		<!--<img src="${RPATH}/images/total-top.jpg" alt="" />-->
-		
-</div>
+	</map>	
+        
+</div>-->
+    
+    
 		<!--<div class="sector3">
 			<div class="col4">
 				<a href="./totalrent">
@@ -583,12 +1001,20 @@ $(document).ready(function(){
 			
 				<img src="${RPATH}/images/mb_main.png" alt="" />
 			</div>-->
+    
+    
+    
+    
 <!--신차/중고 차량 리스트 --> 
      <div style="display: table; margin:auto;">
      
          
- <h1 style=" font-size:24px; font-weight: 600; color:#7a7a7a;"> 즉시출고 신차장기렌트</h1> 
+ <!--<h1 style=" font-size:24px; font-weight: 600; color:#7a7a7a;"> 즉시출고 신차장기렌트</h1> 
 <!--<h1 style="padding-left:20px;  font-size:28px; font-weight: 600; color:##7a7a7a;"> 즉시출고 신차장기렌트</h1>-->
+         
+ <div style="width:100%;"><a href="${RPATH}/bbs/usedcarRealNew"><img src="${RPATH}/images/m_newrent.jpg" style="width:100%;margin-top:5px;" alt=""></a></div>
+         
+         
 <ul class='car_list thumbnail'>  
    
 <c:forEach var="usedCarVO" items="${newUsedCarVO }">
@@ -661,16 +1087,19 @@ function showDivs(n) {
     
 </c:forEach>
  
-<button class="btn1" onclick="location.href='${RPATH}/bbs/usedcarRealNew';">신차더보기</button>    
+<button class="btn1" onclick="location.href='${RPATH}/bbs/usedcarRealNew';">신차장기렌트 더보기</button>    
     
 </ul>
          
       <!-- <div><a href ="${RPATH}/bbs/usedcarRealNew"><h1 style="text-align:right; font-size:20px; font-weight: 600;padding-right:40px; color:black"> ->&nbsp;신차 더보기</h1></a></div>-->
 
-  <br><br>      
+       
          
-<!--<h1 style="padding-left:20px; margin-top:20px; font-size:28px; font-weight: 600; color:##7a7a7a;"> 검증완료 중고재렌트</h1>-->
- <h1 style="margin-top:20px; font-size:24px; font-weight: 600; color:#7a7a7a;"> 검증완료 중고재렌트</h1>          
+<!--<h1 style="padding-left:20px; margin-top:20px; font-size:28px; font-weight: 600; color:##7a7a7a;"> 검증완료 중고재렌트</h1>
+ <h1 style="margin-top:20px; font-size:24px; font-weight: 600; color:#7a7a7a;"> 검증완료 중고재렌트</h1>--> 
+         
+ <div style="width:100%;"><a href="${RPATH}/bbs/usedcarReal"><img src="${RPATH}/images/m_usedrent.jpg" style="width:100%;" alt=""></a></div>         
+         
          
 <ul class='car_list thumbnail'>
 <c:forEach var="usedCarVO" items="${oldUsedCarVO }">
@@ -765,7 +1194,7 @@ if(window.wcs) _nasa["cnv"] = wcs.cnv("1","10"); // 전환유형, 전환가치 �
 </li>
 </c:forEach>
     
-      <button class="btn1" onclick="location.href='${RPATH}/bbs/usedcarReal';">재렌트더보기</button>
+      <button class="btn1" onclick="location.href='${RPATH}/bbs/usedcarReal';">중고장기렌트 더보기</button>
     
 </ul>
         
@@ -834,5 +1263,7 @@ if(window.wcs) _nasa["cnv"] = wcs.cnv("1","10"); // 전환유형, 전환가치 �
 <script language="Javascript"> cookiedata = document.cookie; if ( cookiedata.indexOf("maindiv=done") < 0 )
 { document.all['divpop'].style.visibility = "visible"; } else { document.all['divpop'].style.visibility = "hidden"; } </script>
 	
+
+
 
 

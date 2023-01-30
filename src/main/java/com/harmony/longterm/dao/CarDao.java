@@ -98,7 +98,7 @@ public class CarDao
 	  
 //오너형 계산
 	  if(tax_rate == 0.065F) {
-		  if (fuel.equals("전기")) {
+		  if (fuel.equals("전기") || fuel.equals("하이브리드") ) { 
 			  tax_price = (int)(price / 1.1715F * 1.1F);
 		  }else {
 			 tax_price = (int)(price / 1.1715F * 1.15005F);
@@ -265,8 +265,15 @@ int etcprice = Integer.parseInt(map.get("tagsong_price").toString()) + Integer.p
 	    
 	    float cal_rate = car.getCal_rate();
 	    int maintain_fee = car.getMaintain_fee();
+	    String tax_type = car.getTax_type();
+	    String fuel = car.getFuel();
 //	    float cal_rent = (float)((price * cal_rate + maintain_fee) * 1.1D);
-	    float cal_rent = (float)(((price/1.1715D) * cal_rate + maintain_fee) * 1.1D);
+	    float cal_rent = 0;
+	    if(tax_type.equals("면세") || fuel.equals("전기") || tax_type.equals("승합차") ) {
+	    	cal_rent = (float)(((price/1.1D) * cal_rate + maintain_fee) * 1.1D);
+	    }else {
+	    	cal_rent = (float)(((price/1.1715D) * cal_rate + maintain_fee) * 1.1D);
+	    }
 	    
 	    this.logger.debug("수수료 : " + Integer.toString((int)cal_rent));
 	    retVal.put("rentfee",(int)cal_rent);
@@ -276,8 +283,8 @@ int etcprice = Integer.parseInt(map.get("tagsong_price").toString()) + Integer.p
 	    float tax_rate = car.getTax_rate();
 	    price = car.getPrice() + option_price;
 	    int reg_car_price = (int)(price / 1.1D / (1.0F + tax_rate));
-	    String tax_type = car.getTax_type();
-	    String fuel = car.getFuel();
+
+
 	    float janga = 0.0F;
 	    if (period == 24) {
 	      janga = car.getJanga24();
@@ -300,11 +307,11 @@ int etcprice = Integer.parseInt(map.get("tagsong_price").toString()) + Integer.p
 //	      acquisition = (int)(cal_price * janga);
 //	    }
 //	    else 
-	    	if (deposit_ratio == 0.1F) {
-	      acquisition = (int)(cal_price * (janga + 0.1D));
+	   	if (deposit_ratio == 0.1F) {
+	      acquisition = (int)(price * (janga + 0.15D));
 	    }
 	    else if (deposit_ratio == 0.5F) {
-	      acquisition = (int)(cal_price * (janga + 0.04D));
+	      acquisition = (int)(price * (janga + 0.09D)); //잔가는 price = car.getPrice() + option_price 로 계산. ex)estimate_tot에 나오는 차량가로 계산해야함
 	    } else {
 	      this.logger.error("CHECK deposit_ratio");
 	    } 

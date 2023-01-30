@@ -30,10 +30,26 @@ if(window.wcs) {
 wcs_do();
 }
 </script>
+<br><br><br>
+<br><br>
 
 <div style= "text-align: center; margin-top:0px;">
-<img src="/images/returninfo1.jpg" alt="" style="max-width:100%; height:auto;" /></div>
+<img src="/images/returninfo1.jpg" alt="" style="max-width:100%; height:auto;" usemap="#imagemap"></div>
+
+     <map name="imagemap" id="imagemap">
+    <area shape="rect" coords="565,139,724,198" href="tel:1588-5802" target="_blank">
+</map>
+    
+    
+    
 <div style= "text-align: center; margin-top:0px;">
-<img src="/images/returninfo2.jpg" alt="" style="max-width:100%; height:auto;" /></div>
+<img src="/images/returninfo2.jpg" alt="" style="max-width:100%; height:auto;" usemap="#imagemap2">  
+    </div>
+    <map name="imagemap2" id="imagemap2">
+    <area shape="rect" coords="476,925,640,985" href="tel:010-7604-1262" target="_blank">
+</map>    
+    
+<div style= "text-align: center; margin-top:0px;">
+<img src="/images/returninfo3.png" alt="" style="max-width:100%; height:auto;" /></div>
 
 

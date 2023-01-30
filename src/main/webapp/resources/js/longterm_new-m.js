@@ -335,7 +335,7 @@ $(function(){
 		car.deposit_ratio_hi = $("#depositratio_hi option:selected").val();
 		if (car.trim_price + car.total_option_price + car.color_price > 50000000){
 			if(car.deposit_ratio_hi < 0.2){
-				alert('차량가격이 5000만원 미만이면 보증금은 20%부터 선택이 가능 합니다');
+				alert('차량가격이 5000만원 이상이면 보증금은 20%부터 선택이 가능 합니다');
 				$("#depositratio_hi").val("0.2");
 				car.deposit_ratio_hi = 0.2;
 			}

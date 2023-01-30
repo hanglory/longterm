@@ -221,6 +221,24 @@ $(function(){
 
 </script>
 
+        <% 
+	int isMobile = 0;
+	String agent = request.getHeader("USER-AGENT");
+	String[] mobileos = {"iPhone","iPod","Android","BlackBerry","Windows CE","Nokia","Webos","Opera Mini","SonyEricsson","Opera Mobi","IEMobile"};
+	int j = -1;
+	for(int i=0 ; i<mobileos.length ; i++) {
+		j=agent.indexOf(mobileos[i]);
+		if(j > -1 )
+		{
+			// 모바일로 접근했을 때
+			isMobile = 1;
+			break;
+		}
+	}
+%>
+    
+    
+    
    <div class="content_box">
     <h1>${usedCarVO.trim_name }</h1>
     <div class="car">
@@ -327,6 +345,8 @@ $(function(){
 ${usedCarVO.contents }
     </div>
   </div>
+    
+   <% if( isMobile != 1 ){ %> 
 <c:forEach var="usedCarVoPop" items="${usedCarVOPop }">
 <div id="quick">
 	<div class="quick-input">
@@ -353,6 +373,7 @@ ${usedCarVO.contents }
 	</div>
 </div>
 </c:forEach>
+         <% } %>
 <script>
 
 window.addEventListener("load", function() {

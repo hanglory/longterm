@@ -21,6 +21,11 @@ window.onload = function(){
 	} 
 } 
 </script>
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+ <script src="http://mattstow.com/experiment/responsive-image-maps/jquery.rwdImageMaps.min.js"></script>
+    
+    
 	
 <script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
 <script type="text/javascript">
@@ -31,8 +36,27 @@ wcs_do();
 }
 </script>
 
-<div style= "text-align: center; margin-top:0px;">
-<img src="/images/maintenance.jpg" alt="" style="max-width:100%; height:auto;" /></div>
+<div style= "text-align: center; margin-top:30px;">
+    
+<img src="/images/maintenance.jpg" alt="" style="max-width:100%; height:auto;" usemap="#imagemap">
+    <map name="imagemap" id="imagemap">
+    <area shape="rect" coords="477,839,1225,865" href="tel:1661-7977" target="_blank">
+    <area shape="rect" coords="531,1113,1008,1140" href="tel:080-600-6000" target="_blank">
+    <area shape="rect" coords="513,1151,1007,1177" href="tel:080-200-2000" target="_blank">
+    <area shape="rect" coords="571,1188,1034,1214" href="tel:080-300-3000" target="_blank"> 
+    <area shape="rect" coords="415,1226,887,1251" href="tel:080-3000-5000" target="_blank"> 
+    <area shape="rect" coords="354,1461,712,1540" href="https://www.car.go.kr/home/gate.do" target="_blank">
+</map>
+    
+    
+    </div>
+    
+     <script>
+$(function(){
+	$('img[usemap]').rwdImageMaps();
+	
+});
+</script>
 
 
 

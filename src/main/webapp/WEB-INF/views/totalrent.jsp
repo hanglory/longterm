@@ -389,6 +389,7 @@ if(window.wcs) _nasa["cnv"] = wcs.cnv("1","10"); // 전환유형, 전환가치 �
 						<div id="car-image">
 							<img src="${RPATH}/images/로고배경.png" alt="차량이미지"></img>
 						</div>
+						
 						<div class='notice'><img src="${RPATH }/images/notice.png" alt="안내문" /></div>
 						<div class="rentcontent">
 							<div class="row">

@@ -17,7 +17,7 @@ function sendSmsMsg(formVal) {
 	var customerval = "";
 		phoneval = document.getElementById("re_phone").value;
 		customerval = document.getElementById("re_name").value;
-		authNumber = document.getElementById("re_auth").value;
+		//authNumber = document.getElementById("re_auth").value;인증번호
 		carKindSel = formVal.re_credit.value;
 		if(!fn_mbtlnumChk(phoneval) ){
 			document.getElementById("re_phone").focus();
@@ -57,6 +57,8 @@ function sendSmsMsg(formVal) {
 			});			
 			return false;
 		}
+    
+    /*
 		if(authNumber.length != 4) {
 			alert('인증문자를 입력해 주세요');
 			return false;
@@ -68,7 +70,7 @@ function sendSmsMsg(formVal) {
 		if(isPhoneAuth){
 			alert('문자전송중 입니다. 잠시 기다려 주세요. 문자를 받지 못하셨으면 스팸함을 확인해 주세요.');
 			return false;
-		}
+		} */
 		isPhoneAuth = true;
 //		$('#submitbtn').val("신청하기");
 		
@@ -782,7 +784,7 @@ function currentSlide(n) {
 		<ul>
 			<li><span><input type="text" id="re_name" name="re_name" required class="focusInput" placeholder="&nbsp;&nbsp;이름"/></span></li>
 			<li><span><input type="text" id="re_phone" name="re_phone" required class="focusInput" pattern="(010)-\d{3,4}-\d{4}" placeholder="&nbsp;&nbsp;010-1234-5678"/></span></li>
-			<li><span><input type="text" id="re_auth" name="re_auth" class="focusInput" placeholder="&nbsp;&nbsp;인증번호" /></li>
+			<!--<li><span><input type="text" id="re_auth" name="re_auth" class="focusInput" placeholder="&nbsp;&nbsp;인증번호" /></li>-->
             <li>
 			<span>
 				<select id="re_credit" name="re_credit" required class="required">
@@ -794,7 +796,7 @@ function currentSlide(n) {
 			</li>
 		</ul>
 		<div class="agree"><input type="checkbox" id="agree" name="agree" required value="1" /> <label for="agree">개인정보취급방침</label> <a href="javascript:;" class="btn-vagree2"><img src="${RPATH}/images/btn_vagree.png"></a></div>
-		<div class="submit"><input type="submit" value="인증번호받기" id="submitbtn" /></div>
+		<div class="submit"><input type="submit" value="신청하기" id="submitbtn" /></div>
 		</form>
 
 		<script type="text/javascript">
