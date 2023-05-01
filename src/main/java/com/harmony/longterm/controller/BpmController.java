@@ -62,7 +62,7 @@ public class BpmController {
 			   map.put("maker", "M");
 		   }else if(map.get("maker").equals("기아")) {
 			   map.put("maker", "N");
-		   }else if(map.get("maker").equals("로노삼성")) {
+		   }else if(map.get("maker").equals("르노삼성")) {
 			   map.put("maker", "S");
 		   }else if(map.get("maker").equals("쉐보레")) {
 			   map.put("maker", "L");

@@ -126,7 +126,6 @@
 			<artifactId>log4j-core</artifactId> 
 			<version>${log4j.version}</version> 
 		</dependency>
-
 	  <!-- jsoup HTML parser library @ http://jsoup.org/ -->
 		<dependency>
 		  <groupId>org.jsoup</groupId>

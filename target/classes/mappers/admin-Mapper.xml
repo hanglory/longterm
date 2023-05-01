@@ -67,7 +67,7 @@
 	</select>
 	
 	<select id="selectAccountByUserID" resultType="com.harmony.longterm.vo.BankAccountVO">
-		SELECT bank_name, account, carno, user_name, name, reg_id, memo, used_code, recv_date 
+		SELECT bank_name, account, carno, user_name, name, reg_id, memo, used_code, recv_date, ag, charge 
 		FROM bank_account  ba LEFT JOIN USER us 
 		ON ba.reg_id=us.nickname
 		WHERE reg_id=#{reg_id}
@@ -98,7 +98,7 @@
 	</select>
 	
 	<select id="selectAccount" resultType="com.harmony.longterm.vo.BankAccountVO">
-		SELECT seqno, bank_name, account, carno, user_name, name, reg_id, memo, used_code, recv_date 
+		SELECT seqno, bank_name, account, carno, user_name, name, reg_id, memo, used_code, recv_date, charge, ag 
 		FROM bank_account  ba LEFT JOIN USER us 
 		ON ba.reg_id=us.nickname
 		<where> 
@@ -117,6 +117,7 @@
 		<if test="seqno !=null and !seqno.equals('')" >
 			seqno = #{seqno}
 		</if>
+	
 		</where> 
 		ORDER BY recv_date DESC
 		LIMIT #{page}, #{count}
@@ -148,6 +149,8 @@
 			<if test="user_name != null and user_name != ''">user_name = #{user_name},</if>
 			<if test="memo != null and memo != ''">memo = #{memo},</if>
 			<if test="used_code != null and used_code != ''">used_code = #{used_code},</if>
+			<if test="ag != null and ag != ''">ag = #{ag},</if>
+			<if test="charge != null and charge != ''">charge = #{charge},</if>
 		</set>
     	WHERE account=#{account}
     	AND used_code = '1'
@@ -163,6 +166,7 @@
 			<if test="user_name != null and user_name != ''">user_name = #{user_name},</if>
 			<if test="memo != null and memo != ''">memo = #{memo},</if>
 			<if test="used_code != null and used_code != ''">used_code = #{used_code},</if>
+		
 		</set>
     	WHERE seqno=#{seqno}
     </update>     

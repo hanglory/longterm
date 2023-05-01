@@ -231,8 +231,10 @@ function showPer(per) {
 				<th>은행</th>
 				<th>계좌번호</th>
 				<th>입금자명</th>
-				<th>차량번호</th>
-                <th>발급일시</th>
+				<th>고객번호</th>
+                <!-- <th>발급일시</th> -->
+                <th>영업번호</th>
+                <th>에이전시번호</th>
                 <th>관리자</th>
 				<th>메모</th>
 			</tr>
@@ -244,7 +246,9 @@ function showPer(per) {
 					<td>${bankAccount.account }</td>
 					<td>${bankAccount.user_name }</td>
 					<td>${bankAccount.carno }</td>
-                    <td>${bankAccount.recv_date }</td>
+					<td>${bankAccount.charge }</td>
+					<td>${bankAccount.ag }</td>
+                     <!-- <td>${bankAccount.recv_date }</td> -->
 					<td>${bankAccount.name }</td>
 					<td>${bankAccount.memo }</td>
 				</tr>

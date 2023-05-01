@@ -98,7 +98,7 @@ function fnHidePop(sGetName){
 		<% if( isMobile ==1 ){ %>
 			<img src="${RPATH}/images/footer.png" alt="" style="max-width: 100%;height:auth;"  />
 		<%} else{ %>
-			<a href="javascript:fnShowPop('popup_event');"><img src="${RPATH}/images/footer.png" alt="" style="max-width: 100%;height:auth;"  /></a>
+			<img src="${RPATH}/images/footer.png" alt="" style="max-width: 100%;height:auth;"  />
 		<%} %>
 		</div>
  	</footer>

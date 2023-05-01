@@ -93,7 +93,7 @@
           </li>		
           
           <li class="info_item">
-            <p class="info_title">차량번호</p>
+            <p class="info_title">고객번호</p>
             <div class="input_wrap">
               <input type="text" placeholder="입력창(텍스트)" name="carno" id="carno" value="${bankAccountVo.carno }">
             </div>
@@ -105,6 +105,20 @@
             </div>
           </li>
           <li class="info_item">
+            <p class="info_title">영업번호</p>
+            <div class="input_wrap">
+              <input type="text" placeholder="입력창(텍스트)" name="charge" id="charge" value="${bankAccountVo.charge }">
+            </div>
+          </li>
+          
+            <li class="info_item">
+            <p class="info_title">에이전시번호</p>
+            <div class="input_wrap">
+              <input type="text" placeholder="입력창(텍스트)" name="ag" id="ag" value="${bankAccountVo.ag }">
+            </div>
+          </li>
+          
+            <li class="info_item">
             <p class="info_title">관리자ID</p>
             <div class="input_wrap">
               <input type="text" placeholder="입력창(텍스트)" name="reg_id" id="reg_id" value="${bankAccountVo.reg_id }">

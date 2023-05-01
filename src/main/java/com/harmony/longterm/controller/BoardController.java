@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,6 +37,8 @@ import com.harmony.longterm.utils.Utils;
 import com.harmony.longterm.vo.BoardVO;
 import com.harmony.longterm.vo.UsedCarVO;
 import com.mysql.cj.util.StringUtils;
+import com.runa.api.RunaApiClass;
+import com.runa.api.RunaApiResult;
 
 @Controller
 @RequestMapping({"/bbs"})
@@ -300,6 +303,142 @@ public class BoardController {
 	   return resultMap;
 
    }
+	@RequestMapping({"/banksmsSendAjax"})
+	@ResponseBody
+	public Map<String, Object> banksmsSendAjax(HttpServletRequest request, Model model, @RequestBody HashMap<String, Object> param) throws Exception {
+
+	   Map<String, Object> resultMap = new HashMap<String,Object>();
+	   
+	   
+	   String authNumber = Utils.randomAlphaNumeric(4);
+	   String strMsg = "하모니렌트카 인증번호는["+authNumber+"]입니다.";
+	   param.put("message", strMsg);
+	   resultMap = boardService.sendSms(request, param);
+	   resultMap.put("authKey", authNumber);
+	   return resultMap;
+/*	   
+	   String api_id = "inacar2011";		// sms.gabia.com 이용 ID
+	   String api_key = "0e79114156e076bad7b1b06a1d94d7ae";	// 환결설정에서 확인 가능한 SMS API KEY
+	   String resultXml = "";
+	   SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+//	   param.get("phoneNo")
+	   if(param.get("phoneNo").toString().length() < 12) {
+		   resultMap.put("smsCode", "9999");	//핸드폰 번호가 올바르지 않음.
+		   logger.debug("핸드폰 번호가 올바르지 않음:"+param.get("phoneNo").toString());
+		   return resultMap;
+	   }
+
+//	   resultMap.put("test", "resultXml");
+//	   if( 1 == 1)
+//		   return resultMap;
+	   
+	   ApiClass api = new ApiClass(api_id, api_key);
+	   long timeInMillis =System.currentTimeMillis();
+	   Date timeInDate = new Date(timeInMillis); 
+       String timeInFormat = sdf.format(timeInDate);
+
+       String authNumber = Utils.randomAlphaNumeric(4);
+       String clientIP = Utils.getClientIP(request);
+	   System.out.println("timeMillis=" + timeInFormat);
+	   // 단문 발송 테스트
+	   String arr[] = new String[7];
+	   arr[0] = "sms";							// 발송 타입 sms or lms
+	   arr[1] = timeInFormat;	// 결과 확인을 위한 KEY ( 중복되지 않도록 생성하여 전달해 주시기 바랍니다. )
+	   arr[2] = clientIP;					//  LMS 발송시 제목으로 사용 SMS 발송시는 수신자에게 내용이 보이지 않음.
+	   arr[3] = "하모니렌트카 인증번호는["+authNumber+"]입니다.";	// 본문 (90byte 제한)
+	   arr[4] = "1661-9763";			// 발신 번호
+	   arr[5] = param.get("phoneNo").toString();			// 수신 번호
+	   arr[6] = "0";					//예약 일자 "2013-07-30 12:00:00" 또는 "0" 0또는 빈값(null)은 즉시 발송 
+
+	   String responseXml = api.send(arr);
+	   System.out.println("response xml : \n" + responseXml);
+
+	   ApiResult res = api.getResult( responseXml );
+	   logger.debug( "code = [" + res.getCode() + "] mesg=[" + res.getMesg() + "]" );
+
+	   if( res.getCode().compareTo("0000") == 0 )
+	   {
+//	   		resultXml = api.getResultXml(responseXml);
+//	   		resultMap.put("seneResultXml", resultXml);
+//	   		logger.debug("Send result xml : " + resultXml);
+	   }
+	   resultMap.put("smsCode", res.getCode());
+	   resultMap.put("keyValue", timeInMillis);
+	   resultMap.put("authKey", authNumber);
+
+	   return resultMap;
+*/
+   }
+	
+	@RequestMapping({"/banksmsSendHelpAjax"})
+	@ResponseBody
+	public Map<String, Object> banksmsSendHelpAjax(HttpServletRequest request, Model model, @RequestBody HashMap<String, Object> param) throws Exception {
+
+	   Map<String, Object> resultMap = new HashMap<String,Object>();
+	   
+	   String api_id = "inacar2011";		// sms.gabia.com 이용 ID
+	   String api_key = "0e79114156e076bad7b1b06a1d94d7ae";	// 환결설정에서 확인 가능한 SMS API KEY
+	   String resultXml = "";
+	   SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+	   if(param.get("phoneNo").toString().length() < 12) {
+		   resultMap.put("smsCode", "9999");	//핸드폰 번호가 올바르지 않음.
+		   logger.debug("핸드폰 번호가 올바르지 않음:"+param.get("phoneNo").toString());
+		   return resultMap;
+	   }
+
+
+	   ApiClass api = new ApiClass(api_id, api_key);
+	   long timeInMillis =System.currentTimeMillis();
+	   Date timeInDate = new Date(timeInMillis); 
+       String timeInFormat = sdf.format(timeInDate);
+
+       String authNumber = Utils.randomAlphaNumeric(4);
+       String clientIP = Utils.getClientIP(request);
+       
+       
+       
+	   System.out.println("timeMillis=" + timeInFormat);
+	   // 단문 발송 테스트
+	   String arr[] = new String[7];
+	   arr[0] = "sms";							// 발송 타입 sms or lms
+	   arr[1] = timeInFormat;	// 결과 확인을 위한 KEY ( 중복되지 않도록 생성하여 전달해 주시기 바랍니다. )
+	   arr[2] = clientIP;					//  LMS 발송시 제목으로 사용 SMS 발송시는 수신자에게 내용이 보이지 않음.
+	   arr[3] = " "+param.get("customerNm").toString() +"고객님"+ "\n"
+		   		+ "우리은행 전용계좌 : "+param.get("carKindSel").toString()+ "입니다." + "\n"
+		   		+ "\n"
+		   		+ "감사합니다. -하모니렌트카-";	// 본문 (90byte 제한)
+	   arr[4] = "1661-9763";			// 발신 번호
+	   arr[5] =  param.get("phoneNo").toString(); //"01022528373";			// 수신 번호
+	   arr[6] = "0";					//예약 일자 "2013-07-30 12:00:00" 또는 "0" 0또는 빈값(null)은 즉시 발송 
+
+	   String responseXml = api.send(arr);
+	   System.out.println("response xml : \n" + responseXml);
+
+	   arr[0] = "sms";							// 발송 타입 sms or lms
+	   arr[1] = timeInFormat+"1";	// 결과 확인을 위한 KEY ( 중복되지 않도록 생성하여 전달해 주시기 바랍니다. )
+	   arr[2] = clientIP;					//  LMS 발송시 제목으로 사용 SMS 발송시는 수신자에게 내용이 보이지 않음.
+	   arr[3] =  " "+param.get("customerNm").toString() +"고객님"+ "\n"
+		   		+ "우리은행 전용계좌 : "+param.get("carKindSel").toString()+ "입니다." + "\n"
+		   		+ "\n"
+		   		+ "감사합니다. -하모니렌트카-";
+	   arr[4] = "1661-9763";			// 발신 번호
+	   arr[5] = param.get("authNumber").toString();			// 수신 번호
+	   arr[6] = "0";					//예약 일자 "2013-07-30 12:00:00" 또는 "0" 0또는 빈값(null)은 즉시 발송 
+
+	   responseXml = api.send(arr);	   
+	   ApiResult res = api.getResult( responseXml );
+	   logger.debug( "code = [" + res.getCode() + "] mesg=[" + res.getMesg() + "]" );
+
+	   resultMap.put("smsCode", res.getCode());
+	   resultMap.put("keyValue", timeInMillis);
+	   resultMap.put("authKey", authNumber);
+
+	   return resultMap;
+
+   }
+	
+	
+	
 	@RequestMapping({"/smsSendPdfAjax"})
 	@ResponseBody
 	public Map<String, Object> smsSendPdfAjax(HttpServletRequest request, Model model, @RequestBody HashMap<String, Object> param) throws Exception {
@@ -434,6 +573,32 @@ public class BoardController {
 			if(usedCarVO.size() > 0)
 				usedCarVO.get(0).setPaging(paging);
 			return usedCarVO;     
+	   }
+	   
+	   @PostMapping({"/smsAlimTokAjax"})
+	   @ResponseBody
+	   public Map<String, Object> alimTokSendAjax(HttpServletRequest request, Model model, @RequestBody HashMap<String, Object> param) throws Exception {
+		   Map<String, Object> resultMap = new HashMap<String,Object>();
+		   
+		   if(param.get("phoneNo").toString().length() < 12) {
+			   resultMap.put("code", "9999");	//핸드폰 번호가 올바르지 않음.
+			   logger.debug("핸드폰 번호가 올바르지 않음:"+param.get("phoneNo").toString());
+			   return resultMap;
+		   }
+		   
+		   RunaApiClass runaApi = new RunaApiClass();
+		   RunaApiResult apiResult = runaApi.sendAlimTok(param);
+		   
+		   if("0".equals(apiResult.getCode())) {
+			   resultMap.put("code", "1");
+			   resultMap.put("msg", "success");
+		   } else {
+			   resultMap.put("code", "-1");
+			   resultMap.put("msg", "fail");
+		   }
+		   
+		   
+		   return resultMap;   
 	   }
 	   
 

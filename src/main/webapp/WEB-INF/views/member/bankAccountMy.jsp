@@ -86,6 +86,132 @@ input[type=text], input[type=button], input[type=date], input[type=submit], inpu
 
 </style>
 
+
+
+
+
+<script>
+
+
+
+function validateForm(frm) {
+
+	
+//	function banksendSmsMsg(form) {
+
+
+
+//		var telval= formVal.re_phone.value();
+		var phoneval="";
+		var customerval = "";
+			phoneval = document.getElementById("carno").value;
+			customerval = document.getElementById("user_name").value;
+			//authNumber = document.getElementById("re_auth").value;인증번호
+			carKindSel = document.getElementById("bank_account").value;
+			authNumber = document.getElementById("charge").value;
+/*			
+			if(!fn_mbtlnumChk(phoneval) ){
+				document.getElementById("carno").focus();
+				return false;
+			}
+*/
+			if(frm.user_name.value == '' && frm.carno.value=='' && frm.memo.value == ''){
+				alert('값을 입력해 주세요.');
+				return false;
+			}
+	
+			var smsSendAuth = {phoneNo: phoneval,
+					customerNm: customerval,
+					carKindSel: carKindSel,
+					authNumber : authNumber,
+				 	keyType:"MAIN_STATIC"
+				 };
+		
+			
+				$('#submitbtn').val("발송");
+				smsSendAuth.keyType = "STATIC";
+				
+/*
+				$.ajax({
+					type: "POST",
+					url: baseUrl+"bbs/banksmsSendHelpAjax",
+					data    :JSON.stringify(smsSendAuth),
+					async: false,
+					//dataType: "json",          // ajax 통신으로 받는 타입
+					contentType: "application/json",  // ajax 통신으로 보내는 타입
+					success: function(data) {
+						data.smsCode;
+						data.keyValue;
+						getAuthNum = data.authKey;
+						if(data.smsCode != "0000"){
+							alert("인증문자 전송 실패");
+							isAuthBtn = false;
+							return false;
+						}
+					},
+					error: function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+						alert("실패.")
+						return false;
+					}
+				});			
+			
+*/	    
+
+			isPhoneAuth = true;
+//			$('#submitbtn').val("신청하기");
+			
+//		$(this).val('인증번호확인');
+//		addClass('selected');
+		
+		
+		
+		$.ajax({
+			type: "POST",
+			url: baseUrl+"bbs/banksmsSendHelpAjax",
+			data    :JSON.stringify(smsSendAuth),
+			async: false,
+			//dataType: "json",          // ajax 통신으로 받는 타입
+	        contentType: "application/json",  // ajax 통신으로 보내는 타입
+			success: function(data) {
+					data.smsCode;
+					data.keyValue;
+					car.authNumber = data.authKey;
+					if(data.smsCode == "0000"){
+						alert("전용계좌 발송이 완료되었습니다.");
+						isPhoneAuth = false;
+						return false;
+					}else{
+						alert("전용계좌 발송이 실패하였습니다. ");
+						return false;
+					}
+	            
+	            this.change();
+	            this.changedaum();
+	            
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+	            alert("문자 전송 실패.")
+	            return false;
+			}
+		});
+
+	return false;
+		
+		
+//		function checkInput(form){
+
+//		}		
+	
+	
+//	}
+
+}
+
+
+
+
+</script>
+
     <% 
 	int isMobile = 0;
 	String agent = request.getHeader("USER-AGENT");
@@ -103,36 +229,50 @@ input[type=text], input[type=button], input[type=date], input[type=submit], inpu
 %>
 
 
+
+
+
 <div class="main">
 	<span class="title_history">나의 신청 계좌</span>
 	
 	<div>
 		<span>발급계좌 총 ${paging.totalCount} 개</span> &nbsp; <a href="bankAccountRecv"><input type="button" align="right" value="계좌신청하기"  style="float: right;"></a>
+
+
 		<table id="list">
 
 			<tr>
 				<th>은행</th>
 				<th>계좌번호</th>
-				<th>입금자명</th>
-				<th>차량번호</th>
+				<th>고객명</th>
+				<th>고객번호</th>
+				<th>담당번호</th>
+				<th>에이전시번호</th>
 				<th>메모</th>
-                <th>발급일시</th>
-                <th>수정</th>
+                <!--<th>발급일시</th>-->
+	   <th>sms</th>
+                <th>저장</th>
 			</tr>
 			
 			<c:forEach var="bankAccount" items="${BankAccountVO }">
-				<form action="bankAccountUpdate" method="post" onSubmit="return checkInput(this)">
+				<form action="bankAccountUpdate" method="post" onSubmit="return validateForm(this)">
+				<!-- <form method="post" id="frequestform" name="frequestform" onSubmit="return banksendSmsMsg(this)" action="#"> --> 
 				<input type="hidden" name="account" value="${bankAccount.account }" >
 				<tr>
-				    <td>${bankAccount.bank_name}</td>
-					<td>${bankAccount.account }</td>
-					<td><input name="user_name" value="${bankAccount.user_name }" maxlength="10" class="input_box"></td>
-					<td><input name="carno" value="${bankAccount.carno }" maxlength="10"  class="input_box"></td>
+				    <!--<td>${bankAccount.bank_name}</td>-->
+					<td>우리</td>
+					<td><input id="bank_account" name="bank_account" value="${bankAccount.account }" maxlength="20" class="input_box"></td>
+					<td><input  id="user_name" name="user_name" value="${bankAccount.user_name }" maxlength="10" class="input_box"></td>
+					<td><input  id="carno" name="carno" value="${bankAccount.carno }" maxlength="20"  class="input_box"></td>
+					<td><input  id="charge" name="charge" value="${bankAccount.charge }" maxlength="20"  class="input_box"></td>
+					<td><input  id="ag" name="ag" value="${bankAccount.ag }" maxlength='20'  class="input_box"></td>
 					<td><input name="memo" value="${bankAccount.memo }" maxlength='20'  class="input_box"></td>
-                    <td>${bankAccount.recv_date }</td>
-                    <td><input type="submit" value="수정" class="input_box" style="width:100%"></td>
+                    <!--<td>${bankAccount.recv_date }</td>-->
+	       <td><input type="button" id="submitbtn" value="발송"  style="width:100%"></td>
+                    <td><input type="submit" value="저장" class="input_box" style="width:100%"></td>
 				</tr>
 				</form>
+			
 			</c:forEach>
 
 		</table>

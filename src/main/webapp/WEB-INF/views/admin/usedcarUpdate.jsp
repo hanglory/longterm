@@ -375,6 +375,7 @@
                 <option value="르노삼성">르노삼성</option>
                 <option value="쉐보레">쉐보레</option>
                 <option value="쌍용">쌍용</option>
+                <option value="벤츠">벤츠</option>
               </select>
             </div>
           </li>

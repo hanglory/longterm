@@ -2,4 +2,4 @@ eclipse.preferences.version=1
 encoding//src/main/java/com/gabia/api/Base64Utils.java=UTF-8
 encoding//src/main/java/com/harmony/longterm/dao/CarDao.java=UTF-8
 encoding//src/main/webapp/resources/css/estimate.css=UTF-8
-encoding/<project>=UTF-8
+separateDerivedEncodings=true

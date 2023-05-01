@@ -122,8 +122,8 @@ input[pattern]:invalid{
 						<td><input class="col2"  type="text" id="company" name="company" placeholder="소속회사"/></td>
 					</tr>
 					<tr>
-						<td><label class="required" for="manager">하모니 담당영업사원</label></td>
-						<td><input class="col2"  type="text" id="manager" name="manager" placeholder="하모니 담당영업사원"/></td>
+						<td><label  for="manager" style="color:red;">가입승인문의</label></td>
+						<td><input class="col2"  type="text" id="manager" name="manager" style="color:red" value="010-9930-7725"/></td>
 					</tr>
 					
 					<tr>
@@ -283,6 +283,7 @@ input[pattern]:invalid{
 $(function() {
 	$('#btn-regist').click(function(event) {
 		event.preventDefault();
+        
 		console.log("submit");
 		
 		if (document.getElementById("nickname").value.trim().length == 0) {
@@ -326,11 +327,11 @@ $(function() {
 			return false;
 		}
 
-		if (document.getElementById("manager").value.trim().length == 0) {
+		/*if (document.getElementById("manager").value.trim().length == 0) {
 			alert("담당자를 입력하세요");
 			document.getElementById("manager").focus();
 			return false;
-		}
+		}*/
 
 		if (document.getElementById("read-terms").checked == false) {
 			alert("약관에 동의하세요");

@@ -35,8 +35,20 @@ function check() {
 	}
 }
 </script>    
-    
-    
+ 
+<!-- 수수료 3까지만 입력되게 -->        
+<script>
+$(document).on("keyup", "input[name^=commission]", function() {
+    var val= $(this).val();
+
+    if(val > 3) {
+        alert("최대 수수료는 3% 입니다.");
+        $(this).val('');
+    }
+});
+</script>    
+  <!-- 수수료 3까지만 입력되게 끝-->     
+  
 
     <div id="container">
 
@@ -373,7 +385,7 @@ if(window.wcs) _nasa["cnv"] = wcs.cnv("1","10"); // 전환유형, 전환가치 �
 								</div>
 								<div class="cmb-item">
 									<span>추가수수료(1.0 ~ 3.0%)</span>
-									<input class="" type="number" id="commission" placeholder="" min="0.0" max="3.0" step="0.1"/>%
+									<input class="" type="number" id="commission" name="commission" placeholder="" min="0.0" max="3.0" step="0.1"/>%
 								<span style="color:red">무심사의 경우 추가수수료가 적용 되지 않습니다.</span>
 								</div>
 							</div>
@@ -427,11 +439,16 @@ if(window.wcs) _nasa["cnv"] = wcs.cnv("1","10"); // 전환유형, 전환가치 �
 								<div class="right result" id="period-summary"></div>
 							</div>
 -->	
-							공통사항
-							<div class="row">
-								<div class="left">주행거리</div>
-								<div class="right result" id="distance-summary"></div>
-							</div>
+							&nbsp;&nbsp;공통사항
+						     <div class="row">
+						<div class="left">주행거리</div>
+                                    
+						<select id="distance-summary" class="right result" >
+							<option value="30000" selected>3만km/년 </option>
+							<option value="20000">2만km/년</option>
+							
+						</select>
+					</div>
 
 						</div>
 					</div>

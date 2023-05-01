@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> <!-- JQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-rwdImageMaps/1.6/jquery.rwdImageMaps.min.js"></script>       
+    
+      
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-06Y9Z40Y53"></script>
 <script>
@@ -309,6 +314,26 @@ wcs_do();
 		border-bottom: 2px solid #c2c1c1;
 		
 	}
+    
+    .sector2_call {
+		
+		position: relative;
+		
+		margin: auto;
+		
+	/* border-bottom: 3px solid #015ec6;*/
+      
+		text-align:center;
+	}	
+	.sector2_call img {
+		
+		width: 100%;
+		margin: auto;
+		vertical-align: middle;
+				
+	}
+    
+    
 
 	.sector3 {
 		--background-color: #0074e3;
@@ -682,7 +707,20 @@ h2 {
   font-size: 1.2em;
   letter-spacing: 2px;
     margin-top:15px;
-}   
+}  
+    
+ .mb_call img{
+  width: 80%;
+  height: 50px;
+  border: 0;
+  outline: none;
+  /*border-radius: 40px;*/
+  background: linear-gradient(to left, rgb(46, 101, 255), rgb(47, 147, 255));
+  color: white;
+  font-size: 1.2em;
+  letter-spacing: 2px;
+    margin-top:15px;
+}  
   
     
     
@@ -832,6 +870,29 @@ h2 {
         </div>
     </div>
 </div>
+        
+        
+<!-- Layer popup start --> <script language="JavaScript"> function setCookie( name, value, expiredays ) { var todayDate = new Date(); todayDate.setDate( todayDate.getDate() + expiredays ); 
+document.cookie = name + "=" + escape( value ) + "; path=/; expires=" + todayDate.toGMTString() + ";" } function closeWin() { if ( document.notice_form.chkbox.checked ){ setCookie( "maindiv", "done" , 1 ); }
+ document.all['divpop'].style.visibility = "hidden"; } </script> <!-- Layer popup end -->
+
+
+<div id="divpop" style="position:absolute;left:0px;top:80px;z-index:200;visibility:hidden;"> 
+<table width=350px height=340px cellpadding=0 cellspacing=0> 
+<tr> <td style="border:1px #666666 solid" height=340px align=center bgcolor=white> <a href="https://harmonyrent.co.kr/images/board/wjdwlgp26/aicc%EC%B2%A8%EB%B6%80%ED%8C%8C%EC%9D%BC.png"><img src="${RPATH}/images/aicc_popup_mb.jpg" width=350px height=463px alt="aicc팝업"></a> </td> </tr> 
+<tr> <td height=10 bgcolor="#000000"> </td> </tr> <tr> <form name="notice_form"> <td height=25 align=right bgcolor="#000000" valign=middle>
+ <input type="checkbox" name="chkbox" value="checkbox"> <span style="color:#eeeeee">오늘 하루 이 창을 열지 않음 </span> <a href="javascript:closeWin();"> <span style="color:#eeeeee"> <B style="color:#eeeeee">[닫기]</B> </span></a> </td> </form> </tr> </table> </div>
+
+
+<script language="Javascript"> cookiedata = document.cookie; if ( cookiedata.indexOf("maindiv=done") < 0 ){ document.all['divpop'].style.visibility = "visible"; } else { document.all['divpop'].style.visibility = "hidden"; } </script>
+        
+ <!-- Layer popup finish -->          
+        
+        
+        
+        
+        
+        
 
 <script>
 $(function() {
@@ -902,11 +963,25 @@ function currentSlide(n) {
       <!--<div style="text-align:center;">
       <a href ="tel:1661-9763"><img style="width:80%;height:50px;margin-top:15px;" src="${RPATH}/images/kakaochat.jpg"></a></div>--> 
        
-    <div style="text-align:center;">
-    <a href ="https://open.kakao.com/o/swhk8rFe"><button type="button" class = "call_btn2" id="call_btn2">카카오톡 상담연결</button></a></div> 
+    <!--<div style="text-align:center;">
+    <a href ="https://open.kakao.com/o/swhk8rFe"><button type="button" class = "call_btn2" id="call_btn2">카카오톡 상담연결</button></a></div>-->
     
-     <div style="text-align:center;">
-    <a href ="tel:1661-9763"><button type="button" class = "call_btn" id="call_btn">1661 - 9763 상담연결</button></a></div> 
+    
+     <div class="sector2_call" style="text-align:center;">
+         
+    					<img src="${RPATH}/images/mb_call.png"  name = "mainvisualimg" usemap="#Map" >
+
+	<map name= "Map" id="Map">
+    		<area shape="rect" coords="22,23,211,232" href="tel:1588-5802" onfocus="blur();"/>
+    		<area shape="rect" coords="276,20,455,236" href="https://open.kakao.com/o/swhk8rFe" onfocus="blur();"/>
+    		<area shape="rect" coords="522,13,670,235" href="tel:1661-9763" onfocus="blur();"/>
+	</map>     
+         
+         
+         
+    <!--<a href ="tel:1661-9763"><button type="button" class = "call_btn" id="call_btn">1661 - 9763 상담연결</button></a>-->
+    
+    </div> 
     
     
     <!-- 문자상담창 -->
@@ -1264,6 +1339,9 @@ if(window.wcs) _nasa["cnv"] = wcs.cnv("1","10"); // 전환유형, 전환가치 �
 { document.all['divpop'].style.visibility = "visible"; } else { document.all['divpop'].style.visibility = "hidden"; } </script>
 	
 
-
+ <script type="text/javascript">
+    // rwdImageMaps로 이미지맵 동적 할당하도록 설정
+    $('img[usemap]').rwdImageMaps();
+    </script>
 
 

@@ -6,6 +6,7 @@
 var isPhoneAuth = false;
 var isAuthBtn = false;
 var getAuthNum = "0";
+var imgIndex = 0;   //이미지에 접근하는 인덱스
 function setCookie( name, value, expiredays ){ 
 	var todayDate = new Date(); todayDate.setDate( todayDate.getDate() + expiredays ); 
 	document.cookie = name + "=" + escape( value ) + "; path=/; expires=" + todayDate.toGMTString() + ";" 
@@ -56,6 +57,7 @@ function sendSmsMsg(formVal) {
 				}
 			});			
 			return false;
+			
 		}
     
     /*
@@ -76,6 +78,8 @@ function sendSmsMsg(formVal) {
 		
 //	$(this).val('인증번호확인');
 //	addClass('selected');
+	
+	
 	
 	$.ajax({
 		type: "POST",
@@ -106,6 +110,36 @@ function sendSmsMsg(formVal) {
             return false;
 		}
 	});
+	
+
+/*
+		$.ajax({
+			type: "POST",
+			url: baseUrl+"bbs/smsAlimTokAjax",
+			data    :JSON.stringify(smsSendAuth),
+			async: false,
+			//dataType: "json",          // ajax 통신으로 받는 타입
+	        contentType: "application/json",  // ajax 통신으로 보내는 타입
+			success: function(data) {
+					if(data.smsCode == "1"){
+						alert("상담요청이 완료 되었습니다. 곧 상담원이 전화 연락 드리겠습니다.");
+						isPhoneAuth = false;
+						return false;
+					}else{
+						alert("알림톡 전송이 원활하지 않습니다. 잠시후 다시 이용해 주세요.");
+						return false;
+					}
+	            
+	            this.change();
+	            this.changedaum();
+	            
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+	            alert("알림톡 전송 실패.")
+	            return false;
+			}
+		});  
+*/
 } // <------ 현드폰번호 인증	
 
 function authSms(){
@@ -222,10 +256,10 @@ if(window.wcs) _nasa["cnv"] = wcs.cnv("1","10"); // 전환유형, 전환가치 �
 		margin: 0 auto;
 	}
 
-	.sector2 {
+	.sector2a {
 		min-width: 1200px;
 	}	
-	.sector2 img {
+	.sector2a img {
 		width: 100%;
 	}	
 	.sector3 {
@@ -717,6 +751,25 @@ slideshow-container {
         </div>
     </div>
 </div>
+        
+<!-- Layer popup start --> <script language="JavaScript"> function setCookie( name, value, expiredays ) { var todayDate = new Date(); todayDate.setDate( todayDate.getDate() + expiredays ); 
+document.cookie = name + "=" + escape( value ) + "; path=/; expires=" + todayDate.toGMTString() + ";" } function closeWin() { if ( document.notice_form.chkbox.checked ){ setCookie( "maindiv", "done" , 1 ); }
+ document.all['divpop'].style.visibility = "hidden"; } </script> <!-- Layer popup end -->
+
+
+<div id="divpop" style="position:absolute;left:100px;top:150px;z-index:200;visibility:hidden;"> 
+<table width=490px height=340px cellpadding=0 cellspacing=0> 
+<tr> <td style="border:1px #666666 solid" height=340px align=center bgcolor=white> <a href="https://harmonyrent.co.kr/images/board/wjdwlgp26/aicc%EC%B2%A8%EB%B6%80%ED%8C%8C%EC%9D%BC.png"><img src="${RPATH}/images/aicc_popup.jpg" width=500px height=656px alt="aicc팝업"></a> </td> </tr> 
+<tr> <td height=10 bgcolor="#000000"> </td> </tr> <tr> <form name="notice_form"> <td height=25 align=right bgcolor="#000000" valign=middle>
+ <input type="checkbox" name="chkbox" value="checkbox"> <span style="color:#eeeeee">오늘 하루 이 창을 열지 않음 </span> <a href="javascript:closeWin();"> <span style="color:#eeeeee"> <B style="color:#eeeeee">[닫기]</B> </span></a> </td> </form> </tr> </table> </div>
+
+
+<script language="Javascript"> cookiedata = document.cookie; if ( cookiedata.indexOf("maindiv=done") < 0 ){ document.all['divpop'].style.visibility = "visible"; } else { document.all['divpop'].style.visibility = "hidden"; } </script>
+        
+ <!-- Layer popup finish -->       
+        
+        
+        
 
 <script>
 
@@ -755,15 +808,15 @@ $(document).ready(function(){
     
     function slideShow() {
     var i;
-    var x = document.getElementsByClassName("slide1");  //slide1에 대한 dom 참조
+    var x = document.getElementsByClassName("slide1a");  //slide1에 대한 dom 참조
     for (i = 0; i < x.length; i++) {
-       x[i].style.display = "none";   //처음에 전부 display를 none으로 한다.
+      x[i].style.display = "none";   //처음에 전부 display를 none으로 한다.
     }
-    index++;
-    if (index > x.length) {
-        index = 1;  //인덱스가 초과되면 1로 변경
+    imgIndex++;
+    if (imgIndex > x.length) {
+        imgIndex = 1;  //인덱스가 초과되면 1로 변경
     }   
-    x[index-1].style.display = "block";  //해당 인덱스는 block으로
+    x[imgIndex-1].style.display = "block";  //해당 인덱스는 block으로
     setTimeout(slideShow, 5000);   //함수를 4초마다 호출
  
 }
@@ -775,6 +828,11 @@ function currentSlide(n) {
 }      
 </script>  
 
+    
+    
+    
+    
+    
 
 <div id="quick">
 	<div class="quick-input">
@@ -837,12 +895,12 @@ function currentSlide(n) {
 </div>
 
 
-    <div class="sector2">
+    <div class="sector2a">
         
         
-  <img class="slide1" src="${RPATH}/images/mainimg33.jpg">
-  <img class="slide1" src="${RPATH}/images/mainimg44.jpg">
-  <img class="slide1" src="${RPATH}/images/mainimg55.jpg">
+  <img class="slide1a" src="${RPATH}/images/mainimg33.jpg" style="display:none">
+  <img class="slide1a" src="${RPATH}/images/mainimg44.jpg" style="display:none">
+  <img class="slide1a" src="${RPATH}/images/mainimg55.jpg" style="display:none">
                                    
 </div>
                                                                                                                                                               

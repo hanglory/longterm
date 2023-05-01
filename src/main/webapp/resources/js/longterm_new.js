@@ -111,7 +111,7 @@ var UpdateSummary = function(kind=5) {
 	$('#car-price').html(Number(car.trim_price).toLocaleString('en'));
 	$('#option-price').html(car.total_option_name + "(" +Number(car.total_option_price).toLocaleString('en')+")");
 	$('#period-summary').html(car.period + " 개월");
-	$('#distance-summary').html(car.distance / 10000 + "만Km/년");
+	//$('#distance-summary').html(car.distance / 10000 + "만Km/년");
 	$('#price-total').html(Number(car.trim_price + car.total_option_price + car.color_price).toLocaleString('en'));
 	$('#agency-fee-rate').html(car.agent_fee_rate + " %");
 	
@@ -436,15 +436,13 @@ $(function(){
 		return false;
 	});	
 
-
-		
-	$('.distance').click(function() {
-		let selStr = $(this).val();
+	
+	$('#distance-summary').click(function() {
+		let selStr = $("#distance-summary option:selected").val();
 		car.distance = selStr;		
 		UpdateSummary();
 	});
 	
-
 	$(document).on("click", '.model', function() {
 		let selStr = $(this).data('model');
 		let lineupStr = "";

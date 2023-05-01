@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
-
+<script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+    
   <link rel="stylesheet" href="/css/static.css">
   <link rel="stylesheet" href="/css/style_new.css">
   <style>
@@ -9,7 +10,18 @@
  /* 게시판 목록 */
 #bo_list {position:relative}
 #bo_list:after {display:block; visibility:hidden; clear:both; content:""}
-
+.logo-img {
+	width: 200px;
+	height: 50%;
+	--padding: 25% 0;
+	--border-bottom: 1px solid #e7e7e7;
+	text-align: center;
+	padding: 10px 0;
+	display: block;
+	margin: 0 auto;
+}
+      
+      footer{display:none;}
 .likeTbl{width:100%; margin-bottom:20px; }
 .likeTbl > ul{display:table; width:100%; }
 .likeTbl > ul > li{display:table-row; width:100%; height:50px;}
@@ -29,9 +41,10 @@
 .bo_notice,
 .bo_notice > div {background:#f0f5f8 !important;}
 .likeTbl > ul > li.bo_notice  .td_subject .bo_tit a{color:#ddd !important;}
-.likeTbl .td_board {width:100px; text-align:center; overflow:hidden; white-space:nowrap;}
+.likeTbl .td_board {width:95px; text-align:center; overflow:hidden; white-space:nowrap;}
+.likeTbl .td_zero2 {text-align:center; color:#002c9f;}     
 .likeTbl .td_chk {width:80px; text-align:center}
-.likeTbl .td_zero {width:0px; text-align:center; color:#002c9f;}
+.likeTbl .td_zero {text-align:center; color:#002c9f;}
 .likeTbl .td_date {width:60px; text-align:center; font-style: italic; }
 .likeTbl .td_datetime {width:60px; text-align:center; font-style: italic; color:#999; font-size:11px; font-family:verdana; }
 .likeTbl .td_group {width:100px; text-align:center}
@@ -67,6 +80,9 @@
 .qnaIco3{background:rgba(255,255,255,0.4)}
 .qnaIco i{display:inline-block !important; }
 
+
+      
+      
 @media all and (max-width: 1200px)
 {
 
@@ -208,6 +224,36 @@ $(function(){
 		displaySelect();
 
 	});
+    
+        	$('#model_asc').click(function(){
+		$('#model_desc').removeClass('sort_active');
+//		usedcar.maker = "";
+//		usedcar.trim_name = "";
+//		usedcar.rentfee_min = "";
+//		usedcar.rentfee_max = "";
+//		usedcar.deposit = "";
+		usedcar.orderby = "SALES_BIZ_ITEM_NM";
+//		usedcar.car_no = $('#no_trim').val();
+		$(this).addClass('sort_active');
+		displaySelect();
+
+	});
+	$('#model_desc').click(function(){
+		$('#model_asc').removeClass('sort_active');
+//		usedcar.maker = "";
+//		usedcar.trim_name = "";
+//		usedcar.rentfee_min = "";
+//		usedcar.rentfee_max = "";
+//		usedcar.deposit = "";
+		usedcar.orderby = "SALES_BIZ_ITEM_NM DESC";
+//		usedcar.car_no = $('#no_trim').val();
+		$(this).addClass('sort_active');
+		displaySelect();
+
+	});	
+    
+    
+    
 	
 	$('#price_asc').click(function(){
 		$('#price_desc').removeClass('sort_active');
@@ -308,7 +354,31 @@ $(function(){
 		displaySelect();
 
 	});
+    
+    
+    
 	initFunction();
+    
+    });
+    
+    function ListClick(){
+    
+    
+   if(isList){
+			usedcar.pageSize = 15;
+			isList = 0;
+		}
+		else{
+			usedcar.pageSize = 200;
+			isList = 1;
+		}
+    
+    displaySelect();
+    
+}  
+    
+    
+    
 	function displaySelect(){
 		usedcar.page = 1;
 		var dataURL = ""
@@ -350,7 +420,7 @@ $(function(){
 
 	}	
 
-});
+
 function div_html(data){
 	let htmlStr = "";
 	var iconList;
@@ -359,7 +429,15 @@ function div_html(data){
 	 	if(i % 3 == 0)
 	   		htmlStr += "<ul class='car_list thumbnail'>";
     	htmlStr += '<li class="car_item">';
-		htmlStr += '<a href="usedcarDetail?car_id='+data[i].id+'"><img src="'+data[i].image+'" alt="">';
+        
+        if(data[i].id == "1991"){
+   
+        htmlStr += '<a href="javascript:ListClick();"><img src="'+data[i].image+'" alt="">';}
+              
+
+     else {
+        htmlStr += '<a href="usedcarDetail?car_id='+data[i].id+'"><img src="'+data[i].image+'" alt="">';}
+        
         htmlStr += '<div class="car_content">';
         htmlStr += '  <div class="top_area">';
         htmlStr += '    <div class="left_area">';
@@ -418,7 +496,10 @@ function div_html(data){
 		$('#page_box').html(htmlStr);
 	
 }
-
+    
+var htmlOpt =[];
+var htmlcolor =[];
+    
 function div_html_list(data){
 	let htmlStr = "";
 	var iconList;
@@ -429,26 +510,48 @@ function div_html_list(data){
 	htmlStr += '   	 <div class="mvInlineN td_zero">번호</div>';
 	htmlStr += '   	 <div class="mvInlineN td_num">차량번호</div>';
 	htmlStr += '   	 <div class="mvInlinev td_board">모델명</div>';
+    htmlStr += '   	 <div class="mvInlinev td_board">색상</div>';
 	htmlStr += '   	 <div class="mvInlinev td_chk">연료</div>';
 	htmlStr += '  	 <div class="mvInlineN td_num">연식</div>';
 	htmlStr += '   	 <div class="mvInlineN td_num">신차가격</div>';
 	htmlStr += '     <div class="mvInlineN td_zero">약정기간</div>';
 	htmlStr += '     <div class="mvInlinev td_zero">보증금</div>';
 	htmlStr += '     <div class="mvInlinev td_zero">렌트료</div>';
+    htmlStr += '   	 <div class="mvInlinev td_zero2">옵션</div>';
 	htmlStr += '    </li>';
 	
 	for(let i=0; i<data.length; i++) {
+        
+        htmlOpt.push(data[i].CAR_OPT_CD);
+        htmlcolor.push(data[i].CAR_COLOR);
+        
+        htmlOpt[i] = htmlOpt[i].replace(/OPT001/g,'하이패스').replace(/OPT002/g,'전동시트').replace(/OPT003/g,'내비+후방카메라').replace(/OPT004/g,'썬루프').replace(/OPT005/g,'버튼시동&스마트키').replace(/OPT006/g,'열선시트').replace(/OPT007/g,'통풍시트').replace(/OPT008/g,'크루즈컨트롤').replace(/OPT009/g,'열선핸들').replace(/OPT010/g,'전방감지센서').replace(/OPT011/g,'차선이탈방지').replace(/OPT012/g,'디스플레이+후방카메라').replace(/OPT013/g,'후측방충돌방지').replace(/OPT014/g,'무선충전').replace(/OPT015/g,'가죽시트').replace(/OPT016/g,'스마트크루즈컨트롤').replace(/OPT017/g,'전자식변속다이얼').replace(/OPT018/g,'블루링크/커넥터');
 
     	htmlStr += '<li class="bo_notice likeTblTr likeTblTd">';
 		htmlStr += '  <div class="mvInlineN td_zero">'+(i+1)+'</div>';
         htmlStr += '  <div class="mvInlineN td_num">'+Right(data[i].CAR_NO,4)+'</div>';
         htmlStr += '  <div class="mvInlinev td_board">'+data[i].SALES_BIZ_ITEM_NM+'</div>';
+        htmlStr += '  <div class="mvInlinev td_zero2"><button onclick="btn2('+i+')">보기</button></div>';
         htmlStr += '  <div class="mvInlinev td_chk">'+data[i].FUEL_NM+'</div>';
         htmlStr += '  <div class="mvInlineN td_num">'+data[i].vehicle_year.substring(0,4)+'.'+data[i].vehicle_year.substring(4,6)+'</div>';
         htmlStr += '  <div class="mvInlineN td_num">'+data[i].trim_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+'</div>';
-        htmlStr += '  <div class="mvInlineN td_zero">'+data[i].BASE_MM+'</div>';
+        
+        
+         if(data[i].BASE_MM==""){
+          htmlStr += '  <div class="mvInlineN td_zero">문의</div>';  
+            
+        }else{
+        htmlStr += '  <div class="mvInlineN td_zero">'+data[i].BASE_MM+'</div>';}
+        
+         if(data[i].deposit < 100 || data[i].rentfee < 100){
+         htmlStr += '  <div class="mvInlinev td_zero">문의</div>';
+        htmlStr += '  <div class="mvInlinev td_zero">문의</div>'; }else{   
+            
         htmlStr += '  <div class="mvInlinev td_zero">'+data[i].deposit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+'</div>';
-        htmlStr += '  <div class="mvInlinev td_zero">'+data[i].rentfee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+'</div>';
+        htmlStr += '  <div class="mvInlinev td_zero">'+data[i].rentfee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+'</div>'; }
+        
+        
+         htmlStr += '  <div class="mvInlinev td_zero2"><button onclick="btn('+i+')">보기</button></div>';
         htmlStr += '</li>'
 	}
     htmlStr += '</ul>'
@@ -460,6 +563,20 @@ function div_html_list(data){
 
 	
 }
+    
+       function btn(index){
+        
+        
+       alert("해당차량의 상세옵션은 " + htmlOpt[index] + "입니다.");
+        
+    }
+    
+      function btn2(index){
+        
+        
+       alert("해당차량의 색상은 " + htmlcolor[index] + "입니다.");
+        
+    }
 
 
 function goPage(pageNo){
@@ -566,6 +683,15 @@ function Right(Str, Num){
       <div style="align:left;clear:right;color:blue;">
       	<button id="text_list_all"><span class="qnaIco qnaIco1">리스트보기</span></button>
       </div>
+        
+       <div class="order_item">
+        <span>모델명</span>
+        <div class="button_wrap">
+          <button id="model_asc"><span>▲</span></button>
+          <button id="model_desc"><span>▼</span></button>
+        </div>
+      </div>     
+
       <div class="order_item">
         <span>가격순</span>
         <div class="button_wrap">
