@@ -92,82 +92,24 @@ input[type=text], input[type=button], input[type=date], input[type=submit], inpu
 
 <script>
 
-
-
-function validateForm(frm) {
-
+function sendSmsFrom(frm) {
 	
-//	function banksendSmsMsg(form) {
+	if(frm.user_name.value == '' || frm.bank_account.value == '' ) {
+		alert('값을 입력해 주세요.');
+		return false;
+	}
+	var message = " " +frm.user_name.value + "고객님"+ "\n" +"우리은행 전용계좌 : "+frm.bank_account.value+ "입니다." + "\n" + "\n" + "감사합니다. -하모니렌트카-";
 
-
-
-//		var telval= formVal.re_phone.value();
-		var phoneval="";
-		var customerval = "";
-			phoneval = document.getElementById("carno").value;
-			customerval = document.getElementById("user_name").value;
-			//authNumber = document.getElementById("re_auth").value;인증번호
-			carKindSel = document.getElementById("bank_account").value;
-			authNumber = document.getElementById("charge").value;
-/*			
-			if(!fn_mbtlnumChk(phoneval) ){
-				document.getElementById("carno").focus();
-				return false;
-			}
-*/
-			if(frm.user_name.value == '' && frm.carno.value=='' && frm.memo.value == ''){
-				alert('값을 입력해 주세요.');
-				return false;
-			}
-	
-			var smsSendAuth = {phoneNo: phoneval,
-					customerNm: customerval,
-					carKindSel: carKindSel,
-					authNumber : authNumber,
-				 	keyType:"MAIN_STATIC"
-				 };
+	if(frm.carno.value.length > 10) {
 		
-			
-				$('#submitbtn').val("발송");
-				smsSendAuth.keyType = "STATIC";
-				
-/*
-				$.ajax({
-					type: "POST",
-					url: baseUrl+"bbs/banksmsSendHelpAjax",
-					data    :JSON.stringify(smsSendAuth),
-					async: false,
-					//dataType: "json",          // ajax 통신으로 받는 타입
-					contentType: "application/json",  // ajax 통신으로 보내는 타입
-					success: function(data) {
-						data.smsCode;
-						data.keyValue;
-						getAuthNum = data.authKey;
-						if(data.smsCode != "0000"){
-							alert("인증문자 전송 실패");
-							isAuthBtn = false;
-							return false;
-						}
-					},
-					error: function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
-						alert("실패.")
-						return false;
-					}
-				});			
-			
-*/	    
-
-			isPhoneAuth = true;
-//			$('#submitbtn').val("신청하기");
-			
-//		$(this).val('인증번호확인');
-//		addClass('selected');
-		
-		
+		var smsSendAuth = {phoneNo: frm.carno.value,
+				message: message,
+			 	keyType:"MAIN_STATIC"
+			 };
 		
 		$.ajax({
 			type: "POST",
-			url: baseUrl+"bbs/banksmsSendHelpAjax",
+			url: baseUrl+"bbs/onlySmsSendAjax",
 			data    :JSON.stringify(smsSendAuth),
 			async: false,
 			//dataType: "json",          // ajax 통신으로 받는 타입
@@ -175,40 +117,123 @@ function validateForm(frm) {
 			success: function(data) {
 					data.smsCode;
 					data.keyValue;
-					car.authNumber = data.authKey;
 					if(data.smsCode == "0000"){
 						alert("전용계좌 발송이 완료되었습니다.");
-						isPhoneAuth = false;
 						return false;
 					}else{
 						alert("전용계좌 발송이 실패하였습니다. ");
 						return false;
 					}
-	            
-	            this.change();
-	            this.changedaum();
-	            
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
 	            alert("문자 전송 실패.")
 	            return false;
 			}
 		});
-
-	return false;
+	}
+	if(frm.charge.value.length > 10) {
 		
+		var smsSendAuth = {phoneNo: frm.charge.value,
+				message: message,
+			 	keyType:"MAIN_STATIC"
+			 };
 		
-//		function checkInput(form){
-
-//		}		
+		$.ajax({
+			type: "POST",
+			url: baseUrl+"bbs/onlySmsSendAjax",
+			data    :JSON.stringify(smsSendAuth),
+			async: false,
+			//dataType: "json",          // ajax 통신으로 받는 타입
+	        contentType: "application/json",  // ajax 통신으로 보내는 타입
+			success: function(data) {
+					data.smsCode;
+					data.keyValue;
+					if(data.smsCode == "0000"){
+						alert("전용계좌 발송이 완료되었습니다.");
+						return false;
+					}else{
+						alert("전용계좌 발송이 실패하였습니다. ");
+						return false;
+					}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+	            alert("문자 전송 실패.")
+	            return false;
+			}
+		});
+	}
+	if(frm.ag.value.length > 10) {
+		
+		var smsSendAuth = {phoneNo: frm.ag.value,
+				message: message,
+			 	keyType:"MAIN_STATIC"
+			 };
+		
+		$.ajax({
+			type: "POST",
+			url: baseUrl+"bbs/onlySmsSendAjax",
+			data    :JSON.stringify(smsSendAuth),
+			async: false,
+			//dataType: "json",          // ajax 통신으로 받는 타입
+	        contentType: "application/json",  // ajax 통신으로 보내는 타입
+			success: function(data) {
+					data.smsCode;
+					data.keyValue;
+					if(data.smsCode == "0000"){
+						alert("전용계좌 발송이 완료되었습니다.");
+						return false;
+					}else{
+						alert("전용계좌 발송이 실패하였습니다. ");
+						return false;
+					}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+	            alert("문자 전송 실패.")
+	            return false;
+			}
+		});
+	}
 	
 	
-//	}
+}
 
+function validateForm(frm) {
+
+	
+			if(frm.user_name.value == '' && frm.carno.value=='' && frm.memo.value == ''){
+				alert('값을 입력해 주세요.');
+				return false;
+			}
+	
+		
 }
 
 
+function inputPhoneNumber(obj) {
 
+    var number = obj.value.replace(/[^0-9]/g, "");
+    var phone = "";
+    if(number.length < 4) {
+        return number;
+    } else if(number.length < 7) {
+        phone += number.substr(0, 3);
+        phone += "-";
+        phone += number.substr(3);
+    } else if(number.length < 11) {
+        phone += number.substr(0, 3);
+        phone += "-";
+        phone += number.substr(3, 3);
+        phone += "-";
+        phone += number.substr(6);
+    } else {
+        phone += number.substr(0, 3);
+        phone += "-";
+        phone += number.substr(3, 4);
+        phone += "-";
+        phone += number.substr(7);
+    }
+    obj.value = phone;
+}
 
 </script>
 
@@ -263,12 +288,12 @@ function validateForm(frm) {
 					<td>우리</td>
 					<td><input id="bank_account" name="bank_account" value="${bankAccount.account }" maxlength="20" class="input_box"></td>
 					<td><input  id="user_name" name="user_name" value="${bankAccount.user_name }" maxlength="10" class="input_box"></td>
-					<td><input  id="carno" name="carno" value="${bankAccount.carno }" maxlength="20"  class="input_box"></td>
-					<td><input  id="charge" name="charge" value="${bankAccount.charge }" maxlength="20"  class="input_box"></td>
-					<td><input  id="ag" name="ag" value="${bankAccount.ag }" maxlength='20'  class="input_box"></td>
+					<td><input  id="carno" name="carno" value="${bankAccount.carno }" maxlength="20"  class="input_box" onkeyup="inputPhoneNumber(this)"></td>
+					<td><input  id="charge" name="charge" value="${bankAccount.charge }" maxlength="20"  class="input_box" onKeyup="inputPhoneNumber(this);"></td>
+					<td><input  id="ag" name="ag" value="${bankAccount.ag }" maxlength='20'  class="input_box" onKeyup="inputPhoneNumber(this);"></td>
 					<td><input name="memo" value="${bankAccount.memo }" maxlength='20'  class="input_box"></td>
                     <!--<td>${bankAccount.recv_date }</td>-->
-	       <td><input type="button" id="submitbtn" value="발송"  style="width:100%"></td>
+	       <td><input type="button" onClick="return sendSmsFrom(this.form)" value="발송"  style="width:100%"></td>
                     <td><input type="submit" value="저장" class="input_box" style="width:100%"></td>
 				</tr>
 				</form>

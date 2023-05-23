@@ -135,10 +135,11 @@ public class BoardService implements IBoardService {
 		   String api_key = "0e79114156e076bad7b1b06a1d94d7ae";	// 환결설정에서 확인 가능한 SMS API KEY
 		   String resultXml = "";
 		   SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+		   String regExp = "^01(?:0|1|[6-9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$";
 //		   param.get("phoneNo")
-		   if(map.get("phoneNo").toString().length() < 12) {
+		   if( !map.get("phoneNo").toString().matches(regExp) ) {
 			   resultMap.put("smsCode", "9999");	//핸드폰 번호가 올바르지 않음.
-			   logger.debug("핸드폰 번호가 올바르지 않음:"+map.get("phoneNo").toString());
+			   logger.debug("BoardService.sendSms핸드폰 번호가 올바르지 않음:"+map.get("phoneNo").toString());
 			   return resultMap;
 		   }
 

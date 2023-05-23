@@ -127,11 +127,11 @@ public class AdminService implements IAdminService {
 		  setHeaderCS(cs, font, cell);
 		  
 		  cell = row.createCell(3);
-		  cell.setCellValue(new XSSFRichTextString("차량번호"));
+		  cell.setCellValue(new XSSFRichTextString("고객번호"));
 		  setHeaderCS(cs, font, cell);
 		  
 		  cell = row.createCell(4);
-		  cell.setCellValue(new XSSFRichTextString("계약자명"));
+		  cell.setCellValue(new XSSFRichTextString("고객명"));
 		  setHeaderCS(cs, font, cell);
 		  
 		  cell = row.createCell(5);
@@ -143,11 +143,11 @@ public class AdminService implements IAdminService {
 		  setHeaderCS(cs, font, cell);
 		  
 		  cell = row.createCell(7);
-		  cell.setCellValue(new XSSFRichTextString("등록일시"));
+		  cell.setCellValue(new XSSFRichTextString("발급일시"));
 		  setHeaderCS(cs, font, cell);
 
 		  cell = row.createCell(8);
-		  cell.setCellValue("참조");
+		  cell.setCellValue("메모");
 		  setHeaderCS(cs, font, cell);		
 		
 		
@@ -164,7 +164,8 @@ public class AdminService implements IAdminService {
 					  cell.setCellValue(vo.getSeqno());
 //					  setCmmnCS2(cs, cell);
 					  cell = row.createCell(1);
-					  cell.setCellValue(vo.getBank_name());
+					  cell.setCellValue("우리");
+					  //cell.setCellValue(vo.getBank_name());
 //					  setCmmnCS2(cs, cell);
 					  
 					  cell = row.createCell(2);

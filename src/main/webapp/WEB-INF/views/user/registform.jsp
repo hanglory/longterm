@@ -123,7 +123,7 @@ input[pattern]:invalid{
 					</tr>
 					<tr>
 						<td><label  for="manager" style="color:red;">가입승인문의</label></td>
-						<td><input class="col2"  type="text" id="manager" name="manager" style="color:red" value="010-9930-7725"/></td>
+						<td><input class="col2"  type="text" id="manager" name="manager" style="color:red" value="010-7257-6540"/></td>
 					</tr>
 					
 					<tr>

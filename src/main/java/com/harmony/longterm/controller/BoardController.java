@@ -247,7 +247,26 @@ public class BoardController {
 	public Map<String, Object> smsSendHelpAjax(HttpServletRequest request, Model model, @RequestBody HashMap<String, Object> param) throws Exception {
 
 	   Map<String, Object> resultMap = new HashMap<String,Object>();
+	
+	   String authNumber = Utils.randomAlphaNumeric(4);
+	   String strMsg = param.get("customerNm").toString() +"님 상담 요청 완료되었습니다.\n -하모니렌트카-";
+	   param.put("message", strMsg);
+	   resultMap = boardService.sendSms(request, param);
 	   
+	   strMsg = "이름 : "+param.get("customerNm").toString() +"\n"
+		   		+ "연락처 : "+param.get("phoneNo").toString()+"\n"
+		   		+ "구분 : "+param.get("carKindSel").toString()+"\n"
+		   		+ "\n"
+		   		+ "상담요청 접수되었습니다. ";	// 본문 (90byte 제한)
+	   param.put("message", strMsg);
+	   param.put("phoneNo", "01022528373");
+	   resultMap = boardService.sendSms(request, param);
+	   resultMap.put("authKey", authNumber);
+
+	   
+	   return resultMap;
+
+/*	  2023. 05. 01 KKH 문자전송 서비스 클레스로 처리
 	   String api_id = "inacar2011";		// sms.gabia.com 이용 ID
 	   String api_key = "0e79114156e076bad7b1b06a1d94d7ae";	// 환결설정에서 확인 가능한 SMS API KEY
 	   String resultXml = "";
@@ -301,7 +320,7 @@ public class BoardController {
 	   resultMap.put("authKey", authNumber);
 
 	   return resultMap;
-
+*/
    }
 	@RequestMapping({"/banksmsSendAjax"})
 	@ResponseBody
@@ -380,7 +399,7 @@ public class BoardController {
 	   String api_key = "0e79114156e076bad7b1b06a1d94d7ae";	// 환결설정에서 확인 가능한 SMS API KEY
 	   String resultXml = "";
 	   SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-	   if(param.get("phoneNo").toString().length() < 12) {
+	   if(param.get("phoneNo").toString().length() < 10) {
 		   resultMap.put("smsCode", "9999");	//핸드폰 번호가 올바르지 않음.
 		   logger.debug("핸드폰 번호가 올바르지 않음:"+param.get("phoneNo").toString());
 		   return resultMap;
@@ -454,7 +473,28 @@ public class BoardController {
 	   return resultMap;
 	
 	}
+
+	/* 2023.05.01 KKH SMS 전송옹 컨트롤로 
+	 * param : message - 문자내용(90바이트)
+	 *         phoneNo - 문자 수신자 전화 번호
+	 * return : Map ("smsCode","0000") - 성공
+	 *              ("keyValue","밀리세컨드시간") 전송키값         
+	 *              */
 	
+	@RequestMapping({"/onlySmsSendAjax"})
+	@ResponseBody
+	public Map<String, Object> onlySmsSendAjax(HttpServletRequest request, Model model, @RequestBody HashMap<String, Object> param) throws Exception {
+
+	   Map<String, Object> resultMap = new HashMap<String,Object>();
+	   
+	   if(param.get("message") == null || param.get("message").equals("")) {
+		   resultMap.put("smsCode", "8888");
+		   
+	   }else {
+		   resultMap = boardService.sendSms(request, param);
+	   }
+	   return resultMap;
+   }		
 	
 		/**
 		 * <pre>
@@ -580,7 +620,7 @@ public class BoardController {
 	   public Map<String, Object> alimTokSendAjax(HttpServletRequest request, Model model, @RequestBody HashMap<String, Object> param) throws Exception {
 		   Map<String, Object> resultMap = new HashMap<String,Object>();
 		   
-		   if(param.get("phoneNo").toString().length() < 12) {
+		   if(param.get("phoneNo").toString().length() < 10) {
 			   resultMap.put("code", "9999");	//핸드폰 번호가 올바르지 않음.
 			   logger.debug("핸드폰 번호가 올바르지 않음:"+param.get("phoneNo").toString());
 			   return resultMap;
