@@ -2,6 +2,7 @@ package com.harmony.longterm.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -128,7 +129,7 @@ public class BoardService implements IBoardService {
 		}
 	}
 
-	public Map<String, Object> sendSms(HttpServletRequest request,Map<String, Object> map ){
+	public Map<String, Object> sendSms(HttpServletRequest request,Map<String, Object> map ) {
 		   Map<String, Object> resultMap = new HashMap<String,Object>();
 		   
 		   String api_id = "inacar2011";		// sms.gabia.com 이용 ID
@@ -156,9 +157,21 @@ public class BoardService implements IBoardService {
 		   System.out.println("timeMillis=" + timeInFormat);
 		   // 단문 발송 테스트
 		   String arr[] = new String[7];
-		   arr[0] = "sms";							// 발송 타입 sms or lms
+		   try {
+			   if(map.get("message").toString().getBytes("euc-kr").length > 90) {
+				   arr[0] = "lms";
+				   arr[2] = map.get("title").toString();
+			   }else {
+				   arr[0] = "sms";							// 발송 타입 sms or lms
+				   arr[2] = clientIP;					//  LMS 발송시 제목으로 사용 SMS 발송시는 수신자에게 내용이 보이지 않음.
+			   }
+		   } catch (UnsupportedEncodingException e) {
+			   // TODO Auto-generated catch block
+			   e.printStackTrace();
+		   }		   
+		   
+		   
 		   arr[1] = timeInFormat;	// 결과 확인을 위한 KEY ( 중복되지 않도록 생성하여 전달해 주시기 바랍니다. )
-		   arr[2] = clientIP;					//  LMS 발송시 제목으로 사용 SMS 발송시는 수신자에게 내용이 보이지 않음.
 		   arr[3] = map.get("message").toString(); //"하모니렌트카 인증번호는["+authNumber+"]입니다.";	// 본문 (90byte 제한)
 		   arr[4] = "1661-9763";			// 발신 번호
 		   arr[5] = map.get("phoneNo").toString();			// 수신 번호
@@ -181,4 +194,57 @@ public class BoardService implements IBoardService {
 //		   resultMap.put("authKey", authNumber);
 		   return resultMap;
 	}
+	public Map<String, Object> sendLms(HttpServletRequest request,Map<String, Object> map ){
+		   Map<String, Object> resultMap = new HashMap<String,Object>();
+		   
+		   String api_id = "inacar2011";		// sms.gabia.com 이용 ID
+		   String api_key = "0e79114156e076bad7b1b06a1d94d7ae";	// 환결설정에서 확인 가능한 SMS API KEY
+		   String resultXml = "";
+		   SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+		   String regExp = "^01(?:0|1|[6-9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$";
+//		   param.get("phoneNo")
+		   if( !map.get("phoneNo").toString().matches(regExp) ) {
+			   resultMap.put("smsCode", "9999");	//핸드폰 번호가 올바르지 않음.
+			   logger.debug("BoardService.sendSms핸드폰 번호가 올바르지 않음:"+map.get("phoneNo").toString());
+			   return resultMap;
+		   }
+
+//		   resultMap.put("test", "resultXml");
+//		   if( 1 == 1)
+//			   return resultMap;
+		   
+		   ApiClass api = new ApiClass(api_id, api_key);
+		   long timeInMillis =System.currentTimeMillis();
+		   Date timeInDate = new Date(timeInMillis); 
+	       String timeInFormat = sdf.format(timeInDate);
+
+	       String clientIP = Utils.getClientIP(request);
+		   System.out.println("timeMillis=" + timeInFormat);
+		   // 단문 발송 테스트
+		   String arr[] = new String[7];
+		   arr[0] = "lms";							// 발송 타입 sms or lms
+		   arr[1] = timeInFormat;	// 결과 확인을 위한 KEY ( 중복되지 않도록 생성하여 전달해 주시기 바랍니다. )
+		   arr[2] = map.get("title").toString();					//  LMS 발송시 제목으로 사용 SMS 발송시는 수신자에게 내용이 보이지 않음.
+		   arr[3] = map.get("message").toString(); //"하모니렌트카 인증번호는["+authNumber+"]입니다.";	// 본문 (90byte 제한)
+		   arr[4] = "1661-9763";			// 발신 번호
+		   arr[5] = map.get("phoneNo").toString();			// 수신 번호
+		   arr[6] = "0";					//예약 일자 "2013-07-30 12:00:00" 또는 "0" 0또는 빈값(null)은 즉시 발송 
+
+		   String responseXml = api.send(arr);
+		   System.out.println("response xml : \n" + responseXml);
+
+		   ApiResult res = api.getResult( responseXml );
+		   logger.debug( "code = [" + res.getCode() + "] mesg=[" + res.getMesg() + "]" );
+
+		   if( res.getCode().compareTo("0000") == 0 )
+		   {
+//		   		resultXml = api.getResultXml(responseXml);
+//		   		resultMap.put("seneResultXml", resultXml);
+//		   		logger.debug("Send result xml : " + resultXml);
+		   }
+		   resultMap.put("smsCode", res.getCode());
+		   resultMap.put("keyValue", timeInMillis);
+		   return resultMap;
+	}	
+	
 }

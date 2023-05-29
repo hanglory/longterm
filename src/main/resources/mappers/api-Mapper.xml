@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="api">
+	
+	<select id="selectApiRecvDataList" resultType="com.harmony.longterm.vo.ApiRecvDataVO">
+		SELECT * FROM api_recv_data
+		<if test="coop_cd != null and coop_cd != '' ">
+			WHERE coop_cd=#{coop_cd}
+		</if>
+		ORDER BY seqno DESC
+	</select>
+
+	<select id="selectApiRecvDataTotCnt" resultType="int">
+		SELECT count(*) FROM api_recv_data
+		<if test="coop_cd != null and coop_cd != '' ">
+			WHERE coop_cd=#{coop_cd}
+		</if>
+	</select>
+	
+	<select id="selectBoardList" resultType="com.harmony.longterm.vo.BoardVO">
+		SELECT *
+		FROM board
+		<where>
+		<if test="bd_type != null and bd_type != '' ">
+			AND bd_type = #{bd_type}
+		</if>
+		<if test="bd_isdel != null and bd_isdel != '' ">
+			AND bd_isdel = #{bd_isdel}
+		</if>
+		<if test="search != null and search != '' ">
+			AND bd_title  LIKE concat('%',#{search},'%')
+			OR bd_contents LIKE concat('%',#{search},'%')
+		</if>
+		</where>
+		ORDER BY 
+		bd_isnotice DESC, bd_no DESC
+		limit #{page}, #{count}
+		
+	</select>
+
+	<insert id="insertApiRecvData" useGeneratedKeys="true" keyProperty="id" parameterType="map"> 
+        INSERT INTO api_recv_data 
+        ( 
+ 			seqno, 
+			coop_cd, 
+			plfm_mrkn_chnl_cd, 
+			affl_acpt_req_no, 
+			agm_agrm_dt, 
+			offr_prdt_cd, 
+			cust_no, 
+			cust_nm, 
+			cust_ctif_cn, 
+			cnsl_vhtp_nm, 
+			drot_rsn_cd, 
+			cust_sgmn_cd, 
+			asset_no, 
+			gndr, 
+			brthdt, 
+			reg_date
+        ) VALUES (
+        	0, 
+        	#{coop_cd}, 
+        	#{plfm_mrkn_chnl_cd}, 
+        	#{affl_acpt_req_no}, 
+        	#{agm_agrm_dt}, 
+        	#{offr_prdt_cd}, 
+        	#{cust_no}, 
+        	#{cust_nm},
+        	#{cust_ctif_cn}, 
+        	#{cnsl_vhtp_nm}, 
+        	#{drot_rsn_cd}, 
+        	#{cust_sgmn_cd}, 
+        	#{asset_no},
+        	#{gndr},
+        	#{brthdt},
+        	NOW()
+        ) 
+    </insert>
+
+    <update id="updateApiRecvData" parameterType="map">
+		UPDATE api_recv_data SET
+		<set>
+			<if test="bd_title != ''">bd_title = #{bd_title},</if>
+			<if test="bd_contents != ''">bd_contents = #{bd_contents},</if>
+			<if test="bd_isnotice != ''">bd_isnotice = #{bd_isnotice},</if>
+			<if test="bd_type != ''">bd_type = #{bd_type},</if>
+			<if test="bd_filename != ''">bd_filename = #{bd_filename},</if>
+			<if test="bd_filelink != ''">bd_filelink = #{bd_filelink},</if>
+			<if test="bd_isdel != ''">bd_isdel = #{bd_isdel},</if>
+		</set>
+    	WHERE bd_no=#{bd_no}
+    </update>
+    
+</mapper>

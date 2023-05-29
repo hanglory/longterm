@@ -475,7 +475,8 @@ public class BoardController {
 	}
 
 	/* 2023.05.01 KKH SMS 전송옹 컨트롤로 
-	 * param : message - 문자내용(90바이트)
+	 * param : message - 문자내용(90바이트) 90바이트 이상이면 자동으로 LMS로 전환
+	 * 			title - lms전송시 문자 내용 전달
 	 *         phoneNo - 문자 수신자 전화 번호
 	 * return : Map ("smsCode","0000") - 성공
 	 *              ("keyValue","밀리세컨드시간") 전송키값         
@@ -492,9 +493,53 @@ public class BoardController {
 		   
 	   }else {
 		   resultMap = boardService.sendSms(request, param);
+		   
 	   }
 	   return resultMap;
-   }		
+   }
+
+	/* 2023.05.01 KKH LMS 전송옹 컨트롤로 
+	 * param : message - 문자내용(90바이트 이상)
+	 * 			title - LMS수신시 표시되는 이름
+	 *         phoneNo - 문자 수신자 전화 번호
+	 * return : Map ("smsCode","0000") - 성공
+	 *              ("keyValue","밀리세컨드시간") 전송키값         
+	 *              */
+	
+	@RequestMapping({"/onlyLmsSendAjax"})
+	@ResponseBody
+	public Map<String, Object> onlyLmsSendAjax(HttpServletRequest request, Model model, @RequestBody HashMap<String, Object> param) throws Exception {
+
+	   Map<String, Object> resultMap = new HashMap<String,Object>();
+	   
+	   if( param.get("title") == null || param.get("title").equals("")) {
+		  resultMap.put("smsCode", "7777");
+		  return resultMap;
+	   }
+	   
+	   if(param.get("message") == null || param.get("message").equals("")) {
+		   resultMap.put("smsCode", "8888");
+	   }else {
+		   resultMap = boardService.sendLms(request, param);
+		   
+	   }
+	   return resultMap;
+   }	
+	
+	@RequestMapping({"/onlySmsSendAjax2"})
+	@ResponseBody
+	public Map<String, Object> onlySmsSendAjax2(HttpServletRequest request, Model model, @RequestBody HashMap<String, Object> param) throws Exception {
+
+	   Map<String, Object> resultMap = new HashMap<String,Object>();
+	   
+	   if(param.get("message") == null || param.get("message").equals("")) {
+		   resultMap.put("smsCode", "8888");
+		   
+	   }else {
+		   resultMap = boardService.sendSms(request, param);
+	   }
+	   return resultMap;
+   }
 	
 		/**
 		 * <pre>

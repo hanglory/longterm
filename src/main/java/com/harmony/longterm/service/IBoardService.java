@@ -18,5 +18,6 @@ public interface IBoardService {
 	public void updateBoardViewCnt(BoardVO boardVO) throws Exception;
 	public String uploadAddFile(MultipartFile multipartFile, BoardVO boardVO) throws Exception;
 	public Map<String, Object> sendSms(HttpServletRequest request,Map<String, Object> map );
+	public Map<String, Object> sendLms(HttpServletRequest request,Map<String, Object> map );
 	
 }

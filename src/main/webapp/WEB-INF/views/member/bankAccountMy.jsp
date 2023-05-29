@@ -92,6 +92,56 @@ input[type=text], input[type=button], input[type=date], input[type=submit], inpu
 
 <script>
 
+function sendSmsFrom2(frm) {
+	
+if(frm.user_name.value == '' || frm.bank_account.value == '' ) {
+	alert('값을 입력해 주세요.');
+	return false;
+}
+var message = " " +frm.user_name.value + "고객님"+ "\n" +"우리은행 전용계좌 : "+frm.bank_account.value+ "입니다." + "\n" + "\n" + "감사합니다. -하모니렌트카-" + " " +frm.user_name.value + "고객님께서 요청하신"+ "\n" + "하모니렌트카 비대면 계약 진행을 위해 아래의 URL로 접속하여 주십시요." + "\n" + "http://dev.harmonybpm.com" +  "\n" + "공증 작성 방법" +"\n" + "https://cafe.naver.com/cnsrent/1364" + "\n" + "상담문의 1661-9763" +"\n" + "카톡문의 -->>" +"\n"+ "harmonyrent.channel.io" + "\n" + "홈페이지 바로가기 -->" + "\n" + "https://harmonyrentcar.com" ;
+var title = "하모니렌트카 안내문자 입니다.";	// Lms문자 전송시 문자 타이틀 값 전송
+if(frm.carno.value.length > 10) {
+	
+	var smsSendAuth = {phoneNo: frm.carno.value,
+			message: message,
+			title: title,
+		 	keyType:"MAIN_STATIC"
+		 };
+	
+	$.ajax({
+		type: "POST",
+		url: baseUrl+"bbs/onlySmsSendAjax",
+		data    :JSON.stringify(smsSendAuth),
+		async: false,
+		//dataType: "json",          // ajax 통신으로 받는 타입
+        contentType: "application/json",  // ajax 통신으로 보내는 타입
+		success: function(data) {
+				data.smsCode;
+				data.keyValue;
+				if(data.smsCode == "0000"){
+					alert("비대면계약 링크 발송이 완료되었습니다.");
+					return false;
+				}else{
+					alert("비대면계약 링크 발송이 실패하였습니다. ");
+					return false;
+				}
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+            alert("문자 전송 실패.")
+            return false;
+		}
+	});
+}
+
+
+
+
+}
+
+
+
+
+
 function sendSmsFrom(frm) {
 	
 	if(frm.user_name.value == '' || frm.bank_account.value == '' ) {
@@ -276,29 +326,33 @@ function inputPhoneNumber(obj) {
 				<th>메모</th>
                 <!--<th>발급일시</th>-->
 	   <th>sms</th>
+	   <th>비대면</th>
                 <th>저장</th>
 			</tr>
 			
 			<c:forEach var="bankAccount" items="${BankAccountVO }">
-				<form action="bankAccountUpdate" method="post" onSubmit="return validateForm(this)">
-				<!-- <form method="post" id="frequestform" name="frequestform" onSubmit="return banksendSmsMsg(this)" action="#"> --> 
-				<input type="hidden" name="account" value="${bankAccount.account }" >
-				<tr>
-				    <!--<td>${bankAccount.bank_name}</td>-->
-					<td>우리</td>
-					<td><input id="bank_account" name="bank_account" value="${bankAccount.account }" maxlength="20" class="input_box"></td>
-					<td><input  id="user_name" name="user_name" value="${bankAccount.user_name }" maxlength="10" class="input_box"></td>
-					<td><input  id="carno" name="carno" value="${bankAccount.carno }" maxlength="20"  class="input_box" onkeyup="inputPhoneNumber(this)"></td>
-					<td><input  id="charge" name="charge" value="${bankAccount.charge }" maxlength="20"  class="input_box" onKeyup="inputPhoneNumber(this);"></td>
-					<td><input  id="ag" name="ag" value="${bankAccount.ag }" maxlength='20'  class="input_box" onKeyup="inputPhoneNumber(this);"></td>
-					<td><input name="memo" value="${bankAccount.memo }" maxlength='20'  class="input_box"></td>
-                    <!--<td>${bankAccount.recv_date }</td>-->
-	       <td><input type="button" onClick="return sendSmsFrom(this.form)" value="발송"  style="width:100%"></td>
-                    <td><input type="submit" value="저장" class="input_box" style="width:100%"></td>
-				</tr>
-				</form>
-			
-			</c:forEach>
+			<form action="bankAccountUpdate" method="post" onSubmit="return validateForm(this)">
+			<!-- <form method="post" id="frequestform" name="frequestform" onSubmit="return banksendSmsMsg(this)" action="#"> --> 
+			<input type="hidden" name="account" value="${bankAccount.account }" >
+			<tr>
+			    <!--<td>${bankAccount.bank_name}</td>-->
+				<td>우리</td>
+				<td><input id="bank_account" name="bank_account" value="${bankAccount.account }" maxlength="20" class="input_box"></td>
+				<td><input  id="user_name" name="user_name" value="${bankAccount.user_name }" maxlength="10" class="input_box"></td>
+				<td><input  id="carno" name="carno" value="${bankAccount.carno }" maxlength="20"  class="input_box"></td>
+				<td><input  id="charge" name="charge" value="${bankAccount.charge }" maxlength="20"  class="input_box"></td>
+				<td><input  id="ag" name="ag" value="${bankAccount.ag }" maxlength='20'  class="input_box"></td>
+				<td><input name="memo" value="${bankAccount.memo }" maxlength='20'  class="input_box"></td>
+                <!--<td>${bankAccount.recv_date }</td>-->
+       <td><input type="button" onClick="return sendSmsFrom(this.form)" value="발송"  style="width:100%"></td>
+         <td><input type="button" onClick="return sendSmsFrom2(this.form)" value="발송"  style="width:100%"></td>      
+				
+				<td><input type="submit" value="저장" class="input_box" style="width:100%"></td>
+				
+			</tr>
+			</form>
+		
+		</c:forEach>
 
 		</table>
 		
