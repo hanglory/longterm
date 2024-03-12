@@ -79,10 +79,10 @@ public class BoardController {
 	/* 48 */       prefix = "m-bbs.";
 	/* 49 */     } else if (device.isTablet()) {
 	/* 50 */       prefix = "m-bbs.";
-	/* 51 */       logger.debug("tablet");
+	/* 51 */ //      logger.debug("tablet");
 	/*    */     } 
 	/*    */     
-	/* 57 */     logger.debug(String.valueOf(prefix) + menu);
+	/* 57 */ //    logger.debug(String.valueOf(prefix) + menu);
 	/* 58 */     return String.valueOf(prefix) + menu;
 	/*    */   }	
 	
@@ -446,7 +446,7 @@ public class BoardController {
 
 	   responseXml = api.send(arr);	   
 	   ApiResult res = api.getResult( responseXml );
-	   logger.debug( "code = [" + res.getCode() + "] mesg=[" + res.getMesg() + "]" );
+//	   logger.debug( "code = [" + res.getCode() + "] mesg=[" + res.getMesg() + "]" );
 
 	   resultMap.put("smsCode", res.getCode());
 	   resultMap.put("keyValue", timeInMillis);
@@ -525,21 +525,7 @@ public class BoardController {
 	   }
 	   return resultMap;
    }	
-	
-	@RequestMapping({"/onlySmsSendAjax2"})
-	@ResponseBody
-	public Map<String, Object> onlySmsSendAjax2(HttpServletRequest request, Model model, @RequestBody HashMap<String, Object> param) throws Exception {
 
-	   Map<String, Object> resultMap = new HashMap<String,Object>();
-	   
-	   if(param.get("message") == null || param.get("message").equals("")) {
-		   resultMap.put("smsCode", "8888");
-		   
-	   }else {
-		   resultMap = boardService.sendSms(request, param);
-	   }
-	   return resultMap;
-   }
 	
 		/**
 		 * <pre>
@@ -616,7 +602,7 @@ public class BoardController {
 			model.addAttribute("usedCarVO", usedCarVO);
 			model.addAttribute("queryMap", queryMap);
 			model.addAttribute("reqParam", map);
-			logger.debug(usedCarVO.toString());
+//			logger.debug(usedCarVO.toString());
 		     String prefix = "bbs.";
 		     Device device = DeviceUtils.getCurrentDevice(request);
 		     if (device.isMobile()) {
@@ -624,7 +610,7 @@ public class BoardController {
 		     } else if (device.isTablet()) {
 		       prefix = "m-bbs.";
 		     } 
-		     logger.debug(String.valueOf(prefix) + "usedcarDetail");
+//		     logger.debug(String.valueOf(prefix) + "usedcarDetail");
 			return String.valueOf(prefix) + "usedcarDetail";     
 	}
 	   @RequestMapping({"/usedcarAjax"})

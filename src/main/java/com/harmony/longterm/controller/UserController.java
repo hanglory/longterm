@@ -211,6 +211,7 @@
 /*     */     
 /* 212 */     session.setAttribute("userId", id);
 /* 213 */     session.setAttribute("userLevel", Integer.valueOf(login.getLevel()));
+/* 213 */     session.setAttribute("userPhone", login.getPhone());
 /*     */     
 /* 215 */     logger.debug(Integer.toString(login.getTimeout()));
 /*     */     

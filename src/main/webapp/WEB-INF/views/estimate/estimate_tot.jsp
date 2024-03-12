@@ -523,11 +523,11 @@ var estimateall = {
 		estimatetype_no : "",
 		depositratio_hi : ${depositratio_hi},
 		period_hi : ${period_hi},
-		depositratio_my : ${depositratio_hi},
+		depositratio_my : ${depositratio_my},
 		period_my : ${period_my},
-		depositratio_ou : ${depositratio_hi},
+		depositratio_ou : ${depositratio_ou},
 		period_ou : ${period_ou},
-		depositratio_no :${depositratio_hi},
+		depositratio_no :${depositratio_no},
 		period_no : ${period_no},
 		agentfee_hi :${agentfee_hi},
 		agentfee_my :${agentfee_my},
@@ -540,6 +540,10 @@ var estimateall = {
 		deposit_my : ${deposit_my},
 		deposit_ou : ${deposit_ou},
 		deposit_no : ${deposit_no},
+		jangrate_hi : ${jangrate_hi},
+		jangrate_my : ${jangrate_my},
+		jangrate_ou : ${jangrate_ou},
+		jangrate_no : ${jangrate_no},		
 		distance_hi : ${distance},
 		distance_my : ${distance},
 		distance_ou : ${distance},
@@ -714,10 +718,10 @@ var estimateall = {
           </div>
           <div class="between">
             <span><fmt:formatNumber type="number" maxFractionDigits="3" value="${depositratio_hi *100}" />%</span>
-            <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${(trimprice + optionprice + colorprice) * depositratio_hi}" /> 원<br>
+            <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${deposit_hi}" /> 원<br>
           </div>
           <div class="between">
-            <span><fmt:formatNumber type="number" maxFractionDigits="0" value="${acquisition_hi/(trimprice + optionprice + colorprice)*100 }" />%</span>
+            <span><fmt:formatNumber type="number" maxFractionDigits="0" value="${jangrate_hi}" />%</span>
             <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${(acquisition_hi) }" /> 원</span>
           </div>
           <div class="color between">
@@ -763,10 +767,10 @@ var estimateall = {
           </div>
           <div class="between">
             <span><fmt:formatNumber type="number" maxFractionDigits="3" value="${depositratio_my *100}" />%</span>
-            <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${(trimprice + optionprice + colorprice) * depositratio_my }" /> 원<br>
+            <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${deposit_my}" /> 원<br>
           </div>
           <div class="between">
-            <span><fmt:formatNumber type="number" maxFractionDigits="0" value="${acquisition_my/(trimprice + optionprice + colorprice)*100 }" />%</span>
+            <span><fmt:formatNumber type="number" maxFractionDigits="0" value="${jangrate_my }" />%</span>
             <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${(acquisition_my) }" /> 원</span>
           </div>
           <div class="color between">
@@ -815,7 +819,7 @@ var estimateall = {
             <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${preprice_ou}" /> 만 원</span>
           </div>
           <div class="between">
-            <span><fmt:formatNumber type="number" maxFractionDigits="0" value="${acquisition_ou/(trimprice + optionprice + colorprice)*100 }" />%</span>
+            <span><fmt:formatNumber type="number" maxFractionDigits="0" value="${jangrate_ou }" />%</span>
             <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${acquisition_ou/10000 }"  /> 만원</span>
           </div>
           <div class="color between">
@@ -860,10 +864,10 @@ var estimateall = {
           </div>
           <div class="between">
             <span><fmt:formatNumber type="number" maxFractionDigits="3" value="${depositratio_no *100}" />%</span>
-            <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${(trimprice + optionprice + colorprice) * depositratio_no }" /> 원<br>
+            <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${deposit_no }" /> 원<br>
           </div>
           <div class="between">
-            <span><fmt:formatNumber type="number" maxFractionDigits="0" value="${acquisition_no/(trimprice + optionprice + colorprice)*100 }" />%</span>
+            <span><fmt:formatNumber type="number" maxFractionDigits="0" value="${jangrate_no }" />%</span>
             <span class="ellipsis"><fmt:formatNumber type="number" maxFractionDigits="3" value="${(acquisition_no) }" /> 원</span>
           </div>
           <div class="color between">
@@ -1110,6 +1114,7 @@ window.addEventListener("load", function() {
 				estimateall.rentfee_hi = ${rentfee_hi}
 				estimateall.acquisition_hi = ${acquisition_hi}
 				estimateall.prepayment_hi = ${preprice_hi}*10000
+				
 
 //				xhttp.open("POST", "${CPATH}/esti/save", true);
 //				xhttp.setRequestHeader('Content-Type', 'application/json')
@@ -1236,6 +1241,7 @@ window.addEventListener("load", function() {
 				estimateall.period_hi = ${period_hi}
 				estimateall.rentfee_hi = ${rentfee_hi}
 				estimateall.acquisition_hi = ${acquisition_hi}
+				estimateall.jangrate_hi = ${jangrate_hi}
 				estimateall.prepayment_hi = ${preprice_hi}*10000
 
 //				xhttp.open("POST", "${CPATH}/esti/save", true);
@@ -1249,6 +1255,7 @@ window.addEventListener("load", function() {
 				estimateall.period_my = ${period_my}
 				estimateall.rentfee_my = ${rentfee_my}
 				estimateall.acquisition_my = ${acquisition_my}
+				estimateall.jangrate_my = ${jangrate_my}
 				estimateall.prepayment_my = ${preprice_my}*10000
 				
 //				xhttp.open("POST", "${CPATH}/esti/save", true);
@@ -1262,6 +1269,7 @@ window.addEventListener("load", function() {
 				estimateall.period_ou = ${period_ou}
 				estimateall.rentfee_ou = ${rentfee_ou}
 				estimateall.acquisition_ou = ${acquisition_ou}
+				estimateall.jangrate_ou = ${jangrate_ou}
 				estimateall.prepayment_ou = ${preprice_ou}*10000
 				
 //				xhttp.open("POST", "${CPATH}/esti/save", true);
@@ -1275,6 +1283,7 @@ window.addEventListener("load", function() {
 				estimateall.period_no = ${period_no}
 				estimateall.rentfee_no = ${rentfee_no}
 				estimateall.acquisition_no = ${acquisition_no}
+				estimateall.jangrate_no = ${jangrate_no}
 				estimateall.prepayment_no = ${preprice_no}*10000
 				
 //				xhttp.open("POST", "${CPATH}/esti/save", true);

@@ -12,7 +12,8 @@
 <link rel="stylesheet" href="${RPATH}/css/user.css" type="text/css"/>
 <title>로그인</title>
 <script type='text/javascript'> 
-window.onload = function(){ 
+window.onload = function(){
+/*	
 	if(navigator.userAgent.match(/inapp|NAVER|KAKAOTALK|Snapchat|Line|WirtschaftsWoche|Thunderbird|Instagram|everytimeApp|WhatsApp|Electron|wadiz|AliApp|zumapp|iPhone(.*)Whale|Android(.*)Whale|kakaostory|band|twitter|DaumApps|DaumDevice\/mobile|FB_IAB|FB4A|FBAN|FBIOS|FBSS|SamsungBrowser\/[^1]/i))
 	{ 
 		document.body.innerHTML = ''; 
@@ -21,7 +22,8 @@ window.onload = function(){
 		}else{ 
 			location.href='intent://'+location.href.replace(/https?:\/\//i,'')+'#Intent;scheme=http;package=com.android.chrome;end'; 
 		} 
-	} 
+	}
+*/	
 } 
 </script>
 <style>

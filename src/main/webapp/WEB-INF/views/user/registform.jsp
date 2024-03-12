@@ -15,6 +15,7 @@
 	<title>새사용자</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<style>
+		
 	</style>
 
 </head>
@@ -70,7 +71,41 @@ label.required::after {
 #btn-terms {
 	float: right;
 }
+	
+	
+	
+	#terms-box2 {
+	margin: 10px;
+	padding: 10px;
+	text-align: left;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	background: #fbfff3;
+}
 
+#terms-box2 p {
+	padding: 0 20px;
+	text-indent: 1em;
+}
+
+#btn-partner {
+	float: right;
+}
+
+	#partnerimg{
+		
+		display:none;
+	}	
+
+#btn-regi {
+	float: right;
+}
+
+	#harmonyregi{
+		
+		display:none;
+	}	
+	
 input[pattern]:invalid{
   color:red;
 }
@@ -84,8 +119,66 @@ input[pattern]:invalid{
 	opacity: 0.8;
 }
 
-
+ .layer { display: none; }
+#divpop{
+		
+		position:absolute;left:700px;top:150px;z-index:200;visibility:hidden;
+		
+		
+	}
+	
+	
+  #popupImage {
+      display: block;
+      max-width: 100%;
+      max-height: 100%;
+    }	
+	
+@media (max-width: 800px) {
+#divpop{
+		
+		position:absolute;left:20px;top:30px;z-index:200;visibility:hidden;
+		
+		
+	}
+}	
+	#divpop_table{
+		width:392px;
+		height:272px;
+		
+	}
+	
+		#divpop img{
+		width:392px;
+		height:272px;
+		
+	}	
+	#divpop td{
+		width:392px;
+		
+		
+	}
+	
+	 #popupImage {
+      display: block;
+      max-width: 397px;
+      max-height: 562px;
+    }	
+	
+	
 </style>
+	
+	
+<!-- Layer popup start --> <script language="JavaScript"> function setCookie( name, value, expiredays ) { var todayDate = new Date(); todayDate.setDate( todayDate.getDate() + expiredays ); document.cookie = name + "=" + escape( value ) + "; path=/; expires=" + todayDate.toGMTString() + ";" } function closeWin() { if ( document.notice_form.chkbox.checked ){ setCookie( "maindiv", "done" , 1 ); } document.all['divpop'].style.visibility = "hidden"; } </script> <!-- Layer popup end -->
+
+
+<div id="divpop"> <table id="divpop_table" width=490px height=340px cellpadding=0 cellspacing=0> <tr> <td style="border:1px #666666 solid"  align=center bgcolor=white> <img src="${RPATH}/images/partner2.jpg" width=490px height=340px alt="설명설명"> </td> </tr> <tr> <td height=10 bgcolor="#000000"> </td> </tr> <tr> <form name="notice_form"> <td height=25 align=right bgcolor="#000000" valign=middle> <input type="checkbox" name="chkbox" value="checkbox"> <font color=#eeeeee>오늘 하루 이 창을 열지 않음 </font> <a href="javascript:closeWin();"> <font color=#eeeeee> <B>[닫기]</B> </font></a> </td> </form> </tr> </table> </div>
+
+
+<script language="Javascript"> cookiedata = document.cookie; if ( cookiedata.indexOf("maindiv=done") < 0 ){ document.all['divpop'].style.visibility = "visible"; } else { document.all['divpop'].style.visibility = "hidden"; } </script>
+	
+
+	
 <div class="wrapper">
 	<div id="formContent">
 		<h1 class="text-3d">새 사용자 등록</h1>
@@ -99,11 +192,11 @@ input[pattern]:invalid{
 				<tbody>
 					<tr>
 						<td><label class="required" for="nickname">아이디</label></td>
-						<td><input class="col2" type="text" id="nickname" name="nickname" placeholder="id"/></td>
+						<td><input class="col2" type="text" id="nickname" name="nickname" placeholder="핸드폰번호입력"/></td>
 					</tr>
 					<tr>
 						<td><label class="required" for="password">비밀번호</label></td>
-						<td><input class="col2"  type="password" id="password" name="password" placeholder="비밀번호"/></td>
+						<td><input class="col2"  type="password" id="password" name="password" placeholder="비밀번호입력"/></td>
 					</tr>
 					<tr>
 						<td><label class="required" for="confirm-pw">비밀번호확인</label></td>
@@ -121,10 +214,46 @@ input[pattern]:invalid{
 						<td><label class="required" for="company">소속회사</label></td>
 						<td><input class="col2"  type="text" id="company" name="company" placeholder="소속회사"/></td>
 					</tr>
+					
 					<tr>
-						<td><label  for="manager" style="color:red;">가입승인문의</label></td>
-						<td><input class="col2"  type="text" id="manager" name="manager" style="color:red" value="010-7257-6540"/></td>
+						<td><label class="required" for="manager">하모니담당사원</label></td>
+						<td>
+						<select  style="width:200px;height:40px;"  class="col2"  type="text" id="manager_pmcm" name="manager_pmcm" onchange="selectBoxChange(this.value);">
+										<option value="경남식" >선택</option>
+										<option value="경남식" >경남식</option>
+										<option value="나장열" >나장열</option>
+										<option value="남용일" >남용일</option>
+										<option value="이진희" >이진희</option>
+										<option value="정한일" >정한일</option>
+										<option value="최형용" >최형용</option>
+							
+							
+										<option value="김홍국">김홍국</option>
+										<option value="민종욱">민종욱</option>
+										<option value="백인철">백인철</option>
+										<option value="이종국">이종국</option>
+										<option value="최석순">최석순</option>
+										<option value="황인재">황인재</option>
+										<option value="본사" >본사</option>
+							<option value="김종수" >김종수(수원지점)</option>
+							<option value="전재성" >전재성(수원지점)</option>
+							<option value="김영호" >김영호(수원지점)</option>
+										<option value="기타" >직접입력</option>
+										<!--<option value=""></option>
+										<option value="" ></option>
+										<option value="" ></option>
+										<option value="" ></option>
+			
+										<option value=""></option>-->
+									</select>	
+							<input type="text" id="manager" class="manager" name="manager" placeholder="직접입력" maxlength="10">
+
+						</td>
 					</tr>
+					
+
+					<br><br>
+					
 					
 					<tr>
 						<td></td>
@@ -132,13 +261,42 @@ input[pattern]:invalid{
 					</tr>
 				</tbody>
 			</table>
+			</form>
+			
+				<!-- 이용약관 -->
+						<div id="terms-box2">
+							<input id="read-terms2" type="checkbox">파트너즈2 이용 약관 동의<span class="green">(선택)</span></input>
+							
+			
+			<button id="btn-partner" onclick="showImageInNewWindow()">보기</button>
+			<img id="partnerimg" style="display:none;" alt="파트너즈2약관">
+					
+						</div>
+			
+			<div id="terms-box">
+							<input id="read-terms" type="checkbox">개인정보 제공 및 동의 약관<span class="green">(필수)</span></input>
+							<button id="btn-regi"  onclick="showImageInNewWindow2()">보기</button>
+							<img id="harmonyregi" style="display:none;" alt="개인정보약관">
+									</div>
+	<span style="color:red">본사의 승인완료 후 로그인이 가능합니다.</span><br>
+	<span style="color:red">가입승인문의 : 010-7257-6540</span><br><br>
+	
+			<input type="button" id="btn-regist" value="등록"></input>
+		
+		<!--<div id="formFooter">
+			<a href="./searchid">아이디찾기</a><span class="bar">|</span>
+			<a href="#">비밀번호 찾기</a><span class="bar">|</span>
+			<a href="./login">로그인</a>
+		</div>-->
+	</div></div>
+			
 			
 						<!-- 이용약관 -->
-						<div id="terms-box">
+					<!--	<div id="terms-box">
 							<input id="read-terms" type="checkbox">하모니 이용 약관 동의<span class="green">(필수)</span></input>
 							<button id="btn-terms">보기</button>
 							<div id="tos" style="display:none;"> <!-- terms of service items of use -->
-								<p>
+								<!--<p>
 								제1조 목적
 
 본 이용약관은 “하모니렌트카”(이하 "사이트")의 서비스의 이용조건과 운영에 관한 제반사항 규정을 목적으로 합니다.
@@ -264,23 +422,35 @@ input[pattern]:invalid{
 이 약관은 <사이트 개설일> 부터 시행합니다.
 </p>
 							</div>
-						</div>
+						</div>-->
 
-		</form>
-
-		<span style="color:red">본사의 승인완료 후 로그인이 가능합니다.</span>
-		<input type="button" id="btn-regist" value="등록"></input>
 		
-		<div id="formFooter">
-			<a href="./searchid">아이디찾기</a><span class="bar">|</span>
-			<a href="#">비밀번호 찾기</a><span class="bar">|</span>
-			<a href="./login">로그인</a>
-		</div>
-	</div>
-</div>
+
+		
+
+
 		
 <script>
 $(function() {
+	
+	
+	$("#manager").hide();
+$("#manager_pmcm").change(function() {
+	
+                //기타를 선택하면 등장
+        if($("#manager_pmcm").val() == "기타") {
+            $("#manager").show();
+			
+        }  else {
+            $("#manager").hide();
+        }
+	
+	$("#manager").val($(this).val());
+	
+    }) 
+	
+	
+	
 	$('#btn-regist').click(function(event) {
 		event.preventDefault();
         
@@ -334,7 +504,7 @@ $(function() {
 		}*/
 
 		if (document.getElementById("read-terms").checked == false) {
-			alert("약관에 동의하세요");
+			alert("필수약관에 동의하세요");
 			document.getElementById("read-terms").focus();
 			return false;
 			
@@ -355,7 +525,16 @@ $(function() {
 			}
 		});
 		console.log(formdata);
+		
+
+		
+		
+		
 	});
+	
+
+	
+	
 	
 	document.getElementById("btn-terms").addEventListener("click", function(event) {
 		event.preventDefault();
@@ -366,6 +545,18 @@ $(function() {
 			elem.style.display = "none";
 		}
 	});
+	
+	/*	document.getElementById("btn-terms2").addEventListener("click", function(event) {
+		event.preventDefault();
+		var elem = document.getElementById("tos2");
+		if(elem.style.display === "none") {
+			elem.style.display = "block";	
+		} else {
+			elem.style.display = "none";
+		}
+	}); */
+	
+	
 });
 
 function autoHypenPhone(str){
@@ -402,6 +593,64 @@ cellPhone.onkeyup = function(event){
 	var _val = this.value.trim();
 	this.value = autoHypenPhone(_val) ;
 }
+
+   function showImageInNewWindow() {
+	
+	   
+	 var imageUrl = "https://harmonyrentcar.com/images/partnerimg.png"; // 실제 이미지의 경로로 대체
+      var image = new Image();
+      image.src = imageUrl;
+
+      var width = image.width;
+      var height = image.height;
+      
+      var newWindow = window.open("", "_blank", "width=" + width + ", height=" + height);
+      newWindow.document.write("<html><head><title>이미지</title></head><body style='margin:0'><img id='popupImage' src='" + imageUrl + "' alt='이미지'></body></html>");
+      newWindow.document.close(); 
+	   
+	   
+	   
+	   
+	   
+    }
+	   function showImageInNewWindow2() {
+	
+	   
+	 var imageUrl = "https://harmonyrentcar.com/images/harmonyregi.png"; // 실제 이미지의 경로로 대체
+      var image = new Image();
+      image.src = imageUrl;
+
+      var width = image.width;
+      var height = image.height;
+      
+      var newWindow = window.open("", "_blank", "width=" + width + ", height=" + height);
+      newWindow.document.write("<html><head><title>이미지</title></head><body style='margin:0'><img id='popupImage' src='" + imageUrl + "' alt='이미지'></body></html>");
+      newWindow.document.close(); 
+	   
+	   
+	   
+	   
+	   
+    }
+
+
+
+ /*var imageVisible = false;
+function partner() {
+	
+	var image = document.getElementById("partnerimg");
+	
+	if (imageVisible) {
+        image.style.display = "none"; // 이미지를 숨김
+      } else {
+        image.style.display = "block"; // 이미지를 보이도록 설정
+      }
+      
+      imageVisible = !imageVisible;
+	
+}*/
+
+
 </script>
 </body>
 </html>

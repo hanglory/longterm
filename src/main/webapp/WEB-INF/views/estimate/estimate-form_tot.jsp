@@ -38,6 +38,10 @@
 		<input type="text" id="sel-acquisition_my" name="acquisition_my" value=""/>
 		<input type="text" id="sel-acquisition_ou" name="acquisition_ou" value=""/>
 		<input type="text" id="sel-acquisition_no" name="acquisition_no" value=""/>
+		<input type="text" id="sel-jangrate_hi" name="jangrate_hi" value=""/>
+		<input type="text" id="sel-jangrate_my" name="jangrate_my" value=""/>
+		<input type="text" id="sel-jangrate_ou" name="jangrate_ou" value=""/>
+		<input type="text" id="sel-jangrate_no" name="jangrate_no" value=""/>
 		<input type="text" id="sel-deposit_hi" name="deposit_hi" value=""/>
 		<input type="text" id="sel-deposit_my" name="deposit_my" value=""/>
 		<input type="text" id="sel-deposit_ou" name="deposit_ou" value=""/>

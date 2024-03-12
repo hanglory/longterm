@@ -165,6 +165,12 @@
  <c:if test="${userLevel >= 5 }">           
             <li><a href="${CPATH}/member/${userId}/bankAccountMy">전용계좌 발급</a></li>
  </c:if>
+<c:if test="${userLevel >= 10 }">           
+            <li><a href="${CPATH}/member/${userId}/hyundaiCapital">현대캐피탈DB</a></li>
+ </c:if>
+		  <c:if test="${userLevel >= 10 }">           
+            <li><a href="${CPATH}/member/${userId}/skrentcar">SK렌트카문의</a></li>
+ </c:if>
 
       </ul>
     
@@ -197,10 +203,11 @@ const handleNav = () => {
   //burger Animation
   burger.classList.toggle("toggle");
 };
+/*
 const navSlide = () => {
   burger.addEventListener("click", handleNav);
 };
-
+**/
 const setNavTransition = (width) => {
   if (width > 768) {
     nav.style.transition = "";
@@ -217,7 +224,7 @@ const handleResize = () => {
 const init = () => {
   // Toggle Nav
   window.addEventListener("resize", handleResize);
-  navSlide();
+//  navSlide();
 };
 
 init();

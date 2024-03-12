@@ -522,10 +522,13 @@ function div_html_list(data){
 	
 	for(let i=0; i<data.length; i++) {
         
-        htmlOpt.push(data[i].CAR_OPT_CD);
-        htmlcolor.push(data[i].CAR_COLOR);
+		if(!isEmpty(data[i].CAR_OPT_CD) ) {
+	        htmlOpt.push(data[i].CAR_OPT_CD);
+	        htmlOpt[i] = htmlOpt[i].replace(/OPT001/g,'하이패스').replace(/OPT002/g,'전동시트').replace(/OPT003/g,'내비+후방카메라').replace(/OPT004/g,'썬루프').replace(/OPT005/g,'버튼시동&스마트키').replace(/OPT006/g,'열선시트').replace(/OPT007/g,'통풍시트').replace(/OPT008/g,'크루즈컨트롤').replace(/OPT009/g,'열선핸들').replace(/OPT010/g,'전방감지센서').replace(/OPT011/g,'차선이탈방지').replace(/OPT012/g,'디스플레이+후방카메라').replace(/OPT013/g,'후측방충돌방지').replace(/OPT014/g,'무선충전').replace(/OPT015/g,'가죽시트').replace(/OPT016/g,'스마트크루즈컨트롤').replace(/OPT017/g,'전자식변속다이얼').replace(/OPT018/g,'블루링크/커넥터');
+		}
+       htmlcolor.push(data[i].CAR_COLOR);
         
-        htmlOpt[i] = htmlOpt[i].replace(/OPT001/g,'하이패스').replace(/OPT002/g,'전동시트').replace(/OPT003/g,'내비+후방카메라').replace(/OPT004/g,'썬루프').replace(/OPT005/g,'버튼시동&스마트키').replace(/OPT006/g,'열선시트').replace(/OPT007/g,'통풍시트').replace(/OPT008/g,'크루즈컨트롤').replace(/OPT009/g,'열선핸들').replace(/OPT010/g,'전방감지센서').replace(/OPT011/g,'차선이탈방지').replace(/OPT012/g,'디스플레이+후방카메라').replace(/OPT013/g,'후측방충돌방지').replace(/OPT014/g,'무선충전').replace(/OPT015/g,'가죽시트').replace(/OPT016/g,'스마트크루즈컨트롤').replace(/OPT017/g,'전자식변속다이얼').replace(/OPT018/g,'블루링크/커넥터');
+//        htmlOpt[i] = htmlOpt[i].replace(/OPT001/g,'하이패스').replace(/OPT002/g,'전동시트').replace(/OPT003/g,'내비+후방카메라').replace(/OPT004/g,'썬루프').replace(/OPT005/g,'버튼시동&스마트키').replace(/OPT006/g,'열선시트').replace(/OPT007/g,'통풍시트').replace(/OPT008/g,'크루즈컨트롤').replace(/OPT009/g,'열선핸들').replace(/OPT010/g,'전방감지센서').replace(/OPT011/g,'차선이탈방지').replace(/OPT012/g,'디스플레이+후방카메라').replace(/OPT013/g,'후측방충돌방지').replace(/OPT014/g,'무선충전').replace(/OPT015/g,'가죽시트').replace(/OPT016/g,'스마트크루즈컨트롤').replace(/OPT017/g,'전자식변속다이얼').replace(/OPT018/g,'블루링크/커넥터');
 
     	htmlStr += '<li class="bo_notice likeTblTr likeTblTd">';
 		htmlStr += '  <div class="mvInlineN td_zero">'+(i+1)+'</div>';
@@ -563,6 +566,7 @@ function div_html_list(data){
 
 	
 }
+
     
        function btn(index){
         
@@ -578,7 +582,17 @@ function div_html_list(data){
         
     }
 
-
+  	/**
+  	 * 문자열이 빈 문자열인지 체크하여 결과값을 리턴한다. 
+  	 * @param str		: 체크할 문자열
+  	 */
+  	function isEmpty(str){
+  		
+  		if(typeof str == "undefined" || str == null || str == "")
+  			return true;
+  		else
+  			return false ;
+  	}
 function goPage(pageNo){
 	usedcar.page = pageNo;
 //	usedcar.car_no = $('#no_trim').val();

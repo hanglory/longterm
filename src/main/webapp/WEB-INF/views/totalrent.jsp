@@ -13,7 +13,8 @@ window.onpageshow =  function(event) {
     		window.location.reload();
     }
 }
-window.onload = function(){ 
+window.onload = function(){
+/*	
 	if(navigator.userAgent.match(/inapp|NAVER|KAKAOTALK|Snapchat|Line|WirtschaftsWoche|Thunderbird|Instagram|everytimeApp|WhatsApp|Electron|wadiz|AliApp|zumapp|iPhone(.*)Whale|Android(.*)Whale|kakaostory|band|twitter|DaumApps|DaumDevice\/mobile|FB_IAB|FB4A|FBAN|FBIOS|FBSS|SamsungBrowser\/[^1]/i))
 	{ 
 		document.body.innerHTML = ''; 
@@ -22,7 +23,8 @@ window.onload = function(){
 		}else{ 
 			location.href='intent://'+location.href.replace(/https?:\/\//i,'')+'#Intent;scheme=http;package=com.android.chrome;end'; 
 		} 
-	} 
+	}
+*/ 
 } 
 </script>
 	    
@@ -256,10 +258,10 @@ if(window.wcs) _nasa["cnv"] = wcs.cnv("1","10"); // 전환유형, 전환가치 �
 			                        		<span style="display:block; text-align:center;">르노삼성</span>
 			                        	</div>									
 									</li>
-			                        <li class="maker" data-maker="쌍용">
+			                        <li class="maker" data-maker="KG모빌리티">
 			                        	<div class="imagecontainer">
 			                        		<img src="${RPATH}/images/logo/쌍용.png" alt="" />
-			                        		<span style="display:block; text-align:center;">쌍용</span>
+			                        		<span style="display:block; text-align:center;">KG모빌리티</span>
 			                        	</div>
 									</li>
 					  <li class="maker" data-maker="벤츠">
@@ -358,22 +360,22 @@ if(window.wcs) _nasa["cnv"] = wcs.cnv("1","10"); // 전환유형, 전환가치 �
 									<span>탁송</span>
 									<select name="" id="tagsong">
 										<option value="없음" data-price="0">없음</option>
-										<option value="서울" data-price="65000">서울</option>
-										<option value="경기" data-price="90000">경기</option>
-										<option value="인천" data-price="75000">인천</option>
-										<option value="강원" data-price="160000">강원</option>
-										<option value="대전" data-price="110000">대전</option>
-										<option value="세종" data-price="110000">세종</option>
-										<option value="충북" data-price="150000">충북</option>
-										<option value="충남" data-price="150000">충남</option>
-										<option value="부산" data-price="190000">부산</option>
-										<option value="대구" data-price="170000">대구</option>
-										<option value="울산" data-price="190000">울산</option>
-										<option value="경북" data-price="190000">경북</option>
-										<option value="경남" data-price="200000">경남</option>
-										<option value="광주" data-price="170000">광주</option>
-										<option value="전북" data-price="160000">전북</option>
-										<option value="전남" data-price="220000">전남</option>
+										<option value="서울" data-price="0">서울</option>
+										<option value="경기" data-price="0">경기</option>
+										<option value="인천" data-price="0">인천</option>
+										<option value="강원" data-price="0">강원</option>
+										<option value="대전" data-price="0">대전</option>
+										<option value="세종" data-price="0">세종</option>
+										<option value="충북" data-price="0">충북</option>
+										<option value="충남" data-price="0">충남</option>
+										<option value="부산" data-price="0">부산</option>
+										<option value="대구" data-price="0">대구</option>
+										<option value="울산" data-price="0">울산</option>
+										<option value="경북" data-price="0">경북</option>
+										<option value="경남" data-price="0">경남</option>
+										<option value="광주" data-price="0">광주</option>
+										<option value="전북" data-price="0">전북</option>
+										<option value="전남" data-price="0">전남</option>
 									</select>
 								</div>
 								
@@ -471,13 +473,13 @@ if(window.wcs) _nasa["cnv"] = wcs.cnv("1","10"); // 전환유형, 전환가치 �
 					<span>보증금</span>
 						<select name="depositratio_hi" id="depositratio_hi">
 							<option value="0.1">10%</option>
-							<option value="0.15">15%</option>
+							<!--<option value="0.15">15%</option>-->
 							<option value="0.2">20%</option>
-							<option value="0.25">25%</option>
+							<!--<option value="0.25">25%</option>-->
 							<option value="0.3">30%</option>
-							<option value="0.35">35%</option>
+							<!--<option value="0.35">35%</option>
 							<option value="0.4">40%</option>
-							<option value="0.45">45%</option>
+							<option value="0.45">45%</option>-->
 						</select><span id="deposit_hi" class="result" style="display:inline-block;width:130px;text-align:right;font-size:14px;"></span>
 					</div>
 					<div class="cmb-item2">

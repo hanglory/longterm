@@ -32,7 +32,7 @@
 
 <c:choose>
 	<c:when test="${fn:indexOf(URI,'tot') >= 0 }">
-		<script src="${RPATH}/js/longterm_new-m.js"></script>
+		<script src="${RPATH}/js/longterm-m.js"></script>
 	</c:when>
 	<c:otherwise>
 		<script src="${RPATH}/js/longterm-m.js"></script>

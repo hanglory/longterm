@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
+
 <script language="JavaScript"> 
 var isPhoneAuth = false;
 var isAuthBtn = false;
@@ -757,11 +758,11 @@ document.cookie = name + "=" + escape( value ) + "; path=/; expires=" + todayDat
  document.all['divpop'].style.visibility = "hidden"; } </script> <!-- Layer popup end -->
 
 
-<div id="divpop" style="position:absolute;left:100px;top:150px;z-index:200;visibility:hidden;"> 
+<!--<div id="divpop" style="position:absolute;left:100px;top:150px;z-index:200;visibility:hidden;"> 
 <table width=490px height=340px cellpadding=0 cellspacing=0> 
 <tr> <td style="border:1px #666666 solid" height=340px align=center bgcolor=white> <a href="https://harmonyrent.co.kr/images/board/wjdwlgp26/aicc%EC%B2%A8%EB%B6%80%ED%8C%8C%EC%9D%BC.png"><img src="${RPATH}/images/aicc_popup.jpg" width=500px height=656px alt="aicc팝업"></a> </td> </tr> 
 <tr> <td height=10 bgcolor="#000000"> </td> </tr> <tr> <form name="notice_form"> <td height=25 align=right bgcolor="#000000" valign=middle>
- <input type="checkbox" name="chkbox" value="checkbox"> <span style="color:#eeeeee">오늘 하루 이 창을 열지 않음 </span> <a href="javascript:closeWin();"> <span style="color:#eeeeee"> <B style="color:#eeeeee">[닫기]</B> </span></a> </td> </form> </tr> </table> </div>
+ <input type="checkbox" name="chkbox" value="checkbox"> <span style="color:#eeeeee">오늘 하루 이 창을 열지 않음 </span> <a href="javascript:closeWin();"> <span style="color:#eeeeee"> <B style="color:#eeeeee">[닫기]</B> </span></a> </td> </form> </tr> </table> </div> -->
 
 
 <script language="Javascript"> cookiedata = document.cookie; if ( cookiedata.indexOf("maindiv=done") < 0 ){ document.all['divpop'].style.visibility = "visible"; } else { document.all['divpop'].style.visibility = "hidden"; } </script>
@@ -898,7 +899,7 @@ function currentSlide(n) {
     <div class="sector2a">
         
         
-  <img class="slide1a" src="${RPATH}/images/mainimg33.jpg" style="display:none">
+  <a href="https://harencar.co.kr/100"><img class="slide1a" src="${RPATH}/images/mainimg33.jpg" style="display:none"></a>
   <img class="slide1a" src="${RPATH}/images/mainimg44.jpg" style="display:none">
   <img class="slide1a" src="${RPATH}/images/mainimg55.jpg" style="display:none">
                                    

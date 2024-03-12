@@ -14,7 +14,8 @@ window.onpageshow =  function(event) {
     		window.location.reload();
     }
 }
-window.onload = function(){ 
+window.onload = function(){
+/*	
 	if(navigator.userAgent.match(/inapp|NAVER|KAKAOTALK|Snapchat|Line|WirtschaftsWoche|Thunderbird|Instagram|everytimeApp|WhatsApp|Electron|wadiz|AliApp|zumapp|iPhone(.*)Whale|Android(.*)Whale|kakaostory|band|twitter|DaumApps|DaumDevice\/mobile|FB_IAB|FB4A|FBAN|FBIOS|FBSS|SamsungBrowser\/[^1]/i))
 	{ 
 		document.body.innerHTML = ''; 
@@ -23,7 +24,8 @@ window.onload = function(){
 		}else{ 
 			location.href='intent://'+location.href.replace(/https?:\/\//i,'')+'#Intent;scheme=http;package=com.android.chrome;end'; 
 		} 
-	} 
+	}
+*/	
 } 
 </script>
 
@@ -53,7 +55,7 @@ wcs_do();
 <img src="/images/returninfo2.jpg" alt="" usemap = "#imagemap2" style="max-width:100%; height:auto;" >
     
        <map name="imagemap2" id="imagemap2">
-    <area shape="rect" coords="476,925,640,985" href="tel:010-7604-1262" target="_blank" >
+    <area shape="rect" coords="645,142,748,243" href="tel:010-2261-8373" target="_blank" >
 </map>
     
     </div>

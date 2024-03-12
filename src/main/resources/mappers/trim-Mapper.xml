@@ -58,6 +58,77 @@
 			AND options = #{optionlist}
 			AND status = 'Y'
 		]]>
-	</select>	
-
+	</select>
+		
+	<select id="trimDetail" resultType="com.harmony.longterm.vo.CarVO">
+ 		SELECT 
+        	m.id AS model_id
+        	,m.maker AS maker
+        	,m.name AS model_name
+        	,m.lineup AS lineup
+        	,m.image AS image
+        	,m.ranking AS model_ranking
+        	,t.id AS trim_id
+        	,t.name AS trim_name
+        	,t.price AS price
+        	,t.fuel AS fuel
+        	,m.elec_sub AS elec_sub
+        	,m.displacement AS displacement
+        	,m.car_type AS car_type
+        	,m.janga24 AS janga24
+        	,m.janga36 AS janga36
+        	,m.janga48 AS janga48
+        	,m.tax_type AS tax_type
+        	,m.tax_rate AS tax_rate
+        	,m.tagsong AS tagsong
+        	,t.fees_rate AS fees_rate
+        	,t.maker_rate AS maker_rate
+        	,irr 
+        	,fuel_model
+        	,m.cal_rate_10_24
+        	,m.cal_rate_10_36
+        	,m.cal_rate_10_48
+        	,m.cal_rate_50_24
+        	,m.cal_rate_50_36
+        	,m.cal_rate_50_48
+        	,maintain_fee_10_24
+        	,maintain_fee_10_36
+        	,maintain_fee_10_48
+        	,maintain_fee_50_24
+        	,maintain_fee_50_36
+        	,maintain_fee_50_48
+        	<if test="deposit == 0.1">
+        		<if test="deposit == 24">
+        			,m.cal_rate_10_24 AS cal_rate
+        			,m.maintain_fee_10_24 AS maintain_fee
+        		</if>
+        		<if test="deposit == 36">
+        			,m.cal_rate_10_36 AS cal_rate
+        			,m.maintain_fee_10_36 AS maintain_fee
+        		</if>
+        		<if test="deposit == 48">
+        			,m.cal_rate_10_48 AS cal_rate
+        			,m.maintain_fee_10_48 AS maintain_fee
+        		</if>
+        	</if>
+        	<if test="deposit == 0.5">
+        		<if test="deposit == 24">
+        			,m.cal_rate_50_24 AS cal_rate
+        			,m.maintain_fee_50_24 AS maintain_fee        			
+        		</if>
+        		<if test="deposit == 36">
+        			,m.cal_rate_50_36 AS cal_rate
+        			,m.maintain_fee_50_36 AS maintain_fee        			
+        		</if>
+        		<if test="deposit == 48">
+        			,m.cal_rate_50_48 AS cal_rate
+        			,m.maintain_fee_50_48 AS maintain_fee        			
+        		</if>
+        	</if>
+    	FROM model m
+        LEFT JOIN trim t ON (t.model_id = m.id)
+    	WHERE m.active = 1
+    	AND t.active = 1 
+    	AND t.id = #{trim_id}
+	</select>
 </mapper>

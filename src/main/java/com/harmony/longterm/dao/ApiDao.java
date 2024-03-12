@@ -31,10 +31,11 @@ public class ApiDao  {
     /** MAPPER_PATH */
     private final String MAPPER_PATH = "api.";
 
-	
+
+    
 	/**
 	 * <PRE>
-	 * 설명 : 현대케피탈에서 받은 데이타 내역 리스트
+	 * 설명 : 외주에서 받은 데이타 내역 리스트
 	 * </PRE>
 	 * @param Map
 	 * @return ApiHyundaiVO
@@ -51,8 +52,8 @@ public class ApiDao  {
 	 * @param boardVO
 	 * @return int
 	 */
-	public int insertApiRecvData(ApiRecvDataVO apiHyundaiVO) {
-		return this.sqlSession.insert(MAPPER_PATH + "insertApiHyundaiVO", apiHyundaiVO);
+	public int insertApiRecvData(ApiRecvDataVO apiRecvDataVO) {
+		return this.sqlSession.insert(MAPPER_PATH + "insertApiRecvData", apiRecvDataVO);
 	}
 
 
@@ -62,8 +63,8 @@ public class ApiDao  {
 	 * </PRE>
 	 * @param boardVO
 	 */
-	public void updateApiRecvData(ApiRecvDataVO apiHyundaiVO) {
-		this.sqlSession.update(MAPPER_PATH + "updateApiHyundai", apiHyundaiVO);
+	public void updateApiRecvData(Map<String, Object> map) {
+		this.sqlSession.update(MAPPER_PATH + "updateApiRecvData", map);
 	}
 	
 	/**
@@ -72,8 +73,8 @@ public class ApiDao  {
 	 * </PRE>
 	 * @param boardVO
 	 */
-	public void deleteApiRecvData(ApiRecvDataVO apiHyundaiVO) {
-		this.sqlSession.delete(MAPPER_PATH + "deleteApiHyundai", apiHyundaiVO);
+	public void deleteApiRecvData(ApiRecvDataVO apiRecvDataVO) {
+		this.sqlSession.delete(MAPPER_PATH + "deleteApiRecvData", apiRecvDataVO);
 	}
 
 }

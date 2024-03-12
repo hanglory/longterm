@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 /*    */ import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /*    */ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.harmony.longterm.service.CarService;
 import com.harmony.longterm.service.ISiteinfoService;
 import com.harmony.longterm.service.IUsedCarService;
+import com.harmony.longterm.utils.DateUtil;
 import com.harmony.longterm.utils.Paging;
 import com.harmony.longterm.vo.SiteinfoVO;
 import com.harmony.longterm.vo.UsedCarVO;
@@ -57,7 +59,7 @@ public class LongtermController
 				return "redirect:/main";
 			}
 /* 34 */     String prefix = "rent.";
-logger.debug("longtermControler" + String.valueOf(prefix) + menu);
+// logger.debug("longtermControler" + String.valueOf(prefix) + menu);
 /*    */     
 /* 36 */     if (menu.contains("admin"))
 /*    */     {
@@ -77,16 +79,16 @@ logger.debug("longtermControler" + String.valueOf(prefix) + menu);
 /* 48 */       prefix = "m-rent.";
 /* 49 */     } else if (device.isTablet()) {
 /* 50 */       prefix = "m-rent.";
-/* 51 */       logger.debug("tablet");
+/* 51 */ //      logger.debug("tablet");
 /*    */     } 
 /*    */     
-/* 57 */     logger.debug(String.valueOf(prefix) + menu);
+/* 57 */  //   logger.debug(String.valueOf(prefix) + menu);
 /* 58 */     return String.valueOf(prefix) + menu;
 /*    */   }
 /*    */   
 /*    */   @RequestMapping({"/estimate"})
 /*    */   public String estimate(@RequestParam HashMap<String, String> map, Model model) {
-/* 63 */     logger.debug(map.toString());
+/* 63 *///     logger.debug(map.toString());
 /*    */     
 /* 65 */     model.addAllAttributes(map);
 //     model.addAttribute("phone", "1661-9763");
@@ -95,7 +97,7 @@ logger.debug("longtermControler" + String.valueOf(prefix) + menu);
 /*    */   }
 /*    */   @RequestMapping({"/estimate_tot"})
 /*    */   public String estimate_tot(HttpServletRequest request, @RequestParam HashMap<String, String> map, Model model) {
-/* 63 */     logger.debug(map.toString());
+/* 63 *///     logger.debug(map.toString());
 			String expdate="";
 			Date now = new Date();
 			SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
@@ -245,8 +247,9 @@ public String usedcarReal(Model model,@RequestParam(value = "page", defaultValue
    		logger.debug( "error" + e);
    	}
    }   
-
-/*    */ }
+   
+   
+}
 
 
 /* Location:              D:\web\base\ROOT\WEB-INF\classes\!\com\harmony\longterm\controller\LongtermController.class

@@ -3,11 +3,53 @@
 <mapper namespace="api">
 	
 	<select id="selectApiRecvDataList" resultType="com.harmony.longterm.vo.ApiRecvDataVO">
-		SELECT * FROM api_recv_data
+		SELECT 	seqno, 
+			coop_cd, 
+			plfm_mrkn_chnl_cd, 
+			affl_acpt_req_no, 
+			agm_agrm_dt, 
+			(SELECT code_nm FROM code_mst WHERE code_class='KIND_PRODUCT' AND code_val=offr_prdt_cd ) AS offr_prdt_cd, 
+			cust_no, 
+			cust_nm, 
+			cust_ctif_cn, 
+			cnsl_vhtp_nm, 
+			(SELECT code_nm FROM code_mst WHERE code_class='REASON_CODE' AND code_val=drot_rsn_cd ) AS drot_rsn_cd,
+			(SELECT code_nm FROM code_mst WHERE code_class='AGE_CODE' AND code_val=cust_sgmn_cd ) AS cust_sgmn_cd, 
+			asset_no, 
+			gndr, 
+			brthdt, 
+			cntr_term_mm, 
+			prms_dtc, 
+			impsnl, 
+			pldg_rt, 
+			rgl_rent_amt, 
+			reg_date, 
+			status, 
+			memo,
+			manager
+		FROM api_recv_data
 		<if test="coop_cd != null and coop_cd != '' ">
 			WHERE coop_cd=#{coop_cd}
 		</if>
-		ORDER BY seqno DESC
+		<if test="search1 != null and search1 != '' ">
+			AND ${type1} LIKE CONCAT('%',#{search1}, '%')
+		</if>
+		<if test="searchStart != null and searchStart != '' ">
+		<![CDATA[
+			AND reg_date >= #{searchStart}
+		]]>
+		</if>
+		<if test="searchEnd != null and searchEnd != '' ">
+		<![CDATA[
+			AND reg_date <= CONCAT(#{searchEnd},' 23:59:59')
+		]]>
+		</if>
+		
+		<if test="orderby !=null and orderby != '' ">
+			ORDER BY ${orderfield}  ${orderby}
+		</if>
+		
+		limit #{page}, #{count}
 	</select>
 
 	<select id="selectApiRecvDataTotCnt" resultType="int">
@@ -15,30 +57,23 @@
 		<if test="coop_cd != null and coop_cd != '' ">
 			WHERE coop_cd=#{coop_cd}
 		</if>
+		<if test="search1 != null and search1 != '' ">
+			AND ${type1} LIKE CONCAT('%',#{search1}, '%')
+		</if>		
+		<if test="searchStart != null and searchStart != '' ">
+		<![CDATA[
+			AND reg_date >= #{searchStart}
+		]]>
+		</if>
+		<if test="searchEnd != null and searchEnd != '' ">
+		<![CDATA[
+			AND reg_date <= CONCAT(#{searchEnd},' 23:59:59')
+		]]>
+		</if>
+	
 	</select>
 	
-	<select id="selectBoardList" resultType="com.harmony.longterm.vo.BoardVO">
-		SELECT *
-		FROM board
-		<where>
-		<if test="bd_type != null and bd_type != '' ">
-			AND bd_type = #{bd_type}
-		</if>
-		<if test="bd_isdel != null and bd_isdel != '' ">
-			AND bd_isdel = #{bd_isdel}
-		</if>
-		<if test="search != null and search != '' ">
-			AND bd_title  LIKE concat('%',#{search},'%')
-			OR bd_contents LIKE concat('%',#{search},'%')
-		</if>
-		</where>
-		ORDER BY 
-		bd_isnotice DESC, bd_no DESC
-		limit #{page}, #{count}
-		
-	</select>
-
-	<insert id="insertApiRecvData" useGeneratedKeys="true" keyProperty="id" parameterType="map"> 
+	<insert id="insertApiRecvData" useGeneratedKeys="true" keyProperty="id" parameterType="com.harmony.longterm.vo.ApiRecvDataVO"> 
         INSERT INTO api_recv_data 
         ( 
  			seqno, 
@@ -55,8 +90,15 @@
 			cust_sgmn_cd, 
 			asset_no, 
 			gndr, 
-			brthdt, 
-			reg_date
+			brthdt,
+			cntr_term_mm,
+			prms_dtc,
+			impsnl,
+			pldg_rt,
+			rgl_rent_amt,
+			reg_date,
+			memo,
+			manager
         ) VALUES (
         	0, 
         	#{coop_cd}, 
@@ -73,22 +115,29 @@
         	#{asset_no},
         	#{gndr},
         	#{brthdt},
-        	NOW()
+        	#{cntr_term_mm},
+        	#{prms_dtc},
+        	#{impsnl},
+        	#{pldg_rt},
+        	#{rgl_rent_amt},
+        	NOW(),
+        	#{memo},
+        	#{manager}
+        	
         ) 
     </insert>
 
     <update id="updateApiRecvData" parameterType="map">
-		UPDATE api_recv_data SET
+		UPDATE api_recv_data 
 		<set>
-			<if test="bd_title != ''">bd_title = #{bd_title},</if>
-			<if test="bd_contents != ''">bd_contents = #{bd_contents},</if>
-			<if test="bd_isnotice != ''">bd_isnotice = #{bd_isnotice},</if>
-			<if test="bd_type != ''">bd_type = #{bd_type},</if>
-			<if test="bd_filename != ''">bd_filename = #{bd_filename},</if>
-			<if test="bd_filelink != ''">bd_filelink = #{bd_filelink},</if>
-			<if test="bd_isdel != ''">bd_isdel = #{bd_isdel},</if>
+			<if test="cntrReqSts != null and cntrReqSts != ''">status = #{cntrReqSts},</if>
+			<if test="coop_cd != null and coop_cd != ''">coop_cd = #{coop_cd},</if>
+			<if test="cust_nm != null and cust_nm != ''">cust_nm = #{cust_nm},</if>
+			<if test="cnsl_vhtp_nm != null and cnsl_vhtp_nm != ''">cnsl_vhtp_nm = #{cnsl_vhtp_nm},</if>
+			<if test="manager != null and manager != ''">manager = #{manager},</if>
+			memo = #{memo}, 
 		</set>
-    	WHERE bd_no=#{bd_no}
+    	WHERE seqno=#{seqno}
     </update>
     
 </mapper>

@@ -53,6 +53,10 @@ var car = {
 	preprice_my :0,
 	preprice_ou :0,
 	preprice_no :0,
+	jangrate_hi : 0,
+	jangrate_my : 0,
+	jangrate_ou : 0,
+	jangrate_no : 0,
 	prepayment:0,
 	agentfee_hi:0,
 	agentfee_my:0,
@@ -78,6 +82,7 @@ var car = {
 	phone:"",
 	customer:"",
 	authNumber:""
+
 }
 	
 var updateOptionList = function () {
@@ -130,20 +135,23 @@ var UpdateSummary = function(kind=5) {
 		url: baseUrl+"car/rentfee",
 		data: JSON.stringify(car),
 		//dataType: "json",          // ajax 통신으로 받는 타입
-		contentType: "application/json",  // ajax 통신으로 보내는 타입
+		contentType: "application/json",  // ajax 통신으로 보내는  타입
 		success: function(data) {
 			car.rentfee_hi = data.rentfee;
+			//car.rentfee_hi = data.rentfee + ((data.org_price * 0.006413) + 94097);
 			car.deposit_hi = data.deposit;
 			car.acquisition_hi = data.acquisition;
+//			car.jangrate_hi = data.jang_rate;
 			car.agent_fee = data.agent_fee;
 			car.agentfee_hi = data.agent_fee;
-			car.agentfee_ou = data.agent_fee;
 			car.cal_price = data.cal_price;
+		
 			
 //			$('#rentfee_hi').html(Number(Math.round( car.rentfee_hi - (car.preprice_hi*10000/car.period_hi))).toLocaleString('en') + "원/월");
 //			car.rentfee_hi = Math.round( car.rentfee_hi - (car.preprice_hi*10000/car.period_hi));
 			$('#deposit_hi').html(Number(Math.round( data.deposit / 10000)).toLocaleString('en') + "만원");
 			$('#rentfee_hi').html(Number(car.rentfee_hi).toLocaleString('en') + "원/월");
+			
 			$('#deposit-summary').html(car.deposit_ratio * 100 + " %   " + Number(car.deposit).toLocaleString('en'));
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
@@ -166,6 +174,7 @@ var UpdateSummary = function(kind=5) {
 			car.rentfee_my = data.rentfee;
 			car.deposit_my = data.deposit;
 			car.acquisition_my = data.acquisition;
+//			car.jangrate_my = data.jang_rate;
 			car.agentfee_my = data.agent_fee;
 			car.cal_price = data.cal_price;
 			
@@ -198,6 +207,7 @@ var UpdateSummary = function(kind=5) {
 			car.rentfee_ou = data.rentfee;
 			car.deposit_ou = data.deposit;
 			car.acquisition_ou = data.acquisition;
+			car.jangrate_ = data.jang_rate;
 //			car.agentfee_ou = data.agent_fee;
 			
 //			$('#rentfee_ou').html(Number(Math.round( car.rentfee_ou - (car.preprice_ou*10000/car.period_ou))).toLocaleString('en') + "원/월");
@@ -1156,6 +1166,19 @@ $(function(){
 		input = document.getElementById("sel-acquisition_no");
 		input.focus();
 		input.value = car.acquisition_no;
+
+		input = document.getElementById("sel-jangrate_hi");
+		input.focus();
+		input.value = car.jangrate_hi;
+		input = document.getElementById("sel-jangrate_my");
+		input.focus();
+		input.value = car.jangrate_my;
+		input = document.getElementById("sel-jangrate_ou");
+		input.focus();
+		input.value = car.jangrate_ou;
+		input = document.getElementById("sel-jangrate_no");
+		input.focus();
+		input.value = car.jangrate_no;
 
 		input = document.getElementById("sel-deposit_hi");
 		input.focus();

@@ -14,6 +14,7 @@
       <input type="text" name="search1" id="search1">
       <button>검색</button>
       &nbsp;&nbsp;&nbsp;&nbsp;	<button type="button" onClick="location.href='usedcarform'">등록</button>
+ <!--     <button onclick="javascript:testUsedCar('','' )">테스트</button>	-->
     </form>
     <h2>
       차량리스트
@@ -135,6 +136,56 @@ var deleteUsedCar = function(id, trim_name) {
 	xhr.open("POST", "${CPATH}/admin/usedcarDelete");
 	xhr.setRequestHeader("content-type", "application/json");
 	//xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	console.log(JSON.stringify(data));
+	xhr.send(JSON.stringify(data));
+}
+var testUsedCar = function(id, trim_name) {
+	var xhr = new XMLHttpRequest();
+	var data = {
+			"custSgmnCd":"B", 
+			"cnslAplNo":"C20230713713007", 
+			"agmAgrmDt":"20230713", 
+			"custNm":"T5pKnLsIYjk0Wccc4mLZRQ==", 
+			"offrPrdtCd":"03", 
+			"cnslVhtpNm":"K155_레이(RAY)", 
+			"drotRsnCd":"2", 
+			"custCtifCn":"wEJR/Fom25dJAjLU/Wozag==", 
+			"pmlnMrknChnlCd":"HMN"			
+			};
+//	data.id = id;
+/*
+ * 				"rglRentAmt": "0", 
+				"brthdt": "diZARA5+jyNpBG9OGWL0hA==", 
+				"custNm": "WPPT2g2PkM/6jYlu+RU7uw==", 
+				"impsnl": "1억", 
+				"gndr":"ECta1AWaCfrh2l6GQNLBFg==", 
+				"assetNo": "HMNR41", 
+				"cntrTermMm" :"12", 
+				"cntrId" :"202306290002", 
+				"agreeYn":"Y", 
+				"carNo":"165하1817", 
+				"hpNo": "JTwJoDP5XEl0ZLjTvzB/aA==", 
+				"prmsDtc":"30000", 
+				"pldgRt":"10"			
+
+ */
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == xhr.DONE ) {
+			if (xhr.status == 200 || xhr.status == 201) {
+				// 동작을 마쳤으면, 페이지를 다시 불러온다.
+				console.log(xhr.responseText);
+//				location.reload();
+			} else {
+				console.log(xhr.responseText);
+			}
+		}
+	};
+
+	
+	xhr.open("POST", "${CPATH}/API/hyundaicapitalReq");
+//	xhr.open("POST", "${CPATH}/API/skRentCarReq");
+//	xhr.open("POST", "https://www.harmonyrentcar.com/API/skRentCarReq");
+	xhr.setRequestHeader("content-type", "application/json");
 	console.log(JSON.stringify(data));
 	xhr.send(JSON.stringify(data));
 }

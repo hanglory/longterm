@@ -80,7 +80,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <c:choose>
 	<c:when test="${fn:indexOf(URI,'tot') >= 0 }">
-		<script src="${RPATH}/js/longterm_new.js"></script>
+		<script src="${RPATH}/js/longterm.js"></script>
 	</c:when>
 	<c:otherwise>
 		<script src="${RPATH}/js/longterm.js"></script>

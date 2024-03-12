@@ -37,10 +37,12 @@
 /*     */   private float maintain_fee_50_24;
 /*     */   private float maintain_fee_50_36;
 /*     */   private float maintain_fee_50_48;
+			private float irr;
+			private String fuel_model;
 /*     */   
 /*     */   public CarVO() {}
 /*     */   
-/*     */   public CarVO(int model_id, String maker, String model_name, String lineup, String image, int model_ranking, int trim_id, String trim_name, int price, int elec_sub, String fuel, int displacement, String car_type, float janga24, float janga36, float janga48, String tax_type, float tax_rate, int tagsong, float fees_rate, float maker_rate, float cal_rate, float cal_rate_10_24, float cal_rate_10_36, float cal_rate_10_48, float cal_rate_50_24, float cal_rate_50_36, float cal_rate_50_48, int maintain_fee, float maintain_fee_10_24, float maintain_fee_10_36, float maintain_fee_10_48, float maintain_fee_50_24, float maintain_fee_50_36, float maintain_fee_50_48) {
+/*     */   public CarVO(int model_id, String maker, String model_name, String lineup, String image, int model_ranking, int trim_id, String trim_name, int price, int elec_sub, String fuel, int displacement, String car_type, float janga24, float janga36, float janga48, String tax_type, float tax_rate, int tagsong, float fees_rate, float maker_rate, float cal_rate, float cal_rate_10_24, float cal_rate_10_36, float cal_rate_10_48, float cal_rate_50_24, float cal_rate_50_36, float cal_rate_50_48, int maintain_fee, float maintain_fee_10_24, float maintain_fee_10_36, float maintain_fee_10_48, float maintain_fee_50_24, float maintain_fee_50_36, float maintain_fee_50_48, float irr, String fuel_model) {
 /*  52 */     this.model_id = model_id;
 /*  53 */     this.maker = maker;
 /*  54 */     this.model_name = model_name;
@@ -76,6 +78,8 @@
 /*  83 */     this.maintain_fee_50_24 = maintain_fee_50_24;
 /*  84 */     this.maintain_fee_50_36 = maintain_fee_50_36;
 /*  85 */     this.maintain_fee_50_48 = maintain_fee_50_48;
+			this.irr = irr;
+			this.fuel_model = fuel_model;
 /*     */   }
 /*     */ 
 /*     */   
@@ -423,7 +427,26 @@
 /*     */   public void setMaintain_fee_50_48(float maintain_fee_50_48) {
 /* 425 */     this.maintain_fee_50_48 = maintain_fee_50_48;
 /*     */   }
+
+/*     */   public float getIrr() {
+/* 420 */     return this.irr;
+/*     */   }
 /*     */ 
+/*     */   
+/*     */   public void setIrr(float irr) {
+/* 425 */     this.irr = irr;
+/*     */   }
+/*     */ 
+/*     */   public String getFuel_model() {
+/* 420 */     return this.fuel_model;
+/*     */   }
+/*     */ 
+/*     */   
+/*     */   public void setfuel_model(String fuel_model) {
+/* 425 */     this.fuel_model = fuel_model;
+/*     */   }
+/*     */ 
+
 /*     */ 
 /*     */   
 /*     */   public String toString() {

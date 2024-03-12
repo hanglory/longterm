@@ -953,7 +953,7 @@ function currentSlide(n) {
     
     <div class = "sector2">
     
-  <a href ="tel:1661-9763"><img class="slide1" src="${RPATH}/images/m_main11.jpg"></a>
+  <a href ="https://harencar.co.kr/100"><img class="slide1" src="${RPATH}/images/m_main11.jpg"></a>
   <a href ="tel:1661-9763"><img class="slide1" src="${RPATH}/images/m_main22.jpg"></a>
   <a href ="tel:1661-9763"><img class="slide1" src="${RPATH}/images/m_main33.jpg"></a>
     

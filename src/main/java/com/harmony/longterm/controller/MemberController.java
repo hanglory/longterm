@@ -22,8 +22,10 @@ import java.util.stream.Stream;
 /*     */ import org.springframework.stereotype.Controller;
 /*     */ import org.springframework.ui.Model;
 /*     */ import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 /*     */ import org.springframework.web.bind.annotation.RequestMapping;
 /*     */ import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.harmony.longterm.utils.DateUtil;
 /*     */ 
@@ -34,6 +36,8 @@ import com.harmony.longterm.vo.CarVO;
 import com.harmony.longterm.vo.ColorVO;
 /*     */ import com.harmony.longterm.vo.EstimateVO;
 import com.harmony.longterm.vo.OptionVO;
+import com.harmony.longterm.vo.ApiRecvDataVO;
+
 /*     */ import com.harmony.longterm.vo.UserVO;
 /*     */ 
 /*     */ 
@@ -214,7 +218,6 @@ public String bankAccountMy(HttpServletRequest request, Model model, @RequestPar
 	HttpSession session = request.getSession();
 	HashMap<String, Object> queryMap = new HashMap<>();
 	if (page.intValue() < 1) page = Integer.valueOf(1);
-
 //    if (session.getAttribute("userId") != null) {
 //    }
     int pageSize = 20;
@@ -228,6 +231,7 @@ public String bankAccountMy(HttpServletRequest request, Model model, @RequestPar
     List<BankAccountVO> bankAccountVo  = this.sqlSession.selectList("admin.selectAccountByUserID", queryMap);
     model.addAttribute("BankAccountVO", bankAccountVo);
     model.addAttribute("paging", paging);
+    model.addAttribute("userPhone",session.getAttribute("userPhone"));
     paging.setTotalCount(count);
 
 	return String.valueOf(prefix) +"bankAccountMy";
@@ -253,7 +257,7 @@ public String bankAccountRecv(HttpServletRequest request, Model model) {
 	
 	    }
 	}
-	return "redirect:/member/"+session.getAttribute("userId")+"/bankAccountMy";
+	return "redirect:/member/{member}/bankAccountMy";
 }
 
 @RequestMapping({ "/{member}/bankAccountUpdate" })
@@ -269,8 +273,90 @@ public String bankAccountUpdate(HttpServletRequest request, Model model, @Reques
 
     }
     
-	return "redirect:/member/"+session.getAttribute("userId")+"/bankAccountMy";
+	return "redirect:/member/{member}/bankAccountMy";
 }
+
+@RequestMapping({ "/{member}/hyundaiCapital" })
+//public String hyundaiCapital(HttpServletRequest request, Model model, @RequestParam(value = "page", defaultValue = "1") Integer page) {
+public String hyundaiCapital(HttpServletRequest request, Model model, @RequestParam Map<String, Object> param) {
+
+	String prefix = "member.";
+	HttpSession session = request.getSession();
+	HashMap<String, Object> queryMap = new HashMap<>();
+	if(param.get("pageSize") == null || param.get("pageSize").equals(""))	param.put("pageSize", 50);
+	if(param.get("page") == null || param.get("page").equals(""))	param.put("page", 1);
+
+	if(param.get("orderfield") == null || param.get("orderfield").equals("")) param.put("orderfield", "seqno");
+	if(param.get("orderby") == null || param.get("orderby").equals("")) param.put("orderby", "desc");
+	
+	int pageSize = Integer.parseInt(param.get("pageSize").toString());
+	int page = Integer.parseInt(param.get("page").toString());
+	Paging paging = new Paging();
+	paging.setPageNo(page);
+	paging.setPageSize(pageSize);
+	
+//	Integer page = (Integer) param.get("page");
+//	if( param.get("page") == null)	page = Integer.valueOf(1);
+//	else page = (Integer) param.get("page");
+//	if (page.intValue() < 1) page = Integer.valueOf(1);
+
+//    if (session.getAttribute("userId") != null) {
+//    }
+	/*
+    int pageSize = 50;
+    Paging paging = new Paging();
+    paging.setPageNo(page.intValue());
+    paging.setPageSize(pageSize);
+    */
+    if("offr_prdt_cd".equals(param.get("type1") )) {
+    	if("신차리스".equals(param.get("search1")))	param.put("search1", "02");
+    	else if("신차렌트".equals(param.get("search1"))) param.put("search1", "03");
+    	else if("중고론".equals(param.get("search1"))) param.put("search1", "04");
+    	else if("중고리스".equals(param.get("search1"))) param.put("search1", "05");
+    }
+    param.put("page", Integer.valueOf((page - 1) * pageSize));
+    param.put("reg_id", session.getAttribute("userId"));
+    param.put("count", Integer.valueOf(pageSize));
+    param.put("coop_cd","HD");
+    param.put("searchStart", param.get("search-start"));
+    param.put("searchEnd", param.get("search-end"));
+    
+    int count = ((Integer)this.sqlSession.selectOne("api.selectApiRecvDataTotCnt",  param)).intValue();
+    List <ApiRecvDataVO> apiRecvDataVO  = this.sqlSession.selectList("api.selectApiRecvDataList", param);
+    model.addAttribute("ApiRecvDataVO", apiRecvDataVO);
+    model.addAttribute("paging", paging);
+    paging.setTotalCount(count);
+
+	return String.valueOf(prefix) +"hyundaiCapital";
+}
+@RequestMapping({ "/{member}/skrentcar" })
+public String skrentcar(HttpServletRequest request, Model model, @RequestParam(value = "page", defaultValue = "1") Integer page) {
+	String prefix = "member.";
+	HttpSession session = request.getSession();
+	HashMap<String, Object> queryMap = new HashMap<>();
+	if (page.intValue() < 1) page = Integer.valueOf(1);
+
+//    if (session.getAttribute("userId") != null) {
+//    }
+    int pageSize = 20;
+    Paging paging = new Paging();
+    paging.setPageNo(page.intValue());
+    paging.setPageSize(pageSize);
+    queryMap.put("page", Integer.valueOf((page.intValue() - 1) * pageSize));
+    queryMap.put("reg_id", session.getAttribute("userId"));
+    queryMap.put("count", Integer.valueOf(pageSize));
+    queryMap.put("coop_cd","SK");
+    
+    int count = ((Integer)this.sqlSession.selectOne("api.selectApiRecvDataTotCnt",  queryMap)).intValue();
+    List <ApiRecvDataVO> apiRecvDataVO  = this.sqlSession.selectList("api.selectApiRecvDataList", queryMap);
+    model.addAttribute("ApiRecvDataVO", apiRecvDataVO);
+    model.addAttribute("paging", paging);
+    paging.setTotalCount(count);
+
+	return String.valueOf(prefix) +"skrentcar";
+}
+
+
 
 /*     */   
 /*     */   @RequestMapping({"/{member}/{url}"})
